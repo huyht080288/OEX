@@ -1,0 +1,44 @@
+{
+  "name": "oex-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "dotenv -e .env.test -- vitest run",
+    "test:e2e": "dotenv -e .env.test -- vitest run tests/e2e-student-flow.test.ts",
+    "test:watch": "vitest",
+    "db:seed": "prisma db seed",
+    "db:test:prepare": "dotenv -e .env.test -- prisma migrate deploy && dotenv -e .env.test -- prisma db seed",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.0.3",
+    "@types/supertest": "^6.0.3",
+    "dotenv-cli": "^8.0.0",
+    "embedded-postgres": "^18.4.0-beta.17",
+    "prisma": "^6.9.0",
+    "supertest": "^7.1.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

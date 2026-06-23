@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+backend/.env
+backend/.env.test
+
+# Build
+dist/
+backend/dist/
+frontend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Test / coverage
+coverage/
+backend/tmp/
+backend/.test-runtime.env
+frontend/dist/
+
+# Prisma
+backend/prisma/*.db
+backend/prisma/*.db-journal

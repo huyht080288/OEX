@@ -1,0 +1,137 @@
+---
+description: OEX repository layout, folder purposes, and where to put files
+alwaysApply: true
+---
+
+# OEX — Project Layout & Conventions
+
+**Project:** OEX (Online Examination System)  
+**Stack:** Vue.js · Node.js · PostgreSQL · Prisma  
+**UI language:** English
+
+## Repository map
+
+```
+OEX/
+├── PrjMng/          # Progress & tasks — read first when resuming work
+├── docs/            # Design & requirements (stable reference)
+├── backend/         # Node.js REST API
+├── frontend/        # Vue.js SPA
+├── Ref/             # External references & templates (read-only)
+├── .cursor/         # Cursor rules & skills (agent config)
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+## Folder purposes
+
+| Folder | Purpose | Put here | Do NOT put here |
+|--------|---------|----------|-----------------|
+| `PrjMng/` | Implementation state & next steps | `STATUS.md`, `TASKS.md`, `DECISIONS.md`, `CHANGELOG.md` | Design specs, source code |
+| `docs/` | Formal project documentation | Requirements, detailed design, API notes | Task checklists, secrets |
+| `backend/` | API, Prisma, business logic | `src/`, `prisma/`, tests | Frontend code, `.env` |
+| `frontend/` | Vue SPA | `src/`, public assets, FE tests | Backend code, API secrets |
+| `Ref/` | Third-party / school templates | Reference skills, sample docs | Application runtime code |
+
+## PrjMng/ — context recovery (critical)
+
+Before implementing or continuing work, read **`PrjMng/STATUS.md`**.
+
+| File | Role |
+|------|------|
+| `STATUS.md` | Current phase, done / in-progress / blocked, **next action** |
+| `TASKS.md` | Backlog by phase; checkbox tasks |
+| `DECISIONS.md` | Locked choices (stack, scope cuts) — do not re-debate |
+| `CHANGELOG.md` | Dated log of what was implemented |
+
+Update `STATUS.md` and `CHANGELOG.md` when a phase or major task completes.
+
+## docs/ — naming
+
+| Pattern | Example |
+|---------|---------|
+| Requirements | `docs/basic_requirement.md` |
+| Detailed design | `docs/OEX_DetailedDesign_V1.md` |
+| Future SRS / API export | `docs/OEX_SRS_V1.md`, `docs/api/openapi.yaml` |
+
+Design docs are **versioned** (`_V1`, `_V2`). Do not overwrite; add new version file.
+
+## backend/ layout
+
+```
+backend/
+├── src/
+│   ├── routes/
+│   ├── controllers/
+│   ├── services/
+│   ├── middleware/
+│   ├── validators/
+│   └── index.ts
+├── prisma/
+│   ├── schema.prisma
+│   ├── seed.ts           # required — full sample data for dev & tests
+│   └── seed-data.ts      # stable IDs exported for tests
+├── tests/                # required — integration + unit tests
+├── package.json
+└── .env.example
+```
+
+### Backend quality gate (mandatory)
+
+Backend implementation is **not done** until:
+
+1. `prisma/seed.ts` includes the minimum catalog in `oex-backend` skill (admin, teacher, students, subjects, questions, exams, assignments).
+2. `npm run test` exits **0** with **0 failures** from `backend/`.
+3. Tests run against a prepared test DB (`npm run db:test:prepare` or equivalent) — no manual data entry.
+
+Follow `.cursor/skills/oex-backend/SKILL.md` and `project-context.md` for pass criteria and seed catalog.
+
+## frontend/ layout
+
+```
+frontend/
+├── src/
+│   ├── api/
+│   ├── components/
+│   ├── views/
+│   ├── router/
+│   ├── stores/
+│   └── types/
+├── public/
+└── package.json
+```
+
+## Root & environment
+
+- **`docker-compose.yml`** — PostgreSQL for local dev (repo root only).
+- **`.env.example`** — Template vars; never commit real `.env`.
+- **Secrets** — `JWT_SECRET`, `DATABASE_URL` in `.env` (gitignored).
+
+## Agent workflow
+
+1. Read `PrjMng/STATUS.md` → know phase and next step.
+2. Read relevant section in `docs/OEX_DetailedDesign_V1.md` before coding.
+3. Code in `backend/` or `frontend/` only.
+4. Update `PrjMng/TASKS.md`, `STATUS.md`, `CHANGELOG.md` after meaningful progress.
+
+## Coding skills
+
+| Location | Skills (apply together) |
+|----------|-------------------------|
+| `backend/`, `prisma/`, API tests | `oex-coding` + `oex-backend` |
+| `frontend/`, FE tests | `oex-coding` + `frontend-design` |
+| Both tiers in one task | All three skills as needed |
+
+**Always:** this rule (`oex-project-layout.mdc`) is mandatory for every task.
+
+| Skill | Path | Scope |
+|-------|------|-------|
+| Shared coding | `.cursor/skills/oex-coding/SKILL.md` | Discipline, workflow, scope — backend **and** frontend |
+| Backend | `.cursor/skills/oex-backend/SKILL.md` | API, Prisma, services — **backend only** |
+| Frontend | `.cursor/skills/frontend-design/SKILL.md` | UI, Vue, styling — **frontend only** |
+
+## Out of scope for v1
+
+No Excel import, no anti-cheat, no class module, single-answer MCQ only — see `docs/OEX_DetailedDesign_V1.md` §15.

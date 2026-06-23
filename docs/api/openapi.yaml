@@ -1,0 +1,780 @@
+openapi: 3.0.3
+info:
+  title: OEX API
+  description: |
+    Online Examination System REST API (v1).
+    All responses use a standard envelope. Authenticated routes require `Authorization: Bearer <token>`.
+    Design reference: `docs/OEX_DetailedDesign_V1.md` §9.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local development
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Subjects
+  - name: Questions
+  - name: Exams
+  - name: Students
+  - name: Student Exams
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ErrorEnvelope:
+      type: object
+      required: [success, error]
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_CREDENTIALS
+                - ACCOUNT_INACTIVE
+                - FORBIDDEN
+                - NOT_FOUND
+                - EXAM_NOT_AVAILABLE
+                - MAX_ATTEMPTS_REACHED
+                - ATTEMPT_IN_PROGRESS
+                - ATTEMPT_EXPIRED
+                - VALIDATION_ERROR
+                - SERVICE_UNAVAILABLE
+            message:
+              type: string
+            details:
+              type: array
+              items: {}
+
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        fullName: { type: string }
+        role: { type: string, enum: [ADMIN, TEACHER, STUDENT] }
+        isActive: { type: boolean }
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 1 }
+
+    LoginResponse:
+      type: object
+      properties:
+        success: { type: boolean, enum: [true] }
+        data:
+          type: object
+          properties:
+            accessToken: { type: string }
+            expiresIn: { type: integer }
+            user: { $ref: '#/components/schemas/User' }
+
+    Subject:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        code: { type: string }
+        name: { type: string }
+        description: { type: string, nullable: true }
+        teacherId: { type: string, format: uuid }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    QuestionOption:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        label: { type: string }
+        content: { type: string }
+        isCorrect: { type: boolean, description: Teacher only }
+
+    Question:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        subjectId: { type: string, format: uuid }
+        content: { type: string }
+        difficulty: { type: string, enum: [EASY, MEDIUM, HARD] }
+        points: { type: number }
+        options:
+          type: array
+          items: { $ref: '#/components/schemas/QuestionOption' }
+
+    Exam:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        subjectId: { type: string, format: uuid }
+        title: { type: string }
+        description: { type: string, nullable: true }
+        durationMinutes: { type: integer }
+        openAt: { type: string, format: date-time }
+        closeAt: { type: string, format: date-time }
+        maxAttempts: { type: integer }
+        showAnswersAfterSubmit: { type: boolean }
+        status: { type: string, enum: [DRAFT, PUBLISHED, CLOSED] }
+
+    MyExamAssignment:
+      type: object
+      properties:
+        assignmentId: { type: string, format: uuid }
+        exam:
+          type: object
+          properties:
+            id: { type: string, format: uuid }
+            title: { type: string }
+            subjectName: { type: string }
+            status: { type: string }
+            durationMinutes: { type: integer }
+            openAt: { type: string, format: date-time }
+            closeAt: { type: string, format: date-time }
+        attemptCount: { type: integer }
+        maxAttempts: { type: integer }
+        hasInProgress: { type: boolean }
+        inProgressAttemptId: { type: string, format: uuid, nullable: true }
+        lastCompletedAttemptId: { type: string, format: uuid, nullable: true }
+        bestScore: { type: number, nullable: true }
+        lastAttemptStatus: { type: string, nullable: true }
+
+    InProgressAttempt:
+      type: object
+      properties:
+        attemptId: { type: string, format: uuid }
+        examTitle: { type: string }
+        expiresAt: { type: string, format: date-time }
+        questions:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string, format: uuid }
+              orderIndex: { type: integer }
+              content: { type: string }
+              points: { type: number }
+              options:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: { type: string, format: uuid }
+                    label: { type: string }
+                    content: { type: string }
+        answers:
+          type: object
+          additionalProperties:
+            type: string
+            format: uuid
+            nullable: true
+
+    AttemptResult:
+      type: object
+      properties:
+        attemptId: { type: string, format: uuid }
+        examTitle: { type: string }
+        status: { type: string, enum: [SUBMITTED, EXPIRED] }
+        score: { type: number }
+        maxScore: { type: number }
+        correctCount: { type: integer }
+        totalQuestions: { type: integer }
+        submittedAt: { type: string, format: date-time, nullable: true }
+        review:
+          type: array
+          items:
+            type: object
+            properties:
+              questionId: { type: string, format: uuid }
+              content: { type: string }
+              isCorrect: { type: boolean }
+              points: { type: number }
+              selectedOption:
+                type: object
+                nullable: true
+                properties:
+                  id: { type: string, format: uuid }
+                  label: { type: string }
+                  content: { type: string }
+              correctOption:
+                type: object
+                nullable: true
+                properties:
+                  id: { type: string, format: uuid }
+                  label: { type: string }
+                  content: { type: string }
+
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Sign in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LoginResponse' }
+        '401':
+          description: Invalid credentials or inactive account
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      security: [{ bearerAuth: [] }]
+      summary: Current user profile
+      responses:
+        '200':
+          description: Profile
+        '401':
+          description: Unauthorized
+
+  /auth/change-password:
+    post:
+      tags: [Auth]
+      security: [{ bearerAuth: [] }]
+      summary: Change own password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currentPassword, newPassword]
+              properties:
+                currentPassword: { type: string }
+                newPassword: { type: string, minLength: 8 }
+      responses:
+        '200': { description: Password updated }
+        '400': { description: Validation error (wrong current password) }
+        '401': { description: Unauthorized }
+
+  /users:
+    get:
+      tags: [Users]
+      security: [{ bearerAuth: [] }]
+      summary: List users (Admin)
+      parameters:
+        - name: role
+          in: query
+          schema: { type: string, enum: [ADMIN, TEACHER, STUDENT] }
+        - name: search
+          in: query
+          schema: { type: string }
+      responses:
+        '200': { description: User list }
+        '403': { description: Forbidden }
+    post:
+      tags: [Users]
+      security: [{ bearerAuth: [] }]
+      summary: Create user (Admin)
+      responses:
+        '201': { description: Created }
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      security: [{ bearerAuth: [] }]
+      summary: Get user (Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: User }
+        '404': { description: Not found }
+    put:
+      tags: [Users]
+      security: [{ bearerAuth: [] }]
+      summary: Update user (Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Updated }
+
+  /users/{id}/status:
+    patch:
+      tags: [Users]
+      security: [{ bearerAuth: [] }]
+      summary: Activate or deactivate user (Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Status updated }
+
+  /subjects:
+    get:
+      tags: [Subjects]
+      security: [{ bearerAuth: [] }]
+      summary: List own subjects (Teacher)
+      responses:
+        '200':
+          description: Subject list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Subject' }
+    post:
+      tags: [Subjects]
+      security: [{ bearerAuth: [] }]
+      summary: Create subject (Teacher)
+      responses:
+        '201': { description: Created }
+
+  /subjects/{id}:
+    get:
+      tags: [Subjects]
+      security: [{ bearerAuth: [] }]
+      summary: Get subject (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Subject }
+    put:
+      tags: [Subjects]
+      security: [{ bearerAuth: [] }]
+      summary: Update subject (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Updated }
+    delete:
+      tags: [Subjects]
+      security: [{ bearerAuth: [] }]
+      summary: Delete subject (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '204': { description: Deleted }
+
+  /questions:
+    get:
+      tags: [Questions]
+      security: [{ bearerAuth: [] }]
+      summary: List questions (Teacher)
+      parameters:
+        - name: subjectId
+          in: query
+          schema: { type: string, format: uuid }
+        - name: difficulty
+          in: query
+          schema: { type: string, enum: [EASY, MEDIUM, HARD] }
+        - name: q
+          in: query
+          schema: { type: string }
+      responses:
+        '200': { description: Question list }
+    post:
+      tags: [Questions]
+      security: [{ bearerAuth: [] }]
+      summary: Create question (Teacher)
+      responses:
+        '201': { description: Created }
+
+  /questions/{id}:
+    get:
+      tags: [Questions]
+      security: [{ bearerAuth: [] }]
+      summary: Get question (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Question with correct answer flags
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Question' }
+    put:
+      tags: [Questions]
+      security: [{ bearerAuth: [] }]
+      summary: Update question (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Updated }
+    delete:
+      tags: [Questions]
+      security: [{ bearerAuth: [] }]
+      summary: Delete question (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '204': { description: Deleted }
+
+  /exams:
+    get:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: List own exams (Teacher)
+      responses:
+        '200': { description: Exam list }
+    post:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Create exam (Teacher)
+      responses:
+        '201': { description: Created }
+
+  /exams/{id}:
+    get:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Get exam with questions and assignments (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Exam detail }
+    put:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Update exam — DRAFT only (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Updated }
+    delete:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Delete exam — DRAFT only (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '204': { description: Deleted }
+
+  /exams/{id}/questions:
+    put:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Set exam questions and order (Teacher, DRAFT)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [questionIds]
+              properties:
+                questionIds:
+                  type: array
+                  items: { type: string, format: uuid }
+                  minItems: 1
+      responses:
+        '200': { description: Updated }
+
+  /exams/{id}/status:
+    patch:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Publish or close exam (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: { type: string, enum: [PUBLISHED, CLOSED] }
+      responses:
+        '200': { description: Status updated }
+
+  /exams/{id}/assignments:
+    get:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: List assigned students (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Assignment list }
+    post:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Assign students to exam (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [studentIds]
+              properties:
+                studentIds:
+                  type: array
+                  items: { type: string, format: uuid }
+                  minItems: 1
+      responses:
+        '201': { description: Assigned }
+
+  /exams/{id}/assignments/{assignmentId}:
+    delete:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Remove assignment (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: assignmentId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '204': { description: Removed }
+
+  /exams/{id}/results:
+    get:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: All attempts summary for exam (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Results table rows }
+
+  /exams/{id}/attempts/{attemptId}:
+    get:
+      tags: [Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Attempt detail with answer review (Teacher)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: attemptId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Attempt result with review }
+        '403': { description: Not exam owner }
+        '404': { description: Not found }
+
+  /students:
+    get:
+      tags: [Students]
+      security: [{ bearerAuth: [] }]
+      summary: List active students for assignment (Teacher)
+      parameters:
+        - name: search
+          in: query
+          schema: { type: string }
+      responses:
+        '200': { description: Student list }
+
+  /my-exams:
+    get:
+      tags: [Student Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Assigned exams with attempt summary (Student)
+      responses:
+        '200':
+          description: Assignment list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/MyExamAssignment' }
+
+  /attempts/start:
+    post:
+      tags: [Student Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Start a new attempt (Student)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [assignmentId]
+              properties:
+                assignmentId: { type: string, format: uuid }
+      responses:
+        '201':
+          description: Attempt started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/InProgressAttempt' }
+        '400':
+          description: Exam not available or max attempts reached
+        '409':
+          description: Attempt already in progress
+
+  /attempts/{id}:
+    get:
+      tags: [Student Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Get in-progress attempt (Student)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Questions without isCorrect
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/InProgressAttempt' }
+
+  /attempts/{id}/answers:
+    put:
+      tags: [Student Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Save answers batch (Student)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    required: [questionId, selectedOptionId]
+                    properties:
+                      questionId: { type: string, format: uuid }
+                      selectedOptionId: { type: string, format: uuid, nullable: true }
+      responses:
+        '200': { description: Saved }
+
+  /attempts/{id}/submit:
+    post:
+      tags: [Student Exams]
+      security: [{ bearerAuth: [] }]
+      summary: Submit and grade attempt (Student)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Graded result with optional review
+        '409':
+          description: Already submitted
+
+  /attempts/{id}/result:
+    get:
+      tags: [Student Exams]
+      security: [{ bearerAuth: [] }]
+      summary: View result after submit (Student)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Result with review when allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/AttemptResult' }
