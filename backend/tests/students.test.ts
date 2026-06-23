@@ -15,12 +15,12 @@ describe('Students API (Teacher)', () => {
     expect(res.body.data.some((s: { id: string }) => s.id === SEED_STUDENT2_ID)).toBe(true);
   });
 
-  it('GET /students?search=student1 — filters by email', async () => {
+  it('GET /students?search=student1@oex.test — filters by email', async () => {
     const { token } = await loginAs('teacher');
 
     const res = await request(app)
       .get('/api/v1/students')
-      .query({ search: 'student1' })
+      .query({ search: 'student1@oex.test' })
       .set(authHeader(token));
 
     expect(res.status).toBe(200);

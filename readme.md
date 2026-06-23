@@ -157,8 +157,11 @@ Mật khẩu tất cả tài khoản seed: `Password123!`
 | `teacher2@oex.test` | `Password123!` | Teacher |
 | `student1@oex.test` | `Password123!` | Student |
 | `student2@oex.test` | `Password123!` | Student |
+| `student3@oex.test` … `student10@oex.test` | `Password123!` | Student |
+| `teacher3@oex.test` … `teacher10@oex.test` | `Password123!` | Teacher |
+| `inactive@oex.test` | `Password123!` | Student (inactive) |
 
-Seed gồm: môn CS101, 3 câu hỏi, đề DRAFT/PUBLISHED/CLOSED, gán học sinh, attempts SUBMITTED/EXPIRED.
+Seed gồm **≥10 bản ghi mỗi loại**: 10 giáo viên, 11 học sinh, 10 môn học, 10 câu hỏi (40 phương án), 10 đề thi, 10 gán đề, 10 lượt làm bài, v.v. Tài khoản chính cho demo: `teacher@oex.test`, `student1@oex.test`, `student2@oex.test`.
 
 ---
 
