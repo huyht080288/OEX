@@ -583,23 +583,81 @@ Tài liệu đầy đủ: `docs/api/openapi.yaml`.
 
 ### 5.1. Giao diện chương trình
 
-| STT | Màn hình | Route | Role | Mô tả |
-|-----|----------|-------|------|-------|
-| 1 | Đăng nhập | `/login` | Public | Split layout, form email/password |
-| 2 | Dashboard | `/` | All | Stat cards theo role |
-| 3 | User Management | `/admin/users` | Admin | Bảng user, CRUD |
-| 4 | Subjects | `/subjects` | Teacher | Danh sách môn |
-| 5 | Question Bank | `/subjects/:id/questions` | Teacher | Lọc, sửa, xóa câu |
-| 6 | Question Form | `/questions/new`, `/edit` | Teacher | Form MCQ + options |
-| 7 | Exam List | `/exams` | Teacher | Badge Draft/Published/Closed |
-| 8 | Exam Detail | `/exams/:id` | Teacher | Settings, questions, assign |
-| 9 | Exam Results | `/exams/:id/results` | Teacher | Bảng điểm lớp |
-| 10 | My Exams | `/my-exams` | Student | Start / Resume |
-| 11 | Take Exam | `/take/:attemptId` | Student | Timer, navigator, submit |
-| 12 | Result | `/results/:attemptId` | Student | Điểm + review |
-| 13 | Account | `/account` | All | Đổi mật khẩu |
+Ảnh chụp từ môi trường chạy thực tế (`http://localhost:5173`, backend `http://localhost:3000/api/v1`, dữ liệu seed). Tái tạo: `cd docs/scripts && npm install && npx playwright install chromium && npm run capture-screenshots` (yêu cầu FE + BE đang chạy).
 
-> **Hình 5.1–5.6** — *Chèn ảnh chụp màn hình thực tế khi nộp bản in/PDF: Login, Dashboard Teacher, Question Form, Take Exam, Result, Exam Results.*
+| STT | Màn hình | Route | Role | File ảnh |
+|-----|----------|-------|------|----------|
+| 1 | Đăng nhập | `/login` | Public | `01-login.png` |
+| 2 | Dashboard | `/` | Teacher | `02-dashboard-teacher.png` |
+| 3 | Subjects | `/subjects` | Teacher | `03-subjects.png` |
+| 4 | Question Bank | `/subjects/:id/questions` | Teacher | `04-question-bank.png` |
+| 5 | Question Form | `/questions/:id/edit` | Teacher | `05-question-form.png` |
+| 6 | Exam List | `/exams` | Teacher | `06-exam-list.png` |
+| 7 | Exam Detail | `/exams/:id` | Teacher | `07-exam-detail.png` |
+| 8 | Exam Results | `/exams/:id/results` | Teacher | `08-exam-results.png` |
+| 9 | Dashboard | `/` | Admin | `09-dashboard-admin.png` |
+| 10 | User Management | `/admin/users` | Admin | `10-user-management.png` |
+| 11 | My Exams | `/my-exams` | Student | `11-my-exams.png` |
+| 12 | Take Exam | `/take/:attemptId` | Student | `12-take-exam.png` |
+| 13 | Result | `/results/:attemptId` | Student | `13-result.png` |
+
+#### Hình 5.1 — Màn hình đăng nhập
+
+![Màn hình đăng nhập OEX](images/01-login.png)
+
+*Split layout: panel thương hiệu bên trái, form email/password bên phải.*
+
+#### Hình 5.2 — Dashboard giáo viên
+
+![Dashboard giáo viên](images/02-dashboard-teacher.png)
+
+*Thống kê số môn học và đề thi đang active; điều hướng Subjects / Exams.*
+
+#### Hình 5.3 — Quản lý môn học & ngân hàng câu hỏi
+
+![Danh sách môn học](images/03-subjects.png)
+
+![Ngân hàng câu hỏi](images/04-question-bank.png)
+
+#### Hình 5.4 — Form tạo/sửa câu hỏi MCQ
+
+![Form câu hỏi trắc nghiệm](images/05-question-form.png)
+
+*Nhập nội dung câu, độ khó, điểm và các phương án A/B/C/D với một đáp án đúng.*
+
+#### Hình 5.5 — Quản lý đề thi (giáo viên)
+
+![Danh sách đề thi](images/06-exam-list.png)
+
+![Chi tiết đề thi](images/07-exam-detail.png)
+
+![Kết quả theo lớp](images/08-exam-results.png)
+
+*Badge trạng thái Draft/Published/Closed; tab cấu hình, chọn câu, gán học sinh; bảng điểm và View Detail.*
+
+#### Hình 5.6 — Quản trị hệ thống (Admin)
+
+![Dashboard Admin](images/09-dashboard-admin.png)
+
+![Quản lý người dùng](images/10-user-management.png)
+
+*Admin xem tổng số user và CRUD tài khoản Teacher/Student.*
+
+#### Hình 5.7 — Luồng học sinh: làm bài & xem kết quả
+
+![My Exams — danh sách đề được gán](images/11-my-exams.png)
+
+![Take Exam — timer, navigator, chọn đáp án](images/12-take-exam.png)
+
+![Result — điểm và review câu hỏi](images/13-result.png)
+
+*Học sinh Start đề PUBLISHED, làm bài với đồng hồ đếm ngược và thanh tiến độ; sau khi nộp xem điểm tổng và chi tiết từng câu.*
+
+**Đặc điểm giao diện:**
+
+- Ngôn ngữ UI: **tiếng Anh**.
+- Design tokens: Crimson Pro + Atkinson Hyperlegible; layout Bento card; nền lưới gợi ý giấy thi.
+- Responsive: sidebar chuyển ngang trên mobile; màn làm bài tách sidebar navigator.
 
 ### 5.2. Giải thích mã nguồn cốt lõi
 

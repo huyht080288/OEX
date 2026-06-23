@@ -2,7 +2,13 @@
   "name": "oex-thesis-generator",
   "private": true,
   "type": "module",
+  "scripts": {
+    "capture-screenshots": "node capture-screenshots.mjs"
+  },
   "dependencies": {
     "docx": "^9.5.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0"
   }
 }
