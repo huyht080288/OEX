@@ -6,7 +6,9 @@
     <template v-else-if="attempt">
       <header class="take-exam__header">
         <div class="take-exam__brand">
-          <span class="take-exam__mark" aria-hidden="true" />
+          <span class="take-exam__mark" aria-hidden="true">
+            <OexMark />
+          </span>
           <h1 class="take-exam__title">{{ attempt.examTitle }}</h1>
         </div>
         <p
@@ -19,6 +21,19 @@
 
       <div class="take-exam__body">
         <main class="take-exam__main">
+          <div
+            class="take-exam__progress-bar"
+            role="progressbar"
+            :aria-valuenow="currentIndex + 1"
+            :aria-valuemin="1"
+            :aria-valuemax="attempt.questions.length"
+            :aria-label="`Question ${currentIndex + 1} of ${attempt.questions.length}`"
+          >
+            <div
+              class="take-exam__progress-fill"
+              :style="{ width: `${progressPercent}%` }"
+            />
+          </div>
           <p class="take-exam__progress">
             Question {{ currentIndex + 1 }} of {{ attempt.questions.length }}
           </p>
@@ -127,6 +142,7 @@ import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LoadingState from '@/components/ui/LoadingState.vue';
 import ErrorState from '@/components/ui/ErrorState.vue';
+import OexMark from '@/components/ui/OexMark.vue';
 import { fetchAttempt, saveAnswers, submitAttempt } from '@/api/attempts';
 import { getErrorCode, getErrorMessage } from '@/api/client';
 import { useToast } from '@/composables/useToast';
@@ -157,6 +173,11 @@ const currentQuestion = computed(() => attempt.value?.questions[currentIndex.val
 const answeredCount = computed(() => {
   if (!attempt.value) return 0;
   return attempt.value.questions.filter((q) => !!answers[q.id]).length;
+});
+
+const progressPercent = computed(() => {
+  if (!attempt.value || attempt.value.questions.length === 0) return 0;
+  return ((currentIndex.value + 1) / attempt.value.questions.length) * 100;
 });
 
 function syncAnswersFromAttempt(data: InProgressAttempt) {
@@ -314,17 +335,3 @@ onUnmounted(() => {
   window.removeEventListener('beforeunload', beforeUnload);
 });
 </script>
-
-<style scoped>
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-</style>

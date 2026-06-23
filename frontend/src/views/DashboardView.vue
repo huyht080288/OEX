@@ -35,7 +35,7 @@
       </template>
 
       <template v-if="stats.role === 'STUDENT'">
-        <article class="stat-card stat-card--wide">
+        <article class="stat-card stat-card--wide stat-card--accent">
           <p class="stat-card__label">Upcoming exams</p>
           <ul v-if="stats.upcomingExams?.length" class="dashboard-list">
             <li v-for="item in stats.upcomingExams" :key="item.assignmentId">

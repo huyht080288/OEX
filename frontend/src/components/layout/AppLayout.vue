@@ -1,8 +1,11 @@
 <template>
   <div class="layout">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="layout__header">
       <div class="layout__brand">
-        <span class="layout__mark" aria-hidden="true" />
+        <span class="layout__mark" aria-hidden="true">
+          <OexMark />
+        </span>
         <div>
           <p class="layout__eyebrow">Online Examination System</p>
           <h1 class="layout__title">OEX</h1>
@@ -19,7 +22,7 @@
     </header>
     <div class="layout__body">
       <AppNav v-if="user" :role="user.role" />
-      <main class="layout__main">
+      <main id="main-content" class="layout__main">
         <RouterView />
       </main>
     </div>
@@ -29,6 +32,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import OexMark from '@/components/ui/OexMark.vue';
 import AppNav from './AppNav.vue';
 
 const auth = useAuthStore();
