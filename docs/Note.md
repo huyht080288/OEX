@@ -4,7 +4,7 @@ Thông tin:
     Lớp: DTCXN02-K
     Môn: Phát triển phần mềm hướng dịch vụ
     Giảng viên hướng dẫn: Huỳnh Trung Trụ
-Tiêu chí chấm điểm:
+Tiêu chí chấm điểm báo cáo:
     1. Phần Mở Đầu (0.5 điểm)
         Trang bìa
         Lời cảm ơn & Lời cam đoan
@@ -36,3 +36,15 @@ Tiêu chí chấm điểm:
     7. Phần Phụ Lục(0.5 điểm)
         Tài liệu tham khảo: Sách, tài liệu, website đã trích dẫn.
         Đoạn mã (Code snippets)
+Tiêu chí chấm điểm slide thuyết trình:
+    (0.5 Điểm) - Trang tiêu đề (Title Slide): Tên dự án, Slogan/Mô tả ngắn, Tên người thực hiện.
+    (0.5 Điểm) - Tổng quan dự án (Project Overview): Giới thiệu tầm nhìn, mục đích cốt lõi của phần mềm.
+    (0.5 Điểm) - Vấn đề & Nhu cầu (Problem Statement): Những khó khăn thực tế mà dự án muốn giải quyết.
+    (0.5 Điểm) - Giải pháp đề xuất (Proposed Solution): Cách phần mềm của bạn xử lý các vấn đề trên.
+    (1 Điểm) - Công nghệ sử dụng (Tech Stack): Ngôn ngữ lập trình, Framework, Database, Công cụ hỗ trợ.
+    (1 Điểm) - Tính năng tiêu biểu (Core Features): Danh sách 3-4 chức năng quan trọng nhất của hệ thống.
+    (1 Điểm) - Kiến trúc hệ thống (System Architecture): Sơ đồ luồng dữ liệu hoặc mô hình hoạt động.
+    (1 Điểm) - Quy trình phát triển (Development Timeline): Các giai đoạn từ phân tích, thiết kế đến lập trình và kiểm thử.
+    (2 Điểm) - Trình diễn giao diện (UI/UX Showcase): Hình ảnh thực tế hoặc bản vẽ các màn hình chính.
+    (0.5 Điểm) - Kết quả & Định hướng (Impact & Roadmap): Các mục tiêu đã đạt được và kế hoạch nâng cấp trong tương lai.
+    (0.5 Điểm) - Hỏi đáp & Kết luận (Q&A): Thông tin liên hệ và giải đáp thắc mắc.

@@ -5,7 +5,8 @@
   "scripts": {
     "capture-screenshots": "node capture-screenshots.mjs",
     "render-diagrams": "node render-diagrams.mjs",
-    "build-nhom11-docx": "python build-nhom11-docx.py"
+    "build-nhom11-docx": "python build-nhom11-docx.py",
+    "build-presentation": "python build-presentation.py"
   },
   "dependencies": {
     "docx": "^9.5.0"
