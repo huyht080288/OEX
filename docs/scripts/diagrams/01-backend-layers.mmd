@@ -1,0 +1,15 @@
+flowchart TB
+    subgraph HTTP
+        R[routes/]
+        M[authMiddleware]
+        C[controllers/]
+    end
+    subgraph Business
+        S[services/]
+        V["validators/ Zod"]
+    end
+    subgraph Data
+        P[Prisma Client]
+        DB[(PostgreSQL)]
+    end
+    R --> M --> C --> V --> S --> P --> DB

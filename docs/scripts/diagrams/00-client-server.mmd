@@ -1,0 +1,6 @@
+flowchart TB
+    PRESENTATION["PRESENTATION — Vue 3 SPA<br/>Browser, port 5173"]
+    APPLICATION["APPLICATION — Node.js Express<br/>port 3000, /api/v1<br/>Routes → Controllers → Services → Prisma"]
+    DATA["DATA — PostgreSQL 15<br/>port 5432, database oex"]
+    PRESENTATION -->|"HTTP/JSON REST + Bearer JWT"| APPLICATION
+    APPLICATION -->|SQL| DATA

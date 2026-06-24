@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<w:ftr xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se wp14">
+  <w:p w:rsidR="00C6646E" w:rsidRDefault="009527A9">
+    <w:pPr>
+      <w:pBdr>
+        <w:top w:val="nil"/>
+        <w:left w:val="nil"/>
+        <w:bottom w:val="nil"/>
+        <w:right w:val="nil"/>
+        <w:between w:val="nil"/>
+      </w:pBdr>
+      <w:tabs>
+        <w:tab w:val="center" w:pos="4320"/>
+        <w:tab w:val="right" w:pos="8640"/>
+        <w:tab w:val="right" w:pos="9344"/>
+      </w:tabs>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+    </w:pPr>
+    <w:proofErr w:type="spellStart"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t>Nhập</w:t>
+    </w:r>
+    <w:proofErr w:type="spellEnd"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t xml:space="preserve"> </w:t>
+    </w:r>
+    <w:proofErr w:type="spellStart"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t>Môn</w:t>
+    </w:r>
+    <w:proofErr w:type="spellEnd"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t xml:space="preserve"> </w:t>
+    </w:r>
+    <w:proofErr w:type="spellStart"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t>Công</w:t>
+    </w:r>
+    <w:proofErr w:type="spellEnd"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t xml:space="preserve"> </w:t>
+    </w:r>
+    <w:proofErr w:type="spellStart"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t>Nghệ</w:t>
+    </w:r>
+    <w:proofErr w:type="spellEnd"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t xml:space="preserve"> </w:t>
+    </w:r>
+    <w:proofErr w:type="spellStart"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t>Phần</w:t>
+    </w:r>
+    <w:proofErr w:type="spellEnd"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t xml:space="preserve"> </w:t>
+    </w:r>
+    <w:proofErr w:type="spellStart"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:i/>
+        <w:iCs/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t>Mềm</w:t>
+    </w:r>
+    <w:proofErr w:type="spellEnd"/>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Cambria" w:eastAsia="Cambria" w:hAnsi="Cambria" w:cs="Cambria"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t xml:space="preserve"> </w:t>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:tab/>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:tab/>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:tab/>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:fldChar w:fldCharType="begin"/>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:instrText>PAGE</w:instrText>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:fldChar w:fldCharType="separate"/>
+    </w:r>
+    <w:r w:rsidR="000C2B3D">
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:noProof/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:t>2</w:t>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+        <w:color w:val="000000"/>
+      </w:rPr>
+      <w:fldChar w:fldCharType="end"/>
+    </w:r>
+  </w:p>
+  <w:p w:rsidR="00C6646E" w:rsidRDefault="00C6646E">
+    <w:pPr>
+      <w:pBdr>
+        <w:top w:val="single" w:sz="4" w:space="1" w:color="000000"/>
+        <w:left w:val="nil"/>
+        <w:bottom w:val="nil"/>
+        <w:right w:val="nil"/>
+        <w:between w:val="nil"/>
+      </w:pBdr>
+      <w:tabs>
+        <w:tab w:val="center" w:pos="4320"/>
+        <w:tab w:val="right" w:pos="8640"/>
+        <w:tab w:val="right" w:pos="9344"/>
+      </w:tabs>
+      <w:rPr>
+        <w:rFonts w:ascii="Times" w:eastAsia="Times" w:hAnsi="Times" w:cs="Times"/>
+        <w:smallCaps/>
+        <w:color w:val="8C8C8C"/>
+      </w:rPr>
+    </w:pPr>
+  </w:p>
+</w:ftr>

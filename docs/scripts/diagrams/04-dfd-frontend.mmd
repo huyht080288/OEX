@@ -1,0 +1,20 @@
+flowchart TB
+    User([Người dùng])
+    P1[1.0 Login Flow]
+    P2[2.0 Teacher CRUD Flow]
+    P3[3.0 Exam Taking Flow]
+    P4[4.0 Result Display]
+    DS1[(localStorage token)]
+    DS2[(Pinia auth state)]
+    DS3["(Component local state answers)"]
+    API([REST API])
+
+    User --> P1 & P2 & P3
+    P1 --> DS1 & DS2
+    P1 --> API
+    P2 --> API
+    P3 --> DS3
+    P3 -->|debounce save| API
+    P3 -->|submit| API
+    API --> P4
+    P4 --> User

@@ -3,12 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "capture-screenshots": "node capture-screenshots.mjs"
+    "capture-screenshots": "node capture-screenshots.mjs",
+    "render-diagrams": "node render-diagrams.mjs",
+    "build-nhom11-docx": "python build-nhom11-docx.py"
   },
   "dependencies": {
     "docx": "^9.5.0"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.12.0",
     "playwright": "^1.61.0"
   }
 }

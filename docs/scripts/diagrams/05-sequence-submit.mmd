@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant S as Student Client
+    participant API as Express API
+    participant DB as PostgreSQL
+    S->>API: POST /attempts/start assignmentId
+    API->>DB: Validate + INSERT attempt
+    API-->>S: questions no isCorrect
+    loop Each answer change
+        S->>API: PUT /attempts/:id/answers
+        API->>DB: UPDATE attempt_answers
+    end
+    S->>API: POST /attempts/:id/submit
+    API->>DB: Transaction grade + SUBMITTED
+    API-->>S: score, review

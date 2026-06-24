@@ -1,0 +1,20 @@
+flowchart LR
+    Client([Vue Client])
+    P1[1.0 Auth Service]
+    P2[2.0 User Service]
+    P3[3.0 Subject/Question Service]
+    P4[4.0 Exam Service]
+    P5[5.0 Attempt/Grade Service]
+    D1[(users)]
+    D2["(subjects, questions, options)"]
+    D3["(exams, assignments, exam_questions)"]
+    D4["(attempts, attempt_answers)"]
+
+    Client -->|JWT requests| P1 & P2 & P3 & P4 & P5
+    P1 --> D1
+    P2 --> D1
+    P3 --> D2
+    P4 --> D3
+    P4 --> D2
+    P5 --> D4
+    P5 --> D3

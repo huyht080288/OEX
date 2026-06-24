@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="báo-cáo-dự-án-môn-phát-triển-phần-mềm-hướng-dịch-vụ">BÁO CÁO DỰ ÁN MÔN PHÁT TRIỂN PHẦN MỀM HƯỚNG DỊCH VỤ</h1>
+<hr>
+<h2 id="1-phần-mở-đầu">1. PHẦN MỞ ĐẦU</h2>
+<h3 id="11-trang-bìa">1.1. Trang bìa</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tên đề tài</strong></td>
+<td>Hệ thống thi trắc nghiệm trực tuyến — <strong>OEX (Online Examination System)</strong></td>
+</tr>
+<tr>
+<td><strong>Môn học</strong></td>
+<td>Phát triển phần mềm hướng dịch vụ</td>
+</tr>
+<tr>
+<td><strong>Giảng viên hướng dẫn</strong></td>
+<td>Huỳnh Trung Trụ</td>
+</tr>
+<tr>
+<td><strong>Sinh viên thực hiện</strong></td>
+<td>Hồ Tiến Huy</td>
+</tr>
+<tr>
+<td><strong>Mã sinh viên</strong></td>
+<td>K23DTCN138</td>
+</tr>
+<tr>
+<td><strong>Lớp</strong></td>
+<td>DTCXN02-K</td>
+</tr>
+<tr>
+<td><strong>Thời gian</strong></td>
+<td>Học kỳ 7 — Năm học 2024–2025</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="12-lời-cảm-ơn">1.2. Lời cảm ơn</h3>
+<p>Em xin chân thành cảm ơn thầy <strong>Huỳnh Trung Trụ</strong> đã tận tình hướng dẫn, góp ý trong suốt quá trình học tập và hoàn thành môn Phát triển phần mềm hướng dịch vụ. Em cũng xin cảm ơn nhà trường và bạn bè trong lớp đã hỗ trợ trao đổi ý tưởng và kiểm thử sản phẩm.</p>
+<hr>
+<h3 id="13-lời-cam-đoan">1.3. Lời cam đoan</h3>
+<p>Em <strong>Hồ Tiến Huy</strong>, mã sinh viên <strong>K23DTCN138</strong>, cam đoan báo cáo này là kết quả quá trình học tập và triển khai dự án dưới sự hướng dẫn của giảng viên. Các nội dung trình bày là trung thực; phần mã nguồn và tài liệu tham khảo đã được ghi rõ nguồn gốc.</p>
+<p><em>Hồ Tiến Huy</em></p>
+<hr>
+<h3 id="14-mục-lục">1.4. Mục lục</h3>
+<ol>
+<li><a href="#1-ph%E1%BA%A7n-m%E1%BB%9F-%C4%91%E1%BA%A7u">Phần mở đầu</a></li>
+<li><a href="#2-gi%E1%BB%9Bi-thi%E1%BB%87u--%C4%91%E1%BA%B7t-v%E1%BA%A5n-%C4%91%E1%BB%81">Giới thiệu &amp; Đặt vấn đề</a></li>
+<li><a href="#3-c%C6%A1-s%E1%BB%9F-l%C3%BD-thuy%E1%BA%BFt--c%C3%B4ng-ngh%E1%BB%87">Cơ sở lý thuyết &amp; Công nghệ</a></li>
+<li><a href="#4-ph%C3%A2n-t%C3%ADch--thi%E1%BA%BFt-k%E1%BA%BF-h%E1%BB%87-th%E1%BB%91ng">Phân tích &amp; Thiết kế hệ thống</a></li>
+<li><a href="#5-tri%E1%BB%83n-khai--k%E1%BA%BFt-qu%E1%BA%A3">Triển khai &amp; Kết quả</a></li>
+<li><a href="#6-%C4%91%C3%A1nh-gi%C3%A1--h%C6%B0%E1%BB%9Bng-ph%C3%A1t-tri%E1%BB%83n">Đánh giá &amp; Hướng phát triển</a></li>
+<li><a href="#7-ph%E1%BB%A5-l%E1%BB%A5c">Phụ lục</a></li>
+</ol>
+<hr>
+<h3 id="15-tóm-tắt-dự-án-abstract">1.5. Tóm tắt dự án (Abstract)</h3>
+<p><strong>OEX (Online Examination System)</strong> là hệ thống web hỗ trợ tổ chức thi trắc nghiệm trực tuyến, phục vụ ba vai trò <strong>Admin</strong>, <strong>Teacher</strong> và <strong>Student</strong>. Giáo viên quản lý môn học, ngân hàng câu hỏi MCQ một đáp án đúng, tạo đề thi, gán đề và xem kết quả. Học sinh làm bài online với đồng hồ đếm ngược, nộp bài thủ công hoặc tự động khi hết giờ; hệ thống chấm điểm ngay sau khi nộp.</p>
+<p>Kiến trúc <strong>Client–Server</strong> ba tầng: <strong>Vue.js 3</strong> (SPA), <strong>Node.js + Express</strong> (REST API), <strong>PostgreSQL</strong> (Prisma ORM). Xác thực <strong>JWT</strong>; tài liệu API <strong>OpenAPI 3</strong>. Phiên bản v1 hoàn thiện với <strong>81 bài kiểm thử API tự động</strong>, luồng E2E smoke, giao diện tiếng Anh.</p>
+<p><strong>Từ khóa:</strong> thi trắc nghiệm, REST API, Vue.js, Node.js, PostgreSQL, JWT, chấm điểm tự động.</p>
+<hr>
+<h3 id="16-bảng-phân-công-công-việc">1.6. Bảng phân công công việc</h3>
+<table>
+<thead>
+<tr>
+<th>STT</th>
+<th>Giai đoạn / Công việc</th>
+<th>Mô tả chi tiết</th>
+<th>Người thực hiện</th>
+<th>Thời gian</th>
+<th>Kết quả / Sản phẩm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Khảo sát &amp; phân tích yêu cầu</td>
+<td>Nghiên cứu bài toán thi trực tuyến; xác định actor, phạm vi v1</td>
+<td>Hồ Tiến Huy</td>
+<td>Tuần 1–2</td>
+<td><code>docs/basic_requirement.md</code>, <code>docs/OEX_DetailedDesign_V2.md</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Thiết kế CSDL &amp; API</td>
+<td>ERD, Prisma schema, đặc tả REST, OpenAPI</td>
+<td>Hồ Tiến Huy</td>
+<td>Tuần 2–3</td>
+<td><code>schema.prisma</code>, <code>docs/api/openapi.yaml</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Triển khai Backend</td>
+<td>Auth, CRUD user/subject/question/exam, attempt, grading</td>
+<td>Hồ Tiến Huy</td>
+<td>Tuần 3–6</td>
+<td><code>backend/src/</code>, 81 API tests</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Triển khai Frontend</td>
+<td>Login, dashboard, teacher/student/admin UI, exam taking</td>
+<td>Hồ Tiến Huy</td>
+<td>Tuần 5–8</td>
+<td><code>frontend/src/</code>, 18 views</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Kiểm thử &amp; tích hợp</td>
+<td>Unit/integration test, E2E smoke, manual checklist</td>
+<td>Hồ Tiến Huy</td>
+<td>Tuần 7–9</td>
+<td><code>backend/tests/</code>, <code>docs/MANUAL_TEST_CHECKLIST.md</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Triển khai &amp; tài liệu</td>
+<td>Docker, seed, deploy guide, báo cáo</td>
+<td>Hồ Tiến Huy</td>
+<td>Tuần 9–10</td>
+<td><code>docker-compose.yml</code>, <code>docs/DEPLOY.md</code>, báo cáo này</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-giới-thiệu--đặt-vấn-đề">2. GIỚI THIỆU &amp; ĐẶT VẤN ĐỀ</h2>
+<h3 id="21-lý-do-chọn-đề-tài">2.1. Lý do chọn đề tài</h3>
+<p>Giáo dục chuyển đổi số đặt ra nhu cầu tổ chức kiểm tra trực tuyến: giảm chi phí in ấn, chấm bài thủ công, khó kiểm soát thời gian làm bài. Nền tảng thương mại thường phức tạp hoặc không phù hợp quy mô lớp (~100–500 người).</p>
+<p>Đề tài được chọn để:</p>
+<ul>
+<li>Giải quyết bài toán thực tế: tạo đề → gán bài → làm bài có timer → chấm tự động.</li>
+<li>Rèn luyện <strong>phát triển phần mềm hướng dịch vụ</strong>: thiết kế API contract-first, tách frontend/backend, bảo mật, kiểm thử API.</li>
+<li>Tạo sản phẩm có thể demo, triển khai và mở rộng.</li>
+</ul>
+<h3 id="22-mục-tiêu-dự-án">2.2. Mục tiêu dự án</h3>
+<table>
+<thead>
+<tr>
+<th>STT</th>
+<th>Mục tiêu</th>
+<th>Đối tượng</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1</td>
+<td>Quản lý người dùng</td>
+<td>Admin</td>
+<td>CRUD user, phân role, vô hiệu hóa tài khoản</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>Ngân hàng câu hỏi</td>
+<td>Teacher</td>
+<td>MCQ một đáp án đúng, gắn môn/độ khó/điểm</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>Quản lý đề thi</td>
+<td>Teacher</td>
+<td>Tạo đề, chọn câu, cấu hình thời gian, publish</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>Gán đề</td>
+<td>Teacher</td>
+<td>Gán trực tiếp học sinh</td>
+</tr>
+<tr>
+<td>M5</td>
+<td>Làm bài online</td>
+<td>Student</td>
+<td>Timer, navigator, auto-save, submit</td>
+</tr>
+<tr>
+<td>M6</td>
+<td>Chấm tự động</td>
+<td>Hệ thống</td>
+<td>Tính điểm ngay khi nộp / hết giờ</td>
+</tr>
+<tr>
+<td>M7</td>
+<td>Xem kết quả</td>
+<td>Teacher, Student</td>
+<td>Điểm tổng và chi tiết (theo cấu hình)</td>
+</tr>
+<tr>
+<td>M8</td>
+<td>REST API + DB</td>
+<td>Dev/Ops</td>
+<td>PostgreSQL, OpenAPI, JWT</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-phạm-vi-đề-tài">2.3. Phạm vi đề tài</h3>
+<p><strong>Trong phạm vi:</strong> Auth JWT, quản lý user (Admin), CRUD môn/câu/đề (Teacher), gán đề, làm bài, chấm điểm, xem kết quả, MCQ một đáp án, UI tiếng Anh.</p>
+<p><strong>Ngoài phạm vi:</strong> Import Excel, chống gian lận, module lớp học, câu hỏi hình ảnh/đa đáp án, xáo trộn câu.</p>
+<hr>
+<h2 id="3-cơ-sở-lý-thuyết--công-nghệ">3. CƠ SỞ LÝ THUYẾT &amp; CÔNG NGHỆ</h2>
+<h3 id="31-công-nghệ-sử-dụng-chi-tiết">3.1. Công nghệ sử dụng (chi tiết)</h3>
+<h4 id="311-backend">3.1.1. Backend</h4>
+<table>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>Công nghệ</th>
+<th>Phiên bản</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Node.js</td>
+<td>20 LTS+</td>
+<td>Chạy server JavaScript/TypeScript</td>
+</tr>
+<tr>
+<td>Ngôn ngữ</td>
+<td>TypeScript</td>
+<td>^5.8.3</td>
+<td>Type-safe, refactor an toàn</td>
+</tr>
+<tr>
+<td>Web framework</td>
+<td>Express</td>
+<td>^5.1.0</td>
+<td>HTTP routing, middleware pipeline</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>Prisma</td>
+<td>^6.9.0</td>
+<td>Schema, migration, query type-safe</td>
+</tr>
+<tr>
+<td>DB driver</td>
+<td>@prisma/client</td>
+<td>^6.9.0</td>
+<td>Kết nối PostgreSQL</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>PostgreSQL</td>
+<td>15+ (Docker)</td>
+<td>Lưu trữ quan hệ</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>jsonwebtoken</td>
+<td>^9.0.2</td>
+<td>JWT access token</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>bcrypt</td>
+<td>^6.0.0</td>
+<td>Hash mật khẩu (cost factor)</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Zod</td>
+<td>^3.25.67</td>
+<td>Validate request body/query</td>
+</tr>
+<tr>
+<td>CORS</td>
+<td>cors</td>
+<td>^2.8.5</td>
+<td>Cho phép frontend origin</td>
+</tr>
+<tr>
+<td>Dev runner</td>
+<td>tsx</td>
+<td>^4.20.3</td>
+<td>Hot reload TypeScript</td>
+</tr>
+<tr>
+<td>Test framework</td>
+<td>Vitest</td>
+<td>^3.2.4</td>
+<td>Unit + integration test</td>
+</tr>
+<tr>
+<td>HTTP test</td>
+<td>Supertest</td>
+<td>^7.1.1</td>
+<td>Gọi API trong test</td>
+</tr>
+<tr>
+<td>Env loader</td>
+<td>dotenv-cli</td>
+<td>^8.0.0</td>
+<td>Tách <code>.env</code> / <code>.env.test</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="312-frontend">3.1.2. Frontend</h4>
+<table>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>Công nghệ</th>
+<th>Phiên bản</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Vue.js</td>
+<td>^3.5.17</td>
+<td>Composition API, reactivity</td>
+</tr>
+<tr>
+<td>Build tool</td>
+<td>Vite</td>
+<td>^7.0.0</td>
+<td>Dev server, HMR, production bundle</td>
+</tr>
+<tr>
+<td>Plugin</td>
+<td>@vitejs/plugin-vue</td>
+<td>^6.0.0</td>
+<td>Compile SFC <code>.vue</code></td>
+</tr>
+<tr>
+<td>Ngôn ngữ</td>
+<td>TypeScript</td>
+<td>~5.8.3</td>
+<td>Type cho component, API DTO</td>
+</tr>
+<tr>
+<td>Type check</td>
+<td>vue-tsc</td>
+<td>^2.2.10</td>
+<td>Kiểm tra type trước build</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Pinia</td>
+<td>^3.0.3</td>
+<td>Auth store, session user</td>
+</tr>
+<tr>
+<td>HTTP client</td>
+<td>Axios</td>
+<td>^1.10.0</td>
+<td>Gọi REST, interceptors JWT/401</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>Vue Router</td>
+<td>^4.5.1</td>
+<td>SPA routes, navigation guard</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Custom CSS</td>
+<td>—</td>
+<td>Design tokens <code>main.css</code> (không dùng UI lib ngoài)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="313-hạ-tầng--công-cụ-phát-triển">3.1.3. Hạ tầng &amp; công cụ phát triển</h4>
+<table>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>Công nghệ</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Container DB</td>
+<td>Docker Compose</td>
+<td><code>docker-compose.yml</code> — PostgreSQL local</td>
+</tr>
+<tr>
+<td>Version control</td>
+<td>Git</td>
+<td>Quản lý mã nguồn</td>
+</tr>
+<tr>
+<td>IDE</td>
+<td>Cursor / Visual Studio Code</td>
+<td>Phát triển, debug, terminal tích hợp</td>
+</tr>
+<tr>
+<td>API docs</td>
+<td>OpenAPI 3.0.3</td>
+<td><code>docs/api/openapi.yaml</code></td>
+</tr>
+<tr>
+<td>Thiết kế</td>
+<td>Markdown (V2)</td>
+<td><code>docs/OEX_DetailedDesign_V2.md</code></td>
+</tr>
+<tr>
+<td>OS dev</td>
+<td>Windows 10/11</td>
+<td>Môi trường phát triển chính</td>
+</tr>
+</tbody>
+</table>
+<h4 id="314-biến-môi-trường-quan-trọng">3.1.4. Biến môi trường quan trọng</h4>
+<table>
+<thead>
+<tr>
+<th>Biến</th>
+<th>Tầng</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATABASE_URL</code></td>
+<td>Backend</td>
+<td>Connection string PostgreSQL</td>
+</tr>
+<tr>
+<td><code>JWT_SECRET</code></td>
+<td>Backend</td>
+<td>Khóa ký JWT</td>
+</tr>
+<tr>
+<td><code>JWT_EXPIRES_IN</code></td>
+<td>Backend</td>
+<td>Thời hạn token (vd. <code>1h</code>)</td>
+</tr>
+<tr>
+<td><code>PORT</code></td>
+<td>Backend</td>
+<td>Cổng API (mặc định 3000)</td>
+</tr>
+<tr>
+<td><code>CORS_ORIGIN</code></td>
+<td>Backend</td>
+<td>Origin frontend (<code>http://localhost:5173</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-kiến-trúc-hệ-thống">3.2. Kiến trúc hệ thống</h3>
+<h4 id="321-clientserver-ba-tầng">3.2.1. Client–Server (ba tầng)</h4>
+<p><img src="images/diagram-00-client-server.png" alt="Kiến trúc Client–Server ba tầng"></p>
+<h4 id="322-mvc--backend">3.2.2. MVC — Backend</h4>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Thư mục</th>
+<th>Trách nhiệm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td><code>prisma/schema.prisma</code></td>
+<td>Entity, quan hệ, enum</td>
+</tr>
+<tr>
+<td><strong>View</strong></td>
+<td>JSON response</td>
+<td><code>{ success, data }</code> hoặc <code>{ success, error }</code></td>
+</tr>
+<tr>
+<td><strong>Controller</strong></td>
+<td><code>controllers/*.ts</code></td>
+<td>Parse request, gọi service, HTTP status</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td><code>services/*.ts</code></td>
+<td>Business rules, transaction, grading</td>
+</tr>
+<tr>
+<td><strong>Middleware</strong></td>
+<td><code>middleware/auth.ts</code></td>
+<td>JWT verify, <code>requireRole()</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="323-mvc--frontend-mvvm-pattern">3.2.3. MVC — Frontend (MVVM pattern)</h4>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Thư mục</th>
+<th>Trách nhiệm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>View</strong></td>
+<td><code>views/*.vue</code>, <code>components/</code></td>
+<td>Template, hiển thị, sự kiện UI</td>
+</tr>
+<tr>
+<td><strong>ViewModel</strong></td>
+<td><code>&lt;script setup&gt;</code> + Pinia</td>
+<td>State, computed, gọi API</td>
+</tr>
+<tr>
+<td><strong>Model (client)</strong></td>
+<td><code>types/*.ts</code>, <code>api/*.ts</code></td>
+<td>DTO mirror backend, HTTP client</td>
+</tr>
+</tbody>
+</table>
+<h4 id="324-microservices--lý-do-không-áp-dụng-v1">3.2.4. Microservices — lý do không áp dụng v1</h4>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí</th>
+<th>Monolith (OEX v1)</th>
+<th>Microservices</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quy mô</td>
+<td>~100–500 users</td>
+<td>&gt;10k users, team lớn</td>
+</tr>
+<tr>
+<td>Triển khai</td>
+<td>1 container API + 1 DB</td>
+<td>Nhiều service, service mesh</td>
+</tr>
+<tr>
+<td>Debug</td>
+<td>Đơn giản</td>
+<td>Phức tạp (distributed trace)</td>
+</tr>
+<tr>
+<td>Phù hợp PMHDV</td>
+<td>✓</td>
+<td>Quá mức cho đề tài</td>
+</tr>
+</tbody>
+</table>
+<p>Hướng tách <strong>Auth Service</strong>, <strong>Exam Service</strong>, <strong>Grading Service</strong> khi scale (mục 6.2).</p>
+<hr>
+<h2 id="4-phân-tích--thiết-kế-hệ-thống">4. PHÂN TÍCH &amp; THIẾT KẾ HỆ THỐNG</h2>
+<h3 id="41-yêu-cầu-chức-năng--backend-api--nghiệp-vụ-server">4.1. Yêu cầu chức năng — Backend (API / nghiệp vụ server)</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>ID</th>
+<th>Yêu cầu</th>
+<th>API liên quan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AUTH</td>
+<td>AUTH-01–06</td>
+<td>Login, JWT, change password, chặn user inactive</td>
+<td><code>/auth/*</code></td>
+</tr>
+<tr>
+<td>USR</td>
+<td>USR-01–05</td>
+<td>CRUD user, filter role, deactivate</td>
+<td><code>/users/*</code></td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>SUB-01–04</td>
+<td>CRUD subject (owner teacher)</td>
+<td><code>/subjects/*</code></td>
+</tr>
+<tr>
+<td>QST</td>
+<td>QST-01–06</td>
+<td>CRUD MCQ, validate 1 đáp án đúng</td>
+<td><code>/questions/*</code></td>
+</tr>
+<tr>
+<td>EXM</td>
+<td>EXM-01–08</td>
+<td>CRUD exam, set questions, publish, assign</td>
+<td><code>/exams/*</code></td>
+</tr>
+<tr>
+<td>ATT</td>
+<td>ATT-01–09</td>
+<td>Start/save/submit attempt, expire, grade</td>
+<td><code>/attempts/*</code>, <code>/my-exams</code></td>
+</tr>
+<tr>
+<td>RES</td>
+<td>RES-01–05</td>
+<td>Tính điểm, result, teacher view attempts</td>
+<td><code>/attempts/:id/result</code>, <code>/exams/:id/results</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quy tắc nghiệp vụ backend quan trọng:</strong></p>
+<ul>
+<li>Mọi route (trừ login) yêu cầu JWT hợp lệ.</li>
+<li>Teacher chỉ thao tác dữ liệu <code>createdBy</code> / <code>teacherId</code> của mình.</li>
+<li>Student chỉ truy cập assignment/attempt thuộc <code>studentId</code>.</li>
+<li><code>isCorrect</code> <strong>không</strong> trả về trong attempt IN_PROGRESS.</li>
+<li>Chấm điểm trong Prisma <code>$transaction</code>.</li>
+</ul>
+<h3 id="42-yêu-cầu-chức-năng--frontend-giao-diện--trải-nghiệm">4.2. Yêu cầu chức năng — Frontend (giao diện / trải nghiệm)</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>ID</th>
+<th>Màn hình / Component</th>
+<th>Hành vi UI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AUTH-FE</td>
+<td>FE-AUTH-01</td>
+<td><code>LoginView</code></td>
+<td>Form login, hiển thị lỗi INVALID_CREDENTIALS</td>
+</tr>
+<tr>
+<td>AUTH-FE</td>
+<td>FE-AUTH-02</td>
+<td><code>AccountView</code></td>
+<td>Đổi mật khẩu</td>
+</tr>
+<tr>
+<td>AUTH-FE</td>
+<td>FE-AUTH-03</td>
+<td>Router guard</td>
+<td>Redirect <code>/login</code> nếu chưa auth</td>
+</tr>
+<tr>
+<td>USR-FE</td>
+<td>FE-USR-01</td>
+<td><code>UserListView</code></td>
+<td>Bảng user, modal tạo/sửa (Admin)</td>
+</tr>
+<tr>
+<td>SUB-FE</td>
+<td>FE-SUB-01</td>
+<td><code>SubjectListView</code></td>
+<td>CRUD môn học</td>
+</tr>
+<tr>
+<td>QST-FE</td>
+<td>FE-QST-01</td>
+<td><code>QuestionBankView</code>, <code>QuestionFormView</code></td>
+<td>Danh sách + form nhiều option</td>
+</tr>
+<tr>
+<td>EXM-FE</td>
+<td>FE-EXM-01</td>
+<td><code>ExamListView</code>, <code>ExamNewView</code>, <code>ExamDetailView</code></td>
+<td>Tabs: settings, questions, assign</td>
+</tr>
+<tr>
+<td>EXM-FE</td>
+<td>FE-EXM-02</td>
+<td><code>ExamResultsView</code>, <code>TeacherAttemptDetailView</code></td>
+<td>Kết quả lớp + chi tiết</td>
+</tr>
+<tr>
+<td>ATT-FE</td>
+<td>FE-ATT-01</td>
+<td><code>MyExamsView</code></td>
+<td>Danh sách đề, nút Start/Resume</td>
+</tr>
+<tr>
+<td>ATT-FE</td>
+<td>FE-ATT-02</td>
+<td><code>TakeExamView</code></td>
+<td>Timer, progress bar, navigator, modal submit</td>
+</tr>
+<tr>
+<td>ATT-FE</td>
+<td>FE-ATT-03</td>
+<td>Auto-save</td>
+<td>Debounce 500ms → <code>PUT /answers</code></td>
+</tr>
+<tr>
+<td>RES-FE</td>
+<td>FE-RES-01</td>
+<td><code>ResultView</code></td>
+<td>Điểm + review (nếu server cho phép)</td>
+</tr>
+<tr>
+<td>COM-FE</td>
+<td>FE-COM-01</td>
+<td><code>LoadingState</code>, <code>ErrorState</code>, <code>EmptyState</code></td>
+<td>Mọi view fetch data</td>
+</tr>
+<tr>
+<td>COM-FE</td>
+<td>FE-COM-02</td>
+<td><code>AppLayout</code>, <code>AppNav</code></td>
+<td>Shell, nav theo role</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-sơ-đồ-thiết-kế--backend">4.3. Sơ đồ thiết kế — Backend</h3>
+<p><img src="images/diagram-01-backend-layers.png" alt="Sơ đồ phân lớp Backend"></p>
+<p><strong>Phân lớp backend:</strong></p>
+<table>
+<thead>
+<tr>
+<th>File / nhóm</th>
+<th>Ví dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routes/authRoutes.ts</code></td>
+<td><code>POST /login</code>, <code>GET /me</code></td>
+</tr>
+<tr>
+<td><code>routes/examRoutes.ts</code></td>
+<td>CRUD exam, assign, results</td>
+</tr>
+<tr>
+<td><code>routes/attemptRoutes.ts</code></td>
+<td>start, save, submit</td>
+</tr>
+<tr>
+<td><code>services/attemptService.ts</code></td>
+<td><code>gradeAttemptInTx</code>, <code>startAttempt</code></td>
+</tr>
+<tr>
+<td><code>services/examService.ts</code></td>
+<td>publish, assign students</td>
+</tr>
+<tr>
+<td><code>middleware/auth.ts</code></td>
+<td><code>requireRole(ADMIN|TEACHER|STUDENT)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="44-sơ-đồ-thiết-kế--frontend">4.4. Sơ đồ thiết kế — Frontend</h3>
+<p><img src="images/diagram-02-frontend-layers.png" alt="Sơ đồ phân lớp Frontend"></p>
+<p><strong>Ánh xạ route ↔ role:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>View</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/login</code></td>
+<td>LoginView</td>
+<td>Public</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>DashboardView</td>
+<td>All</td>
+</tr>
+<tr>
+<td><code>/admin/users</code></td>
+<td>UserListView</td>
+<td>ADMIN</td>
+</tr>
+<tr>
+<td><code>/subjects</code>, <code>/questions/*</code>, <code>/exams/*</code></td>
+<td>Teacher views</td>
+<td>TEACHER</td>
+</tr>
+<tr>
+<td><code>/my-exams</code>, <code>/take/:id</code>, <code>/results/:id</code></td>
+<td>Student views</td>
+<td>STUDENT</td>
+</tr>
+<tr>
+<td><code>/account</code></td>
+<td>AccountView</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+<h3 id="45-sơ-đồ-dfd--backend-mức-1">4.5. Sơ đồ DFD — Backend (mức 1)</h3>
+<p><img src="images/diagram-03-dfd-backend.png" alt="Sơ đồ DFD Backend mức 1"></p>
+<p><strong>Luồng dữ liệu nộp bài (backend):</strong></p>
+<ol>
+<li>Nhận <code>POST /attempts/:id/submit</code> + JWT student.</li>
+<li>Load attempt + answers + exam questions (transaction).</li>
+<li><code>gradeAttemptInTx</code>: so sánh <code>selectedOptionId</code> với option <code>isCorrect</code>.</li>
+<li>Ghi <code>score</code>, <code>status=SUBMITTED</code>, <code>is_correct</code> từng câu.</li>
+<li>Trả <code>AttemptResult</code> (+ <code>review</code> nếu <code>showAnswersAfterSubmit</code>).</li>
+</ol>
+<h3 id="46-sơ-đồ-dfd--frontend-mức-1">4.6. Sơ đồ DFD — Frontend (mức 1)</h3>
+<p><img src="images/diagram-04-dfd-frontend.png" alt="Sơ đồ DFD Frontend mức 1"></p>
+<p><strong>Luồng làm bài phía client:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Bước</th>
+<th>Process</th>
+<th>Dữ liệu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>MyExamsView load</td>
+<td><code>GET /my-exams</code> → danh sách assignment</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Start</td>
+<td><code>POST /attempts/start</code> → <code>attemptId</code>, questions</td>
+</tr>
+<tr>
+<td>3</td>
+<td>TakeExamView</td>
+<td><code>answers: Record&lt;questionId, optionId&gt;</code> local</td>
+</tr>
+<tr>
+<td>4</td>
+<td>On change</td>
+<td><code>PUT /attempts/:id/answers</code> (500ms debounce)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Timer = 0 hoặc Submit</td>
+<td><code>POST /attempts/:id/submit</code> → navigate Result</td>
+</tr>
+</tbody>
+</table>
+<h3 id="47-use-case--backend-góc-nhìn-api--hệ-thống">4.7. Use Case — Backend (góc nhìn API / hệ thống)</h3>
+<table>
+<thead>
+<tr>
+<th>UC</th>
+<th>Tên</th>
+<th>Actor</th>
+<th>Endpoint chính</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC-B01</td>
+<td>Xác thực</td>
+<td>All</td>
+<td><code>POST /auth/login</code></td>
+</tr>
+<tr>
+<td>UC-B02</td>
+<td>Quản lý user</td>
+<td>Admin</td>
+<td><code>/users</code> CRUD</td>
+</tr>
+<tr>
+<td>UC-B03</td>
+<td>Quản lý môn/câu</td>
+<td>Teacher</td>
+<td><code>/subjects</code>, <code>/questions</code></td>
+</tr>
+<tr>
+<td>UC-B04</td>
+<td>Quản lý đề</td>
+<td>Teacher</td>
+<td><code>/exams</code></td>
+</tr>
+<tr>
+<td>UC-B05</td>
+<td>Gán đề</td>
+<td>Teacher</td>
+<td><code>POST /exams/:id/assignments</code></td>
+</tr>
+<tr>
+<td>UC-B06</td>
+<td>Bắt đầu attempt</td>
+<td>Student</td>
+<td><code>POST /attempts/start</code></td>
+</tr>
+<tr>
+<td>UC-B07</td>
+<td>Lưu đáp án</td>
+<td>Student</td>
+<td><code>PUT /attempts/:id/answers</code></td>
+</tr>
+<tr>
+<td>UC-B08</td>
+<td>Nộp &amp; chấm</td>
+<td>Student/System</td>
+<td><code>POST /attempts/:id/submit</code></td>
+</tr>
+<tr>
+<td>UC-B09</td>
+<td>Xem kết quả</td>
+<td>Teacher/Student</td>
+<td><code>GET .../result</code>, <code>GET .../results</code></td>
+</tr>
+</tbody>
+</table>
+<p><img src="images/diagram-05-sequence-submit.png" alt="Sequence diagram — luồng nộp bài"></p>
+<h3 id="48-use-case--frontend-góc-nhìn-người-dùng">4.8. Use Case — Frontend (góc nhìn người dùng)</h3>
+<table>
+<thead>
+<tr>
+<th>UC</th>
+<th>Tên</th>
+<th>Actor</th>
+<th>Màn hình</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC-F01</td>
+<td>Đăng nhập</td>
+<td>All</td>
+<td>LoginView</td>
+</tr>
+<tr>
+<td>UC-F02</td>
+<td>Xem dashboard</td>
+<td>All</td>
+<td>DashboardView</td>
+</tr>
+<tr>
+<td>UC-F03</td>
+<td>Quản lý user</td>
+<td>Admin</td>
+<td>UserListView</td>
+</tr>
+<tr>
+<td>UC-F04</td>
+<td>Soạn ngân hàng đề</td>
+<td>Teacher</td>
+<td>SubjectList, QuestionBank, QuestionForm</td>
+</tr>
+<tr>
+<td>UC-F05</td>
+<td>Tạo &amp; publish đề</td>
+<td>Teacher</td>
+<td>ExamNew, ExamDetail</td>
+</tr>
+<tr>
+<td>UC-F06</td>
+<td>Gán học sinh</td>
+<td>Teacher</td>
+<td>ExamDetail (tab Assign)</td>
+</tr>
+<tr>
+<td>UC-F07</td>
+<td>Xem đề được gán</td>
+<td>Student</td>
+<td>MyExamsView</td>
+</tr>
+<tr>
+<td>UC-F08</td>
+<td>Làm bài</td>
+<td>Student</td>
+<td>TakeExamView</td>
+</tr>
+<tr>
+<td>UC-F09</td>
+<td>Xem điểm</td>
+<td>Student</td>
+<td>ResultView</td>
+</tr>
+<tr>
+<td>UC-F10</td>
+<td>Xem kết quả lớp</td>
+<td>Teacher</td>
+<td>ExamResultsView</td>
+</tr>
+</tbody>
+</table>
+<h3 id="49-erd--cơ-sở-dữ-liệu-backend">4.9. ERD — Cơ sở dữ liệu (Backend)</h3>
+<p><img src="images/diagram-06-erd.png" alt="ERD — cơ sở dữ liệu"></p>
+<h3 id="410-cấu-trúc-bảng-dữ-liệu--backend">4.10. Cấu trúc bảng dữ liệu — Backend</h3>
+<table>
+<thead>
+<tr>
+<th>Bảng</th>
+<th>Cột chính</th>
+<th>Ràng buộc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>users</code></td>
+<td>id, email, password_hash, full_name, role, is_active</td>
+<td>email UNIQUE</td>
+</tr>
+<tr>
+<td><code>subjects</code></td>
+<td>id, code, name, teacher_id</td>
+<td>UNIQUE(teacher_id, code)</td>
+</tr>
+<tr>
+<td><code>questions</code></td>
+<td>id, subject_id, content, difficulty, points</td>
+<td>FK subject</td>
+</tr>
+<tr>
+<td><code>question_options</code></td>
+<td>id, question_id, label, content, is_correct</td>
+<td>1 correct/question</td>
+</tr>
+<tr>
+<td><code>exams</code></td>
+<td>id, subject_id, title, duration_minutes, open_at, close_at, status, max_attempts, show_answers_after_submit</td>
+<td>status enum</td>
+</tr>
+<tr>
+<td><code>exam_questions</code></td>
+<td>exam_id, question_id, order_index</td>
+<td>PK composite</td>
+</tr>
+<tr>
+<td><code>exam_assignments</code></td>
+<td>id, exam_id, student_id, assigned_by</td>
+<td>UNIQUE(exam, student)</td>
+</tr>
+<tr>
+<td><code>exam_attempts</code></td>
+<td>id, assignment_id, started_at, expires_at, submitted_at, score, max_score, status</td>
+<td>status enum</td>
+</tr>
+<tr>
+<td><code>attempt_answers</code></td>
+<td>id, attempt_id, question_id, selected_option_id, is_correct</td>
+<td>UNIQUE(attempt, question)</td>
+</tr>
+</tbody>
+</table>
+<p>Nguồn: <code>backend/prisma/schema.prisma</code>.</p>
+<h3 id="411-mô-hình-dữ-liệu--frontend-không-lưu-db">4.11. Mô hình dữ liệu — Frontend (không lưu DB)</h3>
+<p>Frontend <strong>không</strong> có database riêng; quản lý state qua Pinia + bộ nhớ component:</p>
+<table>
+<thead>
+<tr>
+<th>Store / Type</th>
+<th>File</th>
+<th>Dữ liệu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AuthUser</code></td>
+<td><code>types/api.ts</code></td>
+<td>id, email, fullName, role</td>
+</tr>
+<tr>
+<td><code>useAuthStore</code></td>
+<td><code>stores/auth.ts</code></td>
+<td>user, token, login/logout/initialize</td>
+</tr>
+<tr>
+<td><code>InProgressAttempt</code></td>
+<td><code>types/student.ts</code></td>
+<td>attemptId, questions, expiresAt</td>
+</tr>
+<tr>
+<td><code>DashboardStats</code></td>
+<td><code>types/dashboard.ts</code></td>
+<td>Theo role: counts, upcoming exams</td>
+</tr>
+<tr>
+<td>Local <code>answers</code></td>
+<td><code>TakeExamView.vue</code></td>
+<td><code>Record&lt;questionId, optionId&gt;</code> khi làm bài</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DTO frontend mirror API</strong> — đảm bảo field khớp OpenAPI (<code>camelCase</code> JSON).</p>
+<h3 id="412-đặc-tả-danh-sách-api-input--output">4.12. Đặc tả danh sách API (Input / Output)</h3>
+<p>Base URL: <code>http://localhost:3000/api/v1</code><br>
+Envelope thành công: <code>{ &quot;success&quot;: true, &quot;data&quot;: ... }</code><br>
+Envelope lỗi: <code>{ &quot;success&quot;: false, &quot;error&quot;: { &quot;code&quot;, &quot;message&quot; } }</code><br>
+Auth: <code>Authorization: Bearer &lt;token&gt;</code> (trừ login).</p>
+<h4 id="auth">Auth</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Role</th>
+<th>Input</th>
+<th>Output (data)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/auth/login</code></td>
+<td>Public</td>
+<td><code>{ email, password }</code></td>
+<td><code>{ accessToken, expiresIn, user }</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/auth/me</code></td>
+<td>Any</td>
+<td>—</td>
+<td><code>User</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/auth/change-password</code></td>
+<td>Any</td>
+<td><code>{ currentPassword, newPassword }</code></td>
+<td><code>{ message }</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="users-admin">Users (Admin)</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/users?role=&amp;search=</code></td>
+<td>Query filter</td>
+<td><code>User[]</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/users</code></td>
+<td><code>{ email, password, fullName, role }</code></td>
+<td><code>User</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/users/:id</code></td>
+<td>Path id</td>
+<td><code>User</code></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/users/:id</code></td>
+<td><code>{ email?, fullName?, role? }</code></td>
+<td><code>User</code></td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td><code>/users/:id/status</code></td>
+<td><code>{ isActive: boolean }</code></td>
+<td><code>User</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="subjects-teacher">Subjects (Teacher)</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/subjects</code></td>
+<td>—</td>
+<td><code>Subject[]</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/subjects</code></td>
+<td><code>{ code, name, description? }</code></td>
+<td><code>Subject</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/subjects/:id</code></td>
+<td>—</td>
+<td><code>Subject</code></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/subjects/:id</code></td>
+<td><code>{ code?, name?, description? }</code></td>
+<td><code>Subject</code></td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/subjects/:id</code></td>
+<td>—</td>
+<td><code>{ message }</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="questions-teacher">Questions (Teacher)</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/questions?subjectId=&amp;difficulty=&amp;search=</code></td>
+<td>Query</td>
+<td><code>Question[]</code> (có <code>isCorrect</code>)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/questions</code></td>
+<td><code>{ subjectId, content, difficulty, points, options[] }</code></td>
+<td><code>Question</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/questions/:id</code></td>
+<td>—</td>
+<td><code>Question</code></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/questions/:id</code></td>
+<td>Cập nhật tương tự create</td>
+<td><code>Question</code></td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/questions/:id</code></td>
+<td>—</td>
+<td><code>{ message }</code></td>
+</tr>
+</tbody>
+</table>
+<p><em><code>options</code>: <code>[{ label, content, isCorrect }]</code> — đúng một <code>isCorrect: true</code>.</em></p>
+<h4 id="exams-teacher">Exams (Teacher)</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/exams</code></td>
+<td>—</td>
+<td><code>Exam[]</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/exams</code></td>
+<td><code>{ subjectId, title, description?, durationMinutes, openAt, closeAt, maxAttempts?, showAnswersAfterSubmit? }</code></td>
+<td><code>Exam</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/exams/:id</code></td>
+<td>—</td>
+<td><code>Exam</code> + questions</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/exams/:id</code></td>
+<td>Cập nhật metadata</td>
+<td><code>Exam</code></td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/exams/:id</code></td>
+<td>—</td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/exams/:id/questions</code></td>
+<td><code>{ questionIds: uuid[] }</code></td>
+<td>Exam với ordered questions</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td><code>/exams/:id/status</code></td>
+<td><code>{ status: DRAFT|PUBLISHED|CLOSED }</code></td>
+<td><code>Exam</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/exams/:id/assignments</code></td>
+<td><code>{ studentIds: uuid[] }</code></td>
+<td>Assignments created</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/exams/:id/assignments</code></td>
+<td>—</td>
+<td>Assignment list</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/exams/:id/assignments/:assignmentId</code></td>
+<td>—</td>
+<td><code>{ message }</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/exams/:id/results</code></td>
+<td>—</td>
+<td>Danh sách attempt/score theo học sinh</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/exams/:id/attempts/:attemptId</code></td>
+<td>—</td>
+<td>Chi tiết attempt (teacher)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="students-teacher">Students (Teacher)</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/students?search=</code></td>
+<td>Query</td>
+<td><code>User[]</code> (role STUDENT)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="student-exams--attempts">Student exams &amp; attempts</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Role</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/my-exams</code></td>
+<td>Student</td>
+<td>—</td>
+<td><code>MyExamAssignment[]</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/attempts/start</code></td>
+<td>Student</td>
+<td><code>{ assignmentId }</code></td>
+<td><code>InProgressAttempt</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/attempts/:id</code></td>
+<td>Student</td>
+<td>—</td>
+<td>Attempt in progress</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/attempts/:id/answers</code></td>
+<td>Student</td>
+<td><code>{ answers: [{ questionId, selectedOptionId }] }</code></td>
+<td>Updated attempt</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/attempts/:id/submit</code></td>
+<td>Student</td>
+<td>—</td>
+<td><code>AttemptResult</code> (score, review?)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/attempts/:id/result</code></td>
+<td>Student</td>
+<td>—</td>
+<td><code>AttemptResult</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Mã lỗi nghiệp vụ thường gặp:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>HTTP</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INVALID_CREDENTIALS</td>
+<td>401</td>
+<td>Sai email/password</td>
+</tr>
+<tr>
+<td>ACCOUNT_INACTIVE</td>
+<td>401</td>
+<td>Tài khoản bị khóa</td>
+</tr>
+<tr>
+<td>FORBIDDEN</td>
+<td>403</td>
+<td>Sai role / không sở hữu resource</td>
+</tr>
+<tr>
+<td>NOT_FOUND</td>
+<td>404</td>
+<td>Không tìm thấy</td>
+</tr>
+<tr>
+<td>EXAM_NOT_AVAILABLE</td>
+<td>400</td>
+<td>Chưa publish / ngoài khung giờ</td>
+</tr>
+<tr>
+<td>MAX_ATTEMPTS_REACHED</td>
+<td>400</td>
+<td>Hết lượt làm</td>
+</tr>
+<tr>
+<td>ATTEMPT_IN_PROGRESS</td>
+<td>409</td>
+<td>Đang có bài chưa nộp</td>
+</tr>
+<tr>
+<td>ATTEMPT_EXPIRED</td>
+<td>400</td>
+<td>Hết giờ làm bài</td>
+</tr>
+<tr>
+<td>VALIDATION_ERROR</td>
+<td>400</td>
+<td>Dữ liệu không hợp lệ</td>
+</tr>
+</tbody>
+</table>
+<p>Tài liệu đầy đủ: <code>docs/api/openapi.yaml</code>.</p>
+<hr>
+<h2 id="5-triển-khai--kết-quả">5. TRIỂN KHAI &amp; KẾT QUẢ</h2>
+<h3 id="51-giao-diện-chương-trình">5.1. Giao diện chương trình</h3>
+<p>Ảnh chụp từ môi trường chạy thực tế (<code>http://localhost:5173</code>, backend <code>http://localhost:3000/api/v1</code>, dữ liệu seed). Tái tạo: <code>cd docs/scripts &amp;&amp; npm install &amp;&amp; npx playwright install chromium &amp;&amp; npm run capture-screenshots</code> (yêu cầu FE + BE đang chạy).</p>
+<table>
+<thead>
+<tr>
+<th>STT</th>
+<th>Màn hình</th>
+<th>Route</th>
+<th>Role</th>
+<th>File ảnh</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Đăng nhập</td>
+<td><code>/login</code></td>
+<td>Public</td>
+<td><code>01-login.png</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dashboard</td>
+<td><code>/</code></td>
+<td>Teacher</td>
+<td><code>02-dashboard-teacher.png</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Subjects</td>
+<td><code>/subjects</code></td>
+<td>Teacher</td>
+<td><code>03-subjects.png</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Question Bank</td>
+<td><code>/subjects/:id/questions</code></td>
+<td>Teacher</td>
+<td><code>04-question-bank.png</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Question Form</td>
+<td><code>/questions/:id/edit</code></td>
+<td>Teacher</td>
+<td><code>05-question-form.png</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Exam List</td>
+<td><code>/exams</code></td>
+<td>Teacher</td>
+<td><code>06-exam-list.png</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Exam Detail</td>
+<td><code>/exams/:id</code></td>
+<td>Teacher</td>
+<td><code>07-exam-detail.png</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Exam Results</td>
+<td><code>/exams/:id/results</code></td>
+<td>Teacher</td>
+<td><code>08-exam-results.png</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Dashboard</td>
+<td><code>/</code></td>
+<td>Admin</td>
+<td><code>09-dashboard-admin.png</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>User Management</td>
+<td><code>/admin/users</code></td>
+<td>Admin</td>
+<td><code>10-user-management.png</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>My Exams</td>
+<td><code>/my-exams</code></td>
+<td>Student</td>
+<td><code>11-my-exams.png</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Take Exam</td>
+<td><code>/take/:attemptId</code></td>
+<td>Student</td>
+<td><code>12-take-exam.png</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Result</td>
+<td><code>/results/:attemptId</code></td>
+<td>Student</td>
+<td><code>13-result.png</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="hình-51--màn-hình-đăng-nhập">Hình 5.1 — Màn hình đăng nhập</h4>
+<p><img src="images/01-login.png" alt="Màn hình đăng nhập OEX"></p>
+<p><em>Split layout: panel thương hiệu bên trái, form email/password bên phải.</em></p>
+<h4 id="hình-52--dashboard-giáo-viên">Hình 5.2 — Dashboard giáo viên</h4>
+<p><img src="images/02-dashboard-teacher.png" alt="Dashboard giáo viên"></p>
+<p><em>Thống kê số môn học và đề thi đang active; điều hướng Subjects / Exams.</em></p>
+<h4 id="hình-53--quản-lý-môn-học--ngân-hàng-câu-hỏi">Hình 5.3 — Quản lý môn học &amp; ngân hàng câu hỏi</h4>
+<p><img src="images/03-subjects.png" alt="Danh sách môn học"></p>
+<p><img src="images/04-question-bank.png" alt="Ngân hàng câu hỏi"></p>
+<h4 id="hình-54--form-tạosửa-câu-hỏi-mcq">Hình 5.4 — Form tạo/sửa câu hỏi MCQ</h4>
+<p><img src="images/05-question-form.png" alt="Form câu hỏi trắc nghiệm"></p>
+<p><em>Nhập nội dung câu, độ khó, điểm và các phương án A/B/C/D với một đáp án đúng.</em></p>
+<h4 id="hình-55--quản-lý-đề-thi-giáo-viên">Hình 5.5 — Quản lý đề thi (giáo viên)</h4>
+<p><img src="images/06-exam-list.png" alt="Danh sách đề thi"></p>
+<p><img src="images/07-exam-detail.png" alt="Chi tiết đề thi"></p>
+<p><img src="images/08-exam-results.png" alt="Kết quả theo lớp"></p>
+<p><em>Badge trạng thái Draft/Published/Closed; tab cấu hình, chọn câu, gán học sinh; bảng điểm và View Detail.</em></p>
+<h4 id="hình-56--quản-trị-hệ-thống-admin">Hình 5.6 — Quản trị hệ thống (Admin)</h4>
+<p><img src="images/09-dashboard-admin.png" alt="Dashboard Admin"></p>
+<p><img src="images/10-user-management.png" alt="Quản lý người dùng"></p>
+<p><em>Admin xem tổng số user và CRUD tài khoản Teacher/Student.</em></p>
+<h4 id="hình-57--luồng-học-sinh-làm-bài--xem-kết-quả">Hình 5.7 — Luồng học sinh: làm bài &amp; xem kết quả</h4>
+<p><img src="images/11-my-exams.png" alt="My Exams — danh sách đề được gán"></p>
+<p><img src="images/12-take-exam.png" alt="Take Exam — timer, navigator, chọn đáp án"></p>
+<p><img src="images/13-result.png" alt="Result — điểm và review câu hỏi"></p>
+<p><em>Học sinh Start đề PUBLISHED, làm bài với đồng hồ đếm ngược và thanh tiến độ; sau khi nộp xem điểm tổng và chi tiết từng câu.</em></p>
+<p><strong>Đặc điểm giao diện:</strong></p>
+<ul>
+<li>Ngôn ngữ UI: <strong>tiếng Anh</strong>.</li>
+<li>Design tokens: Crimson Pro + Atkinson Hyperlegible; layout Bento card; nền lưới gợi ý giấy thi.</li>
+<li>Responsive: sidebar chuyển ngang trên mobile; màn làm bài tách sidebar navigator.</li>
+</ul>
+<h3 id="52-giải-thích-mã-nguồn-cốt-lõi">5.2. Giải thích mã nguồn cốt lõi</h3>
+<h4 id="521-backend--chấm-điểm-attemptservicets">5.2.1. Backend — chấm điểm (<code>attemptService.ts</code>)</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">gradeAttemptInTx</span>(<span class="hljs-params">tx, attempt</span>) {
+  <span class="hljs-keyword">let</span> score = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">let</span> maxScore = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> eq <span class="hljs-keyword">of</span> attempt.<span class="hljs-property">assignment</span>.<span class="hljs-property">exam</span>.<span class="hljs-property">questions</span>) {
+    <span class="hljs-keyword">const</span> question = eq.<span class="hljs-property">question</span>;
+    maxScore += <span class="hljs-title class_">Number</span>(question.<span class="hljs-property">points</span>);
+    <span class="hljs-keyword">const</span> answer = attempt.<span class="hljs-property">answers</span>.<span class="hljs-title function_">find</span>(<span class="hljs-function">(<span class="hljs-params">a</span>) =&gt;</span> a.<span class="hljs-property">questionId</span> === question.<span class="hljs-property">id</span>);
+    <span class="hljs-keyword">const</span> correctOption = question.<span class="hljs-property">options</span>.<span class="hljs-title function_">find</span>(<span class="hljs-function">(<span class="hljs-params">o</span>) =&gt;</span> o.<span class="hljs-property">isCorrect</span>);
+    <span class="hljs-keyword">const</span> isCorrect =
+      !!answer?.<span class="hljs-property">selectedOptionId</span> &amp;&amp;
+      answer.<span class="hljs-property">selectedOptionId</span> === correctOption?.<span class="hljs-property">id</span>;
+    <span class="hljs-keyword">if</span> (isCorrect) score += <span class="hljs-title class_">Number</span>(question.<span class="hljs-property">points</span>);
+    <span class="hljs-keyword">await</span> tx.<span class="hljs-property">attemptAnswer</span>.<span class="hljs-title function_">update</span>({
+      <span class="hljs-attr">where</span>: { <span class="hljs-attr">id</span>: answer.<span class="hljs-property">id</span> },
+      <span class="hljs-attr">data</span>: { isCorrect },
+    });
+  }
+  <span class="hljs-keyword">return</span> { score, maxScore };
+}
+</div></code></pre>
+<h4 id="522-backend--middleware-phân-quyền">5.2.2. Backend — middleware phân quyền</h4>
+<pre class="hljs"><code><div><span class="hljs-comment">// routes/examRoutes.ts</span>
+router.<span class="hljs-title function_">use</span>(authMiddleware, <span class="hljs-title function_">requireRole</span>(<span class="hljs-title class_">Role</span>.<span class="hljs-property">TEACHER</span>));
+</div></code></pre>
+<p>Mọi handler exam chỉ chạy khi JWT hợp lệ <strong>và</strong> <code>req.user.role === TEACHER</code>.</p>
+<h4 id="523-frontend--navigation-guard">5.2.3. Frontend — navigation guard</h4>
+<pre class="hljs"><code><div>router.<span class="hljs-title function_">beforeEach</span>(<span class="hljs-title function_">async</span> (to) =&gt; {
+  <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuthStore</span>();
+  <span class="hljs-keyword">if</span> (!auth.<span class="hljs-property">initialized</span>) <span class="hljs-keyword">await</span> auth.<span class="hljs-title function_">initialize</span>();
+  <span class="hljs-keyword">if</span> (to.<span class="hljs-property">meta</span>.<span class="hljs-property">public</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">if</span> (!auth.<span class="hljs-property">isAuthenticated</span>) <span class="hljs-keyword">return</span> { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;login&#x27;</span>, <span class="hljs-attr">query</span>: { <span class="hljs-attr">redirect</span>: to.<span class="hljs-property">fullPath</span> } };
+  <span class="hljs-keyword">if</span> (to.<span class="hljs-property">meta</span>.<span class="hljs-property">roles</span> &amp;&amp; !to.<span class="hljs-property">meta</span>.<span class="hljs-property">roles</span>.<span class="hljs-title function_">includes</span>(auth.<span class="hljs-property">user</span>!.<span class="hljs-property">role</span>))
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;dashboard&#x27;</span> };
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+});
+</div></code></pre>
+<h4 id="524-frontend--timer--auto-submit-takeexamviewvue">5.2.4. Frontend — timer &amp; auto-submit (<code>TakeExamView.vue</code>)</h4>
+<ul>
+<li><code>remainingSeconds</code> tính từ <code>expiresAt</code> (server).</li>
+<li><code>setInterval</code> 1s; khi <code>&lt;= 0</code> → <code>submitAttempt()</code>.</li>
+<li><code>scheduleSave()</code> debounce 500ms → <code>saveAnswers()</code>.</li>
+<li><code>&lt;dialog&gt;</code> xác nhận trước submit thủ công.</li>
+</ul>
+<h4 id="525-frontend--axios-client">5.2.5. Frontend — Axios client</h4>
+<ul>
+<li>Request interceptor: gắn <code>Authorization: Bearer</code>.</li>
+<li>Response interceptor: 401 → <code>auth.logout()</code> + redirect login.</li>
+</ul>
+<h3 id="53-hướng-dẫn-kiểm-thử">5.3. Hướng dẫn kiểm thử</h3>
+<h4 id="531-chiến-lược-kiểm-thử">5.3.1. Chiến lược kiểm thử</h4>
+<table>
+<thead>
+<tr>
+<th>Loại</th>
+<th>Công cụ</th>
+<th>Phạm vi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unit / Integration API</td>
+<td>Vitest + Supertest</td>
+<td>Toàn bộ REST endpoints</td>
+</tr>
+<tr>
+<td>E2E smoke API</td>
+<td><code>e2e-student-flow.test.ts</code></td>
+<td>Login → start → save → submit → result</td>
+</tr>
+<tr>
+<td>Manual UI</td>
+<td><code>docs/MANUAL_TEST_CHECKLIST.md</code></td>
+<td>40+ testcase giao diện</td>
+</tr>
+<tr>
+<td>Build FE</td>
+<td><code>vue-tsc</code> + Vite build</td>
+<td>Type-check + bundle</td>
+</tr>
+</tbody>
+</table>
+<h4 id="532-coverage-theo-module-api-81-tests">5.3.2. Coverage theo module API (81 tests)</h4>
+<table>
+<thead>
+<tr>
+<th>File test</th>
+<th>Số test</th>
+<th>Module / API được kiểm tra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth.test.ts</code></td>
+<td>10</td>
+<td>Login, me, change-password, inactive user</td>
+</tr>
+<tr>
+<td><code>users.test.ts</code></td>
+<td>11</td>
+<td>CRUD user, role filter, deactivate</td>
+</tr>
+<tr>
+<td><code>subjects.test.ts</code></td>
+<td>9</td>
+<td>CRUD subject, ownership teacher</td>
+</tr>
+<tr>
+<td><code>questions.test.ts</code></td>
+<td>10</td>
+<td>CRUD MCQ, validate 1 correct option</td>
+</tr>
+<tr>
+<td><code>exams.test.ts</code></td>
+<td>19</td>
+<td>CRUD exam, questions, publish, assign, results</td>
+</tr>
+<tr>
+<td><code>attempts.test.ts</code></td>
+<td>17</td>
+<td>Start, save, submit, expire, hide answers</td>
+</tr>
+<tr>
+<td><code>students.test.ts</code></td>
+<td>3</td>
+<td>List students for assign</td>
+</tr>
+<tr>
+<td><code>e2e-student-flow.test.ts</code></td>
+<td>2</td>
+<td>Full student journey (smoke)</td>
+</tr>
+<tr>
+<td><strong>Tổng</strong></td>
+<td><strong>81</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="533-chuẩn-bị-môi-trường-test">5.3.3. Chuẩn bị môi trường test</h4>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> backend
+<span class="hljs-built_in">cp</span> .env.test.example .env.test
+<span class="hljs-comment"># DATABASE_URL trỏ database oex_test</span>
+npm run db:<span class="hljs-built_in">test</span>:prepare   <span class="hljs-comment"># migrate + seed test data</span>
+</div></code></pre>
+<h4 id="534-chạy-kiểm-thử">5.3.4. Chạy kiểm thử</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># Toàn bộ API tests</span>
+<span class="hljs-built_in">cd</span> backend
+npm run <span class="hljs-built_in">test</span>
+<span class="hljs-comment"># Kỳ vọng: 81 passed, exit code 0</span>
+
+<span class="hljs-comment"># E2E smoke (luồng học sinh)</span>
+npm run <span class="hljs-built_in">test</span>:e2e
+
+<span class="hljs-comment"># Build frontend (type-check)</span>
+<span class="hljs-built_in">cd</span> ../frontend
+npm run build
+</div></code></pre>
+<h4 id="535-ma-trận-kiểm-thử-api-tiêu-biểu">5.3.5. Ma trận kiểm thử API tiêu biểu</h4>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Test case</th>
+<th>Kỳ vọng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /auth/login</code></td>
+<td>Đúng credentials</td>
+<td>200 + accessToken</td>
+</tr>
+<tr>
+<td><code>POST /auth/login</code></td>
+<td>Sai password</td>
+<td>401 INVALID_CREDENTIALS</td>
+</tr>
+<tr>
+<td><code>POST /users</code></td>
+<td>Admin tạo student</td>
+<td>201</td>
+</tr>
+<tr>
+<td><code>POST /users</code></td>
+<td>Teacher gọi</td>
+<td>403 FORBIDDEN</td>
+</tr>
+<tr>
+<td><code>POST /questions</code></td>
+<td>2 options, 1 correct</td>
+<td>201</td>
+</tr>
+<tr>
+<td><code>POST /questions</code></td>
+<td>0 correct</td>
+<td>400 VALIDATION_ERROR</td>
+</tr>
+<tr>
+<td><code>PATCH /exams/:id/status</code></td>
+<td>Publish</td>
+<td>status PUBLISHED</td>
+</tr>
+<tr>
+<td><code>POST /attempts/start</code></td>
+<td>Ngoài khung giờ</td>
+<td>400 EXAM_NOT_AVAILABLE</td>
+</tr>
+<tr>
+<td><code>GET /attempts/:id</code></td>
+<td>IN_PROGRESS</td>
+<td>options không có isCorrect</td>
+</tr>
+<tr>
+<td><code>POST /attempts/:id/submit</code></td>
+<td>Có đáp án đúng</td>
+<td>score &gt; 0, SUBMITTED</td>
+</tr>
+<tr>
+<td><code>POST /attempts/:id/submit</code></td>
+<td>Hết expiresAt</td>
+<td>400 ATTEMPT_EXPIRED</td>
+</tr>
+</tbody>
+</table>
+<h4 id="536-kiểm-thử-thủ-công-gợi-ý">5.3.6. Kiểm thử thủ công (gợi ý)</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Bước</th>
+<th>Kết quả mong đợi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Login <code>teacher@oex.test</code></td>
+<td>Vào dashboard, thấy Subjects/Exams</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Tạo câu hỏi mới</td>
+<td>Hiển thị trong Question Bank</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Publish exam + assign student2</td>
+<td>Student thấy trong My Exams</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Student Start → Submit</td>
+<td>Hiển thị điểm Result</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Teacher Exam Results</td>
+<td>Thấy attempt vừa nộp</td>
+</tr>
+</tbody>
+</table>
+<p>Checklist đầy đủ: <code>docs/MANUAL_TEST_CHECKLIST.md</code>.</p>
+<h3 id="54-hướng-dẫn-cài-đặt-và-sử-dụng">5.4. Hướng dẫn cài đặt và sử dụng</h3>
+<h4 id="541-yêu-cầu">5.4.1. Yêu cầu</h4>
+<p>Node.js 20+, Docker Desktop, Git, 4GB+ RAM.</p>
+<h4 id="542-cài-đặt">5.4.2. Cài đặt</h4>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> &lt;repo-url&gt;
+<span class="hljs-built_in">cd</span> PMHDV
+docker compose up -d
+<span class="hljs-built_in">cp</span> backend/.env.example backend/.env
+<span class="hljs-built_in">cd</span> backend &amp;&amp; npm install
+npx prisma migrate deploy &amp;&amp; npx prisma db seed
+<span class="hljs-built_in">cd</span> ../frontend &amp;&amp; npm install
+</div></code></pre>
+<h4 id="543-chạy">5.4.3. Chạy</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># Terminal 1</span>
+<span class="hljs-built_in">cd</span> backend &amp;&amp; npm run dev    <span class="hljs-comment"># http://localhost:3000/api/v1</span>
+
+<span class="hljs-comment"># Terminal 2</span>
+<span class="hljs-built_in">cd</span> frontend &amp;&amp; npm run dev   <span class="hljs-comment"># http://localhost:5173</span>
+</div></code></pre>
+<h4 id="544-tài-khoản-demo">5.4.4. Tài khoản demo</h4>
+<table>
+<thead>
+<tr>
+<th>Email</th>
+<th>Password</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>admin@oex.test</code></td>
+<td><code>Password123!</code></td>
+<td>Admin</td>
+</tr>
+<tr>
+<td><code>teacher@oex.test</code></td>
+<td><code>Password123!</code></td>
+<td>Teacher</td>
+</tr>
+<tr>
+<td><code>student2@oex.test</code></td>
+<td><code>Password123!</code></td>
+<td>Student</td>
+</tr>
+</tbody>
+</table>
+<p>Production: <code>docs/DEPLOY.md</code>.</p>
+<hr>
+<h2 id="6-đánh-giá--hướng-phát-triển">6. ĐÁNH GIÁ &amp; HƯỚNG PHÁT TRIỂN</h2>
+<h3 id="61-đánh-giá-hệ-thống">6.1. Đánh giá hệ thống</h3>
+<p><strong>Đã hoàn thiện:</strong></p>
+<ul>
+<li>Luồng nghiệp vụ v1 end-to-end (user → question → exam → attempt → grade → result).</li>
+<li>Phân tách frontend/backend rõ ràng; OpenAPI contract.</li>
+<li>81 API tests pass; E2E smoke; manual checklist.</li>
+<li>Bảo mật: JWT, bcrypt, role guard, ẩn đáp án khi thi.</li>
+<li>UI đầy đủ 3 role; exam taking có timer, auto-save, auto-submit.</li>
+</ul>
+<p><strong>Hạn chế:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Hạn chế</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chưa Playwright UI E2E</td>
+<td>Có API E2E + manual checklist</td>
+</tr>
+<tr>
+<td>Không import Excel / media</td>
+<td>Ngoài phạm vi v1</td>
+</tr>
+<tr>
+<td>Không module lớp</td>
+<td>Gán trực tiếp học sinh</td>
+</tr>
+<tr>
+<td>Chưa chống gian lận</td>
+<td>Cần hạ tầng riêng</td>
+</tr>
+<tr>
+<td>UI chỉ tiếng Anh</td>
+<td>Có thể i18n</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kết luận:</strong> Hệ thống đáp ứng mục tiêu môn học và tiêu chí báo cáo PMHDV; có tài liệu thiết kế, API spec, kiểm thử có thể tái lập.</p>
+<h3 id="62-hướng-phát-triển">6.2. Hướng phát triển</h3>
+<table>
+<thead>
+<tr>
+<th>Ưu tiên</th>
+<th>Tính năng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cao</td>
+<td>Module lớp học; import Excel câu hỏi</td>
+</tr>
+<tr>
+<td>Trung bình</td>
+<td>Xáo trộn câu/đáp án; câu hỏi hình ảnh; thống kê biểu đồ</td>
+</tr>
+<tr>
+<td>Thấp</td>
+<td>Playwright UI E2E; i18n Việt/Anh</td>
+</tr>
+<tr>
+<td>Dài hạn</td>
+<td>Microservices khi scale lớn</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-phụ-lục">7. PHỤ LỤC</h2>
+<h3 id="71-tài-liệu-tham-khảo">7.1. Tài liệu tham khảo</h3>
+<ol>
+<li>Vue.js — https://vuejs.org/</li>
+<li>Express.js — https://expressjs.com/</li>
+<li>Prisma — https://www.prisma.io/docs</li>
+<li>PostgreSQL — https://www.postgresql.org/docs/</li>
+<li>JWT RFC 7519 — https://datatracker.ietf.org/doc/html/rfc7519</li>
+<li>OpenAPI 3.0 — https://swagger.io/specification/</li>
+<li>Fielding, R. T. — REST architectural style</li>
+<li>OEX project docs — <code>docs/OEX_DetailedDesign_V2.md</code>, <code>docs/api/openapi.yaml</code>, <code>docs/DEPLOY.md</code>, <code>docs/MANUAL_TEST_CHECKLIST.md</code></li>
+<li>Giáo trình PMHDV — Lớp DTCXN02-K, GVHD Huỳnh Trung Trụ</li>
+</ol>
+<h3 id="72-đoạn-mã-code-snippets">7.2. Đoạn mã (Code snippets)</h3>
+<h4 id="a--prisma-examattempt">A — Prisma ExamAttempt</h4>
+<pre class="hljs"><code><div>model ExamAttempt {
+  id           String        @id @default(uuid())
+  assignmentId String        @map(&quot;assignment_id&quot;)
+  expiresAt    DateTime      @map(&quot;expires_at&quot;)
+  score        Decimal?      @db.Decimal(7, 2)
+  status       AttemptStatus
+  answers      AttemptAnswer[]
+}
+</div></code></pre>
+<h4 id="b--zod-validation-khái-niệm">B — Zod validation (khái niệm)</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> loginSchema = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">email</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">email</span>(),
+  <span class="hljs-attr">password</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">1</span>),
+});
+</div></code></pre>
+<h4 id="c--api-login-requestresponse">C — API login request/response</h4>
+<pre class="hljs"><code><div>POST /api/v1/auth/login
+{ &quot;email&quot;: &quot;student2@oex.test&quot;, &quot;password&quot;: &quot;Password123!&quot; }
+
+→ 200 { &quot;success&quot;: true, &quot;data&quot;: { &quot;accessToken&quot;: &quot;...&quot;, &quot;user&quot;: { ... } } }
+</div></code></pre>
+<h4 id="d--lệnh-kiểm-thử">D — Lệnh kiểm thử</h4>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> backend &amp;&amp; npm run db:<span class="hljs-built_in">test</span>:prepare &amp;&amp; npm run <span class="hljs-built_in">test</span>
+<span class="hljs-built_in">cd</span> frontend &amp;&amp; npm run build
+</div></code></pre>
+<hr>
+<p><em>Báo cáo: Hồ Tiến Huy (K23DTCN138) — Lớp DTCXN02-K — Môn Phát triển phần mềm hướng dịch vụ — Đề tài OEX.</em></p>
+
+</body>
+</html>

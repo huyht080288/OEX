@@ -1,23 +1,3 @@
-# BÁO CÁO DỰ ÁN MÔN PHÁT TRIỂN PHẦN MỀM HƯỚNG DỊCH VỤ
-
----
-
-## 1. PHẦN MỞ ĐẦU
-
-### 1.1. Trang bìa
-
-| | |
-|---|---|
-| **Tên đề tài** | Hệ thống thi trắc nghiệm trực tuyến — **OEX (Online Examination System)** |
-| **Môn học** | Phát triển phần mềm hướng dịch vụ |
-| **Giảng viên hướng dẫn** | Huỳnh Trung Trụ |
-| **Sinh viên thực hiện** | Hồ Tiến Huy |
-| **Mã sinh viên** | K23DTCN138 |
-| **Lớp** | DTCXN02-K |
-| **Thời gian** | Học kỳ 7 — Năm học 2024–2025 |
-
----
-
 ### 1.2. Lời cảm ơn
 
 Em xin chân thành cảm ơn thầy **Huỳnh Trung Trụ** đã tận tình hướng dẫn, góp ý trong suốt quá trình học tập và hoàn thành môn Phát triển phần mềm hướng dịch vụ. Em cũng xin cảm ơn nhà trường và bạn bè trong lớp đã hỗ trợ trao đổi ý tưởng và kiểm thử sản phẩm.

@@ -1,0 +1,15 @@
+erDiagram
+    users ||--o{ subjects : teaches
+    users ||--o{ questions : creates
+    users ||--o{ exams : creates
+    users ||--o{ exam_assignments : "assigned student"
+    subjects ||--o{ questions : has
+    subjects ||--o{ exams : has
+    questions ||--o{ question_options : has
+    exams ||--o{ exam_questions : contains
+    questions ||--o{ exam_questions : includes
+    exams ||--o{ exam_assignments : assigns
+    exam_assignments ||--o{ exam_attempts : has
+    exam_attempts ||--o{ attempt_answers : contains
+    questions ||--o{ attempt_answers : answered
+    question_options ||--o{ attempt_answers : selected

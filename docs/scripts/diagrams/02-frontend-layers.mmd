@@ -1,0 +1,20 @@
+flowchart TB
+    subgraph Shell
+        App[App.vue]
+        Layout[AppLayout.vue]
+        Nav[AppNav.vue]
+    end
+    subgraph Router
+        Guard[beforeEach guard]
+        Views["views/ by role"]
+    end
+    subgraph State
+        Pinia[stores/auth.ts]
+        API["api/client.ts + modules"]
+    end
+    App --> Layout
+    Layout --> Nav
+    Guard --> Views
+    Views --> Pinia
+    Views --> API
+    API -->|HTTPS JSON| Backend[Express API]
