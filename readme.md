@@ -110,7 +110,17 @@ Terminal 1 — API:
 cd backend
 npm run dev
 # → http://localhost:3000/api/v1
+# → Swagger UI: http://localhost:3000/api/docs
 ```
+
+**Test API với Swagger UI** (`http://localhost:3000/api/docs`):
+
+1. Mở **POST /auth/login** → **Try it out** → body: `{"email":"teacher@oex.test","password":"Password123!"}` → **Execute**
+2. Copy `accessToken` từ response
+3. Bấm **Authorize** (🔒) → nhập `Bearer <accessToken>` → **Authorize**
+4. Gọi thử các endpoint khác (GET /subjects, POST /exams, …)
+
+Spec thô: `http://localhost:3000/api/openapi.yaml` (đồng bộ với `docs/api/openapi.yaml`)
 
 Terminal 2 — Frontend:
 
@@ -125,7 +135,7 @@ npm run dev
 ```bash
 cd backend
 npm run db:test:prepare   # migrate + seed test DB
-npm run test              # 76 tests — exit 0
+npm run test              # 83 tests — exit 0
 npm run test:e2e          # smoke: login → thi → nộp → xem điểm
 ```
 
