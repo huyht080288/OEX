@@ -9,7 +9,8 @@ Hệ thống thi trắc nghiệm trực tuyến: giáo viên tạo ngân hàng c
 | **API base** | `http://localhost:5002/api/v1` |
 | **Frontend dev** | `http://localhost:5001` |
 | **Swagger UI** | `http://localhost:5002/api/docs` |
-| **Trạng thái v1** | Hoàn thiện — **83 API tests** pass |
+| **Coverage report** | `http://localhost:5002/testcoverage.html` |
+| **Trạng thái v1** | Hoàn thiện — **84 API tests** pass |
 
 **Tài liệu thiết kế:** [`docs/OEX_DetailedDesign_V2.md`](docs/OEX_DetailedDesign_V2.md)  
 **OpenAPI spec:** [`docs/api/openapi.yaml`](docs/api/openapi.yaml)  
@@ -77,7 +78,7 @@ PMHDV/
 ├── backend/
 │   ├── src/                # Express API (routes → controllers → services)
 │   ├── prisma/             # schema, migrations, seed
-│   └── tests/              # Vitest + Supertest (83 tests)
+│   └── tests/              # Vitest + Supertest (84 tests)
 ├── frontend/
 │   └── src/                # Vue 3 SPA (views, stores, api client)
 ├── .cursor/                # Rules & skills cho Cursor agent
@@ -274,6 +275,7 @@ npm run dev
 | Health check | http://localhost:5002/health |
 | Swagger UI | http://localhost:5002/api/docs |
 | OpenAPI YAML | http://localhost:5002/api/openapi.yaml |
+| Test coverage HTML | http://localhost:5002/testcoverage.html |
 
 Console khi start:
 
@@ -377,7 +379,7 @@ Backend **không coi là xong** nếu:
 
 ```bash
 cd backend
-npm run test    # exit code 0, 0 failed — hiện tại 83 tests
+npm run test    # exit code 0, 0 failed — hiện tại 84 tests
 ```
 
 ### Chạy test
@@ -394,10 +396,17 @@ npm run test:e2e
 # Watch mode (dev)
 npm run test:watch
 
+# Chạy test và tạo báo cáo HTML trong backend/coverage/
+npm run test:coverage
+
 # Chuẩn bị DB test thủ công (Docker oex_test)
 npm run db:test:prepare
 npm run test
 ```
+
+Sau khi chạy coverage và khởi động Backend, mở:
+
+**http://localhost:5002/testcoverage.html**
 
 ### Cơ chế test database
 
@@ -407,7 +416,7 @@ npm run test
 4. Nếu vẫn không → tự khởi động embedded PostgreSQL (`backend/tmp/pgdata-test`)
 5. Ghi `backend/.test-runtime.env` (tự tạo/xóa khi chạy test)
 
-### Phân bổ 83 tests
+### Phân bổ 84 tests
 
 | File test | Số test | Phạm vi |
 |-----------|---------|---------|
@@ -420,7 +429,8 @@ npm run test
 | `students.test.ts` | 3 | List students for assign |
 | `e2e-student-flow.test.ts` | 2 | Full student journey (smoke) |
 | `swagger.test.ts` | 2 | `/api/docs`, `/api/openapi.yaml` |
-| **Tổng** | **83** | |
+| `coverageReport.test.ts` | 1 | Redirect đến báo cáo coverage HTML |
+| **Tổng** | **84** | |
 
 ### Frontend build check
 
@@ -601,7 +611,7 @@ Khi agent tiếp tục code: đọc `PrjMng/STATUS.md` trước, cập nhật `S
 - Làm bài online: timer, auto-save, auto-submit khi hết giờ
 - Chấm điểm tự động, xem kết quả
 - UI tiếng Anh đầy đủ 3 role
-- OpenAPI + Swagger UI + 83 API tests
+- OpenAPI + Swagger UI + coverage HTML + 84 API tests
 
 **Không có (ngoài phạm vi v1):**
 

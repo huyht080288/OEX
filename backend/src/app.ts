@@ -3,6 +3,7 @@ import cors from 'cors';
 import routes from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { mountSwagger } from './swagger.js';
+import { mountCoverageReport } from './coverageReport.js';
 
 export function createApp() {
   const app = express();
@@ -15,6 +16,7 @@ export function createApp() {
   });
 
   mountSwagger(app);
+  mountCoverageReport(app);
 
   app.use('/api/v1', routes);
   app.use(errorHandler);

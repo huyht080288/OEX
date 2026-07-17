@@ -105,4 +105,6 @@ Dated log of meaningful project changes (not every commit).
 - Standardized local ports: frontend `5001`, backend/Swagger `5002`, Prisma Studio `5003`, PostgreSQL host `5005`.
 - Updated Vite proxy, Express defaults/CORS, Docker mapping, environment templates, test configuration, OpenAPI, scripts, and documentation.
 - Added `npm run db:studio` with fixed port `5003`.
-- PostgreSQL container recreated with persistent data volume; **83 backend tests pass**, backend and frontend builds pass.
+- PostgreSQL container recreated with persistent data volume; **84 backend tests pass**, backend and frontend builds pass.
+- Added Vitest V8 coverage support and `npm run test:coverage`; baseline: 75.06% statements/lines, 73.25% branches, 97.50% functions.
+- Exposed a development-only coverage viewer at `/testcoverage.html` with Back/Forward/Home/Reload and links to Swagger/OEX.

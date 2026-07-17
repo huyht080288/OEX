@@ -8,4 +8,7 @@ app.listen(port, () => {
   if (process.env.SWAGGER_ENABLED !== 'false') {
     console.log(`Swagger UI: http://localhost:${port}/api/docs`);
   }
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`Coverage report: http://localhost:${port}/testcoverage.html`);
+  }
 });
