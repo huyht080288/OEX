@@ -80,6 +80,41 @@ describe('Exams API (Teacher)', () => {
     expect(res.body.data.title).toBe('Updated Draft Title');
   });
 
+  it('PUT /exams/:id — updates a valid exam window', async () => {
+    const { token } = await loginAs('teacher');
+    const exam = await createDraftExam(token);
+    const openAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const closeAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
+
+    const res = await request(app)
+      .put(`/api/v1/exams/${exam.id}`)
+      .set(authHeader(token))
+      .send({ openAt, closeAt });
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.openAt).toBe(openAt);
+    expect(res.body.data.closeAt).toBe(closeAt);
+  });
+
+  it('PUT /exams/:id — rejects closeAt before openAt', async () => {
+    const { token } = await loginAs('teacher');
+    const exam = await createDraftExam(token);
+    const openAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
+    const closeAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+    const res = await request(app)
+      .put(`/api/v1/exams/${exam.id}`)
+      .set(authHeader(token))
+      .send({ openAt, closeAt });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+    expect(res.body.error.details).toContainEqual({
+      path: 'closeAt',
+      message: 'closeAt must be after openAt',
+    });
+  });
+
   it('PUT /exams/:id — cannot update published exam', async () => {
     const { token } = await loginAs('teacher');
 

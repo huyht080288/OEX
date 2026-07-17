@@ -9,8 +9,9 @@ Hệ thống thi trắc nghiệm trực tuyến: giáo viên tạo ngân hàng c
 | **API base** | `http://localhost:5002/api/v1` |
 | **Frontend dev** | `http://localhost:5001` |
 | **Swagger UI** | `http://localhost:5002/api/docs` |
-| **Coverage report** | `http://localhost:5002/testcoverage.html` |
-| **Trạng thái v1** | Hoàn thiện — **84 API tests** pass |
+| **Backend coverage** | `http://localhost:5002/testcoverage.html` |
+| **Frontend coverage** | `http://localhost:5001/testcoverage.html` |
+| **Trạng thái v1** | Hoàn thiện — **86 API tests** pass |
 
 **Tài liệu thiết kế:** [`docs/OEX_DetailedDesign_V2.md`](docs/OEX_DetailedDesign_V2.md)  
 **OpenAPI spec:** [`docs/api/openapi.yaml`](docs/api/openapi.yaml)  
@@ -78,7 +79,7 @@ PMHDV/
 ├── backend/
 │   ├── src/                # Express API (routes → controllers → services)
 │   ├── prisma/             # schema, migrations, seed
-│   └── tests/              # Vitest + Supertest (84 tests)
+│   └── tests/              # Vitest + Supertest (86 tests)
 ├── frontend/
 │   └── src/                # Vue 3 SPA (views, stores, api client)
 ├── .cursor/                # Rules & skills cho Cursor agent
@@ -140,6 +141,8 @@ Mở trên trình duyệt:
 | OEX Frontend | **http://localhost:5001** |
 | Swagger API | **http://localhost:5002/api/docs** |
 | Prisma Studio (database) | **http://localhost:5003** |
+| Frontend coverage | **http://localhost:5001/testcoverage.html** |
+| Backend coverage | **http://localhost:5002/testcoverage.html** |
 
 > Prisma Studio phải chạy ở terminal riêng và terminal đó cần được giữ mở. Công cụ này cho phép xem/sửa trực tiếp database, chỉ nên dùng trong môi trường development và không public ra Internet.
 
@@ -379,7 +382,7 @@ Backend **không coi là xong** nếu:
 
 ```bash
 cd backend
-npm run test    # exit code 0, 0 failed — hiện tại 84 tests
+npm run test    # exit code 0, 0 failed — hiện tại 86 tests
 ```
 
 ### Chạy test
@@ -408,6 +411,11 @@ Sau khi chạy coverage và khởi động Backend, mở:
 
 **http://localhost:5002/testcoverage.html**
 
+Backend whole-app coverage hiện tại: **91.09% statements, 75.11% branches,
+98.31% functions và 91.09% lines**. Báo cáo đo `backend/src/**/*.ts` cùng
+`prisma/seed-data.ts`; `prisma/seed.ts` được loại vì đây là script chuẩn bị dữ liệu
+chạy ngoài application runtime. Tính đúng đắn của seed được xác minh qua integration tests.
+
 ### Cơ chế test database
 
 1. Đọc `DATABASE_URL` từ `backend/.env.test`
@@ -416,7 +424,7 @@ Sau khi chạy coverage và khởi động Backend, mở:
 4. Nếu vẫn không → tự khởi động embedded PostgreSQL (`backend/tmp/pgdata-test`)
 5. Ghi `backend/.test-runtime.env` (tự tạo/xóa khi chạy test)
 
-### Phân bổ 84 tests
+### Phân bổ 86 tests
 
 | File test | Số test | Phạm vi |
 |-----------|---------|---------|
@@ -424,20 +432,34 @@ Sau khi chạy coverage và khởi động Backend, mở:
 | `users.test.ts` | 11 | CRUD user, role filter, deactivate |
 | `subjects.test.ts` | 9 | CRUD subject, ownership teacher |
 | `questions.test.ts` | 10 | CRUD MCQ, validate 1 đáp án đúng |
-| `exams.test.ts` | 19 | CRUD exam, questions, publish, assign, results |
+| `exams.test.ts` | 21 | CRUD exam, validate time window, questions, publish, assign, results |
 | `attempts.test.ts` | 17 | Start, save, submit, expire, hide answers |
 | `students.test.ts` | 3 | List students for assign |
 | `e2e-student-flow.test.ts` | 2 | Full student journey (smoke) |
 | `swagger.test.ts` | 2 | `/api/docs`, `/api/openapi.yaml` |
-| `coverageReport.test.ts` | 1 | Redirect đến báo cáo coverage HTML |
-| **Tổng** | **84** | |
+| `coverageReport.test.ts` | 1 | Trang điều hướng báo cáo coverage HTML |
+| **Tổng** | **86** | |
 
-### Frontend build check
+### Frontend tests, coverage và build
 
 ```bash
 cd frontend
+npm run test             # Vitest unit tests
+npm run test:coverage    # Tạo frontend/coverage/index.html
 npm run build    # vue-tsc + Vite production bundle
 ```
+
+Khi Vite dev server đang chạy, mở báo cáo Frontend:
+
+**http://localhost:5001/testcoverage.html**
+
+Trang này có navigation và liên kết nhanh sang Backend Coverage, Swagger và OEX App.
+
+Frontend hiện có **95 test cases / 16 test files** cho API client, auth store, router,
+composables, shared components và các luồng Admin/Teacher/Student. Báo cáo whole-app:
+**88.46% statements, 82.59% branches, 77.53% functions, 90.45% lines**.
+Vitest áp dụng ngưỡng tối thiểu **75% cho cả bốn chỉ số**; lệnh coverage sẽ thất bại nếu
+coverage bị giảm dưới ngưỡng.
 
 ---
 
@@ -611,7 +633,7 @@ Khi agent tiếp tục code: đọc `PrjMng/STATUS.md` trước, cập nhật `S
 - Làm bài online: timer, auto-save, auto-submit khi hết giờ
 - Chấm điểm tự động, xem kết quả
 - UI tiếng Anh đầy đủ 3 role
-- OpenAPI + Swagger UI + coverage HTML + 84 API tests
+- OpenAPI + Swagger UI + coverage HTML + 86 API tests
 
 **Không có (ngoài phạm vi v1):**
 

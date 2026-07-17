@@ -105,6 +105,17 @@ Dated log of meaningful project changes (not every commit).
 - Standardized local ports: frontend `5001`, backend/Swagger `5002`, Prisma Studio `5003`, PostgreSQL host `5005`.
 - Updated Vite proxy, Express defaults/CORS, Docker mapping, environment templates, test configuration, OpenAPI, scripts, and documentation.
 - Added `npm run db:studio` with fixed port `5003`.
-- PostgreSQL container recreated with persistent data volume; **84 backend tests pass**, backend and frontend builds pass.
-- Added Vitest V8 coverage support and `npm run test:coverage`; baseline: 75.06% statements/lines, 73.25% branches, 97.50% functions.
+- PostgreSQL container recreated with persistent data volume; **86 backend tests pass**, backend and frontend builds pass.
+- Added Vitest V8 coverage support and `npm run test:coverage`; current application
+  coverage: **91.09% statements/lines, 75.11% branches, 98.31% functions**.
+- Added valid and invalid exam-window update tests; `src/validators` now has 100%
+  coverage on all metrics.
+- Coverage explicitly measures `src/**/*.ts` and `prisma/seed-data.ts`; runtime-external
+  `prisma/seed.ts` is excluded and remains verified through integration test preparation.
 - Exposed a development-only coverage viewer at `/testcoverage.html` with Back/Forward/Home/Reload and links to Swagger/OEX.
+- Expanded Frontend Vitest coverage to **95 tests / 16 test files** across API modules,
+  auth, router, composables, shared components, and Admin/Teacher/Student workflows.
+- Whole-app frontend coverage is **88.46% statements, 82.59% branches, 77.53% functions,
+  and 90.45% lines**; a 75% threshold on every metric prevents silent regression.
+- Frontend HTML coverage remains available through the navigable viewer at
+  `http://localhost:5001/testcoverage.html`.
