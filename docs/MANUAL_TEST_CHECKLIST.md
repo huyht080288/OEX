@@ -8,7 +8,7 @@ Use this checklist before defense or stakeholder demo.
 - [ ] PostgreSQL running (`docker compose up -d` from repo root)
 - [ ] Backend: `cd backend && npm run db:migrate && npm run db:seed && npm run dev`
 - [ ] Frontend: `cd frontend && npm run dev`
-- [ ] Open app at `http://localhost:5173`
+- [ ] Open app at `http://localhost:5001`
 
 ## Seed accounts
 

@@ -136,7 +136,7 @@ Giáo dục chuyển đổi số đặt ra nhu cầu tổ chức kiểm tra tr�
 | `JWT_SECRET` | Backend | Khóa ký JWT |
 | `JWT_EXPIRES_IN` | Backend | Thời hạn token (vd. `1h`) |
 | `PORT` | Backend | Cổng API (mặc định 3000) |
-| `CORS_ORIGIN` | Backend | Origin frontend (`http://localhost:5173`) |
+| `CORS_ORIGIN` | Backend | Origin frontend (`http://localhost:5001`) |
 
 ### 3.2. Kiến trúc hệ thống
 
@@ -339,7 +339,7 @@ Frontend **không** có database riêng; quản lý state qua Pinia + bộ nhớ
 
 ### 4.12. Đặc tả danh sách API (Input / Output)
 
-Base URL: `http://localhost:3000/api/v1`  
+Base URL: `http://localhost:5002/api/v1`  
 Envelope thành công: `{ "success": true, "data": ... }`  
 Envelope lỗi: `{ "success": false, "error": { "code", "message" } }`  
 Auth: `Authorization: Bearer <token>` (trừ login).
@@ -440,7 +440,7 @@ Tài liệu đầy đủ: `docs/api/openapi.yaml`.
 
 ### 5.1. Giao diện chương trình
 
-Ảnh chụp từ môi trường chạy thực tế (`http://localhost:5173`, backend `http://localhost:3000/api/v1`, dữ liệu seed). Tái tạo: `cd docs/scripts && npm install && npx playwright install chromium && npm run capture-screenshots` (yêu cầu FE + BE đang chạy).
+Ảnh chụp từ môi trường chạy thực tế (`http://localhost:5001`, backend `http://localhost:5002/api/v1`, dữ liệu seed). Tái tạo: `cd docs/scripts && npm install && npx playwright install chromium && npm run capture-screenshots` (yêu cầu FE + BE đang chạy).
 
 | STT | Màn hình | Route | Role | File ảnh |
 |-----|----------|-------|------|----------|
@@ -677,10 +677,10 @@ cd ../frontend && npm install
 
 ```bash
 # Terminal 1
-cd backend && npm run dev    # http://localhost:3000/api/v1
+cd backend && npm run dev    # http://localhost:5002/api/v1
 
 # Terminal 2
-cd frontend && npm run dev   # http://localhost:5173
+cd frontend && npm run dev   # http://localhost:5001
 ```
 
 #### 5.4.4. Tài khoản demo

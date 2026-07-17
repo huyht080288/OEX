@@ -47,12 +47,12 @@
               <span>Your answer:</span>
               {{
                 item.selectedOption
-                  ? `${item.selectedOption.label}. ${item.selectedOption.content}`
+                  ? `${item.selectedOption.content}`
                   : 'No answer'
               }}
             </p>
             <p v-if="!item.isCorrect && item.correctOption" class="result-review__correct">
-              Correct answer: {{ item.correctOption.label }}. {{ item.correctOption.content }}
+              Correct answer: {{ item.correctOption.content }}
             </p>
             <p class="result-review__points">{{ item.points }} pt{{ item.points === 1 ? '' : 's' }}</p>
           </li>

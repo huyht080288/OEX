@@ -6,9 +6,9 @@ Hệ thống thi trắc nghiệm trực tuyến: giáo viên tạo ngân hàng c
 |---|---|
 | **Stack** | Vue 3 · Node.js · Express · PostgreSQL · Prisma · TypeScript |
 | **UI** | Tiếng Anh |
-| **API base** | `http://localhost:3000/api/v1` |
-| **Frontend dev** | `http://localhost:5173` |
-| **Swagger UI** | `http://localhost:3000/api/docs` |
+| **API base** | `http://localhost:5002/api/v1` |
+| **Frontend dev** | `http://localhost:5001` |
+| **Swagger UI** | `http://localhost:5002/api/docs` |
 | **Trạng thái v1** | Hoàn thiện — **83 API tests** pass |
 
 **Tài liệu thiết kế:** [`docs/OEX_DetailedDesign_V2.md`](docs/OEX_DetailedDesign_V2.md)  
@@ -92,8 +92,7 @@ PMHDV/
 Thực hiện **một lần** khi clone project mới:
 
 ```bash
-git clone <repo-url>
-cd PMHDV
+git clone https://github.com/huyht080288/OEX
 
 # 1. Database
 docker compose up -d
@@ -112,19 +111,37 @@ npx prisma db seed
 # 4. Frontend: install
 cd ../frontend
 npm install
+cd ..
+
 ```
 
-Chạy hàng ngày — **2 terminal**:
+Chạy hàng ngày — **2 terminal chính + 1 terminal Prisma Studio (tùy chọn)**:
 
 ```bash
 # Terminal 1 — API
-cd backend && npm run dev
+cd backend
+npm run dev
 
 # Terminal 2 — SPA
-cd frontend && npm run dev
+cd frontend
+npm run dev
+
+# Terminal 3 — giao diện quản lý database (tùy chọn)
+cd backend
+npm run db:studio
+
 ```
 
-Mở trình duyệt: **http://localhost:5173**  
+Mở trên trình duyệt:
+
+| Giao diện | Địa chỉ |
+|-----------|---------|
+| OEX Frontend | **http://localhost:5001** |
+| Swagger API | **http://localhost:5002/api/docs** |
+| Prisma Studio (database) | **http://localhost:5003** |
+
+> Prisma Studio phải chạy ở terminal riêng và terminal đó cần được giữ mở. Công cụ này cho phép xem/sửa trực tiếp database, chỉ nên dùng trong môi trường development và không public ra Internet.
+
 Đăng nhập demo: `teacher@oex.test` / `Password123!`
 
 ---
@@ -144,10 +161,10 @@ docker compose down -v        # Dừng + XÓA toàn bộ data (reset sạch)
 | Thông số | Giá trị dev |
 |----------|-------------|
 | Host | `localhost` |
-| Port | `5432` |
+| Port | `5005` (host) → `5432` (container) |
 | Database | `oex` |
 | User / Password | `oex` / `oex` |
-| Connection string | `postgresql://oex:oex@localhost:5432/oex?schema=public` |
+| Connection string | `postgresql://oex:oex@localhost:5005/oex?schema=public` |
 
 ### Migrate & seed (dev database `oex`)
 
@@ -156,7 +173,7 @@ cd backend
 npx prisma migrate deploy    # Áp dụng migrations (production-safe)
 npx prisma db seed           # Nạp dữ liệu mẫu (users, subjects, exams, …)
 npx prisma generate          # Tạo lại Prisma Client sau khi đổi schema
-npx prisma studio            # GUI xem/sửa DB (tùy chọn)
+npm run db:studio            # GUI xem/sửa DB tại http://localhost:5003
 ```
 
 **Tạo migration mới** (khi đổi `schema.prisma` trong dev):
@@ -205,17 +222,17 @@ Copy từ `backend/.env.example`:
 | `DATABASE_URL` | ✓ | PostgreSQL connection string |
 | `JWT_SECRET` | ✓ | Khóa ký JWT — **đổi trong production** |
 | `JWT_EXPIRES_IN` | | Thời hạn token, mặc định `1h` |
-| `PORT` | | Cổng API, mặc định `3000` |
-| `CORS_ORIGIN` | | Origin frontend, mặc định `http://localhost:5173` |
+| `PORT` | | Cổng API, mặc định `5002` |
+| `CORS_ORIGIN` | | Origin frontend, mặc định `http://localhost:5001` |
 | `NODE_ENV` | | `development` / `production` / `test` |
 | `SWAGGER_ENABLED` | | `true` (mặc định) — set `false` để tắt `/api/docs` |
 
 ```env
-DATABASE_URL="postgresql://oex:oex@localhost:5432/oex?schema=public"
+DATABASE_URL="postgresql://oex:oex@localhost:5005/oex?schema=public"
 JWT_SECRET="dev-secret-change-in-production"
 JWT_EXPIRES_IN="1h"
-PORT=3000
-CORS_ORIGIN="http://localhost:5173"
+PORT=5002
+CORS_ORIGIN="http://localhost:5001"
 NODE_ENV="development"
 SWAGGER_ENABLED="true"
 ```
@@ -225,10 +242,10 @@ SWAGGER_ENABLED="true"
 Copy từ `backend/.env.test.example`:
 
 ```env
-DATABASE_URL="postgresql://oex:oex@localhost:5432/oex_test?schema=public"
+DATABASE_URL="postgresql://oex:oex@localhost:5005/oex_test?schema=public"
 JWT_SECRET="test-secret"
 JWT_EXPIRES_IN="1h"
-PORT=3000
+PORT=5002
 NODE_ENV="test"
 ```
 
@@ -238,7 +255,7 @@ NODE_ENV="test"
 VITE_API_BASE_URL=/api/v1
 ```
 
-Vite dev server **proxy** `/api` → `http://localhost:3000` (xem `frontend/vite.config.ts`), nên mặc định không cần đổi URL.
+Vite dev server **proxy** `/api` → `http://localhost:5002` (xem `frontend/vite.config.ts`), nên mặc định không cần đổi URL.
 
 ---
 
@@ -253,16 +270,16 @@ npm run dev
 
 | Endpoint | URL |
 |----------|-----|
-| API v1 | http://localhost:3000/api/v1 |
-| Health check | http://localhost:3000/health |
-| Swagger UI | http://localhost:3000/api/docs |
-| OpenAPI YAML | http://localhost:3000/api/openapi.yaml |
+| API v1 | http://localhost:5002/api/v1 |
+| Health check | http://localhost:5002/health |
+| Swagger UI | http://localhost:5002/api/docs |
+| OpenAPI YAML | http://localhost:5002/api/openapi.yaml |
 
 Console khi start:
 
 ```
-OEX API listening on http://localhost:3000/api/v1
-Swagger UI: http://localhost:3000/api/docs
+OEX API listening on http://localhost:5002/api/v1
+Swagger UI: http://localhost:5002/api/docs
 ```
 
 ### Frontend SPA
@@ -274,8 +291,8 @@ npm run dev
 
 | | |
 |---|---|
-| App | http://localhost:5173 |
-| Proxy API | `/api/*` → backend `:3000` |
+| App | http://localhost:5001 |
+| Proxy API | `/api/*` → backend `:5002` |
 
 ### Production local (smoke)
 
@@ -298,7 +315,7 @@ Swagger UI đọc spec từ [`docs/api/openapi.yaml`](docs/api/openapi.yaml) —
 cd backend && npm run dev
 ```
 
-Mở **http://localhost:3000/api/docs**
+Mở **http://localhost:5002/api/docs**
 
 ### Bước 2 — Đăng nhập lấy JWT
 
@@ -341,12 +358,12 @@ Thử các nhóm endpoint theo role:
 
 ```bash
 # Login
-curl -s -X POST http://localhost:3000/api/v1/auth/login \
+curl -s -X POST http://localhost:5002/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"teacher@oex.test","password":"Password123!"}'
 
 # Dùng token (thay <TOKEN>)
-curl -s http://localhost:3000/api/v1/subjects \
+curl -s http://localhost:5002/api/v1/subjects \
   -H "Authorization: Bearer <TOKEN>"
 ```
 
@@ -424,7 +441,7 @@ Checklist đầy đủ: [`docs/MANUAL_TEST_CHECKLIST.md`](docs/MANUAL_TEST_CHECK
 - [ ] `cd backend && npm run dev`
 - [ ] `cd frontend && npm run dev`
 - [ ] `npm run test` pass
-- [ ] Mở http://localhost:5173
+- [ ] Mở http://localhost:5001
 
 **Script chụp screenshot** (cần FE + BE đang chạy):
 
@@ -474,10 +491,10 @@ Student: login → GET `/my-exams` → POST `/attempts/start` → PUT `/attempts
 
 | | |
 |---|---|
-| Base URL | `http://localhost:3000/api/v1` |
+| Base URL | `http://localhost:5002/api/v1` |
 | Auth | `Authorization: Bearer <JWT>` (trừ `POST /auth/login`) |
 | Spec | [`docs/api/openapi.yaml`](docs/api/openapi.yaml) |
-| Swagger | http://localhost:3000/api/docs |
+| Swagger | http://localhost:5002/api/docs |
 
 ### Nhóm endpoint
 
@@ -607,7 +624,7 @@ Chi tiết: `docs/OEX_DetailedDesign_V2.md`.
 | Login báo lỗi server / 500 | DB chưa chạy hoặc chưa migrate/seed |
 | `PrismaClient` / schema lỗi | `cd backend && npx prisma generate` |
 | Test fail sau đổi schema | `npm run db:test:prepare` hoặc xóa `backend/tmp/pgdata-test` rồi `npm run test` |
-| Port 3000 / 5173 bận | Đổi `PORT` trong `.env` hoặc tắt process chiếm port |
+| Port 5001 / 5002 / 5003 / 5005 bận | Đổi cấu hình port tương ứng hoặc tắt process chiếm port |
 | Swagger không mở | Kiểm tra `SWAGGER_ENABLED` ≠ `false`, backend đang chạy |
 | Swagger 401 trên endpoint | Chưa Authorize hoặc token hết hạn — login lại |
 | Frontend không gọi được API | Backend phải chạy; dev dùng proxy Vite (`/api/v1`) |
@@ -632,9 +649,9 @@ Chi tiết: `docs/OEX_DetailedDesign_V2.md`.
 | Prepare test DB | `cd backend && npm run db:test:prepare` |
 | FE build | `cd frontend && npm run build` |
 | BE build | `cd backend && npm run build` |
-| Prisma GUI | `cd backend && npx prisma studio` |
-| Swagger | http://localhost:3000/api/docs |
-| Health | http://localhost:3000/health |
+| Prisma GUI | `cd backend && npm run db:studio` |
+| Swagger | http://localhost:5002/api/docs |
+| Health | http://localhost:5002/health |
 
 ---
 

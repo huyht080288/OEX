@@ -1042,7 +1042,7 @@ Internet
 │  Nginx  │  SSL termination, static files, reverse proxy
 └────┬────┘
      ├── /        → Vue build (dist/)
-     └── /api/v1  → Node.js container :3000
+     └── /api/v1  → Node.js container :5002
                            │
                            ▼
                     PostgreSQL (managed or container)

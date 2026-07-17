@@ -288,7 +288,7 @@ def build() -> None:
     textbox(s, Inches(0.8), Inches(4.2), Inches(11.5), Inches(1.2),
             "Hồ Tiến Huy  ·  K23DTCN138  ·  Lớp DTCXN02-K\n"
             "Đề tài: OEX — Online Examination System\n"
-            "Demo: http://localhost:5173  ·  API: http://localhost:3000/api/v1\n"
+            "Demo: http://localhost:5001  ·  API: http://localhost:5002/api/v1\n"
             "Tài khoản: teacher@oex.test / student2@oex.test  ·  Password123!",
             size=16, color=WHITE, align=PP_ALIGN.CENTER)
 

@@ -7,7 +7,7 @@ import { mountSwagger } from './swagger.js';
 export function createApp() {
   const app = express();
 
-  app.use(cors({ origin: process.env.CORS_ORIGIN ?? 'http://localhost:5173' }));
+  app.use(cors({ origin: process.env.CORS_ORIGIN ?? 'http://localhost:5001' }));
   app.use(express.json());
 
   app.get('/health', (_req, res) => {

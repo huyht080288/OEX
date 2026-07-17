@@ -12,7 +12,7 @@ Guide for deploying the Online Examination System (v1) to a production environme
 ```
 [Browser] → HTTPS → [Reverse proxy / CDN]
                         ├─ /          → static files (frontend/dist)
-                        └─ /api/v1/*  → Node.js backend (:3000)
+                        └─ /api/v1/*  → Node.js backend (:5002)
                                               ↓
                                          PostgreSQL
 ```
@@ -60,7 +60,7 @@ Copy `backend/.env.example` and set production values:
 | `DATABASE_URL` | PostgreSQL connection string with SSL if required |
 | `JWT_SECRET` | Long random string (≥ 32 chars); never commit |
 | `JWT_EXPIRES_IN` | e.g. `1h` (design default) |
-| `PORT` | Internal port, e.g. `3000` |
+| `PORT` | Internal port, e.g. `5002` |
 | `CORS_ORIGIN` | Exact frontend URL, e.g. `https://oex.example.com` |
 | `NODE_ENV` | `production` |
 
@@ -127,7 +127,7 @@ server {
     index index.html;
 
     location /api/ {
-        proxy_pass http://127.0.0.1:3000;
+        proxy_pass http://127.0.0.1:5002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

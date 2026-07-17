@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>UserManual.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="oex--hướng-dẫn-nghiệp-vụ-người-dùng">OEX — HƯỚNG DẪN NGHIỆP VỤ NGƯỜI DÙNG</h1>
+<blockquote>
+<p><strong>OEX (Online Examination System)</strong> — Hệ thống thi trắc nghiệm trực tuyến<br>
+Phiên bản tài liệu: 1.0 · Cập nhật: 17/07/2026</p>
+</blockquote>
+<hr>
+<h2 id="1-giới-thiệu">1. Giới thiệu</h2>
+<p>Tài liệu này hướng dẫn các nghiệp vụ chính của OEX cho ba nhóm người dùng:</p>
+<table>
+<thead>
+<tr>
+<th>Vai trò</th>
+<th>Nghiệp vụ chính</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Administrator (Admin)</strong></td>
+<td>Tạo, sửa, kích hoạt và vô hiệu hóa tài khoản</td>
+</tr>
+<tr>
+<td><strong>Teacher (Giáo viên)</strong></td>
+<td>Quản lý môn học, ngân hàng câu hỏi, đề thi, gán học sinh và xem kết quả</td>
+</tr>
+<tr>
+<td><strong>Student (Học sinh)</strong></td>
+<td>Xem đề được gán, làm bài, nộp bài và xem kết quả</td>
+</tr>
+</tbody>
+</table>
+<p>Giao diện hệ thống sử dụng <strong>tiếng Anh</strong>. Tài liệu này trình bày bằng tiếng Việt và giữ nguyên tên nút/menu tiếng Anh để người dùng dễ đối chiếu.</p>
+<h3 id="11-địa-chỉ-truy-cập">1.1. Địa chỉ truy cập</h3>
+<table>
+<thead>
+<tr>
+<th>Môi trường</th>
+<th>Địa chỉ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ứng dụng web mặc định</td>
+<td><code>http://localhost:5001</code></td>
+</tr>
+<tr>
+<td>API mặc định</td>
+<td><code>http://localhost:5002/api/v1</code></td>
+</tr>
+<tr>
+<td>Swagger UI</td>
+<td><code>http://localhost:5002/api/docs</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Địa chỉ thực tế có thể khác khi hệ thống được triển khai trên máy chủ của khách hàng.</p>
+</blockquote>
+<h3 id="12-tài-khoản-minh-họa">1.2. Tài khoản minh họa</h3>
+<table>
+<thead>
+<tr>
+<th>Vai trò</th>
+<th>Email</th>
+<th>Mật khẩu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Admin</td>
+<td><code>admin@oex.test</code></td>
+<td><code>Password123!</code></td>
+</tr>
+<tr>
+<td>Teacher</td>
+<td><code>teacher@oex.test</code></td>
+<td><code>Password123!</code></td>
+</tr>
+<tr>
+<td>Student</td>
+<td><code>student2@oex.test</code></td>
+<td><code>Password123!</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Đây là tài khoản dữ liệu mẫu. Không dùng mật khẩu mẫu trong môi trường production.</p>
+</blockquote>
+<hr>
+<h2 id="2-quy-trình-nghiệp-vụ-tổng-quát">2. Quy trình nghiệp vụ tổng quát</h2>
+<pre class="hljs"><code><div>Admin tạo tài khoản
+        ↓
+Teacher tạo môn học và ngân hàng câu hỏi
+        ↓
+Teacher tạo đề → thêm câu hỏi → Publish → gán học sinh
+        ↓
+Student mở My Exams → Start/Resume → chọn đáp án → Submit
+        ↓
+Hệ thống chấm tự động
+        ↓
+Student xem điểm; Teacher xem kết quả và chi tiết bài làm
+</div></code></pre>
+<h3 id="21-quy-tắc-nghiệp-vụ-quan-trọng">2.1. Quy tắc nghiệp vụ quan trọng</h3>
+<ol>
+<li>Người dùng không tự đăng ký; <strong>Admin</strong> tạo tài khoản.</li>
+<li>Giáo viên chỉ quản lý môn học, câu hỏi và đề thi thuộc quyền sở hữu của mình.</li>
+<li>Mỗi câu hỏi là MCQ và có <strong>đúng một đáp án đúng</strong>.</li>
+<li>Đề thi phải có câu hỏi và được <strong>Publish</strong> trước khi học sinh có thể làm.</li>
+<li>Học sinh chỉ thấy đề đã được gán cho tài khoản của mình.</li>
+<li>Học sinh chỉ làm bài trong khoảng <code>Open date/time</code> đến <code>Close date/time</code>.</li>
+<li>Số lần làm bài không vượt quá <code>Max attempts</code>.</li>
+<li>Bài đang làm được lưu đáp án tự động; khi hết thời gian, hệ thống tự nộp bài.</li>
+<li>Điểm được tính tự động khi nộp.</li>
+<li>Học sinh chỉ xem đáp án đúng nếu giáo viên bật <strong>Show answers after submit</strong>.</li>
+</ol>
+<hr>
+<h2 id="3-đăng-nhập-đăng-xuất-và-tài-khoản">3. Đăng nhập, đăng xuất và tài khoản</h2>
+<h3 id="31-đăng-nhập">3.1. Đăng nhập</h3>
+<ol>
+<li>Mở ứng dụng OEX.</li>
+<li>Nhập email tại ô <strong>Email address</strong>.</li>
+<li>Nhập mật khẩu tại ô <strong>Password</strong>.</li>
+<li>Nhấn <strong>Sign in</strong>.</li>
+<li>Hệ thống chuyển đến <strong>Dashboard</strong> tương ứng với vai trò.</li>
+</ol>
+<p><img src="docs/images/01-login.png" alt="Màn hình đăng nhập OEX"></p>
+<p><strong>Kết quả có thể gặp:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tình huống</th>
+<th>Kết quả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Email và mật khẩu đúng</td>
+<td>Đăng nhập thành công</td>
+</tr>
+<tr>
+<td>Sai email hoặc mật khẩu</td>
+<td>Hiển thị lỗi thông tin đăng nhập</td>
+</tr>
+<tr>
+<td>Tài khoản bị vô hiệu hóa</td>
+<td>Không cho phép đăng nhập</td>
+</tr>
+<tr>
+<td>Phiên đăng nhập hết hạn</td>
+<td>Chuyển về trang đăng nhập</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-đổi-mật-khẩu">3.2. Đổi mật khẩu</h3>
+<ol>
+<li>Sau khi đăng nhập, chọn <strong>Account</strong> trên thanh điều hướng.</li>
+<li>Nhập mật khẩu hiện tại.</li>
+<li>Nhập mật khẩu mới và xác nhận.</li>
+<li>Nhấn nút lưu thay đổi.</li>
+<li>Đăng nhập lại bằng mật khẩu mới nếu hệ thống yêu cầu.</li>
+</ol>
+<h3 id="33-đăng-xuất">3.3. Đăng xuất</h3>
+<p>Nhấn <strong>Sign out</strong> ở góc trên bên phải. Hệ thống xóa phiên đăng nhập và quay về màn hình đăng nhập.</p>
+<hr>
+<h2 id="4-nghiệp-vụ-admin--quản-lý-người-dùng">4. Nghiệp vụ Admin — Quản lý người dùng</h2>
+<p>Đăng nhập bằng tài khoản có vai trò <strong>Admin</strong>.</p>
+<h3 id="41-xem-và-tìm-kiếm-người-dùng">4.1. Xem và tìm kiếm người dùng</h3>
+<ol>
+<li>Chọn <strong>User Management</strong> trên menu trái.</li>
+<li>Chọn vai trò tại bộ lọc <strong>Role</strong> nếu cần.</li>
+<li>Nhập tên hoặc email tại ô <strong>Search</strong>.</li>
+<li>Nhấn <strong>Search</strong>.</li>
+</ol>
+<p>Danh sách hiển thị tên, email, vai trò, trạng thái và thao tác.</p>
+<p><img src="docs/images/10-user-management.png" alt="Danh sách quản lý người dùng"></p>
+<h3 id="42-tạo-tài-khoản">4.2. Tạo tài khoản</h3>
+<ol>
+<li>Tại <strong>User Management</strong>, nhấn <strong>Add User</strong>.</li>
+<li>Nhập:
+<ul>
+<li><strong>Full name</strong>: họ tên người dùng.</li>
+<li><strong>Email</strong>: email đăng nhập, không được trùng.</li>
+<li><strong>Password</strong>: mật khẩu khởi tạo.</li>
+<li><strong>Role</strong>: <code>Admin</code>, <code>Teacher</code> hoặc <code>Student</code>.</li>
+</ul>
+</li>
+<li>Nhấn nút lưu.</li>
+<li>Kiểm tra tài khoản mới xuất hiện trong danh sách với trạng thái <strong>ACTIVE</strong>.</li>
+</ol>
+<p><strong>Lưu ý:</strong></p>
+<ul>
+<li>Email phải đúng định dạng và duy nhất.</li>
+<li>Chỉ cấp vai trò Admin cho người có trách nhiệm quản trị hệ thống.</li>
+<li>Nên yêu cầu người dùng đổi mật khẩu sau lần đăng nhập đầu tiên.</li>
+</ul>
+<h3 id="43-sửa-tài-khoản">4.3. Sửa tài khoản</h3>
+<ol>
+<li>Tìm tài khoản cần sửa.</li>
+<li>Nhấn <strong>Edit</strong>.</li>
+<li>Cập nhật họ tên, email hoặc vai trò.</li>
+<li>Lưu thay đổi.</li>
+</ol>
+<h3 id="44-vô-hiệu-hóa-hoặc-kích-hoạt-tài-khoản">4.4. Vô hiệu hóa hoặc kích hoạt tài khoản</h3>
+<ul>
+<li>Nhấn <strong>Deactivate</strong> để khóa tài khoản đang hoạt động.</li>
+<li>Nhấn <strong>Activate</strong> để mở lại tài khoản đã khóa.</li>
+</ul>
+<p>Tài khoản <strong>INACTIVE</strong> không thể đăng nhập, kể cả khi thông tin mật khẩu đúng.</p>
+<h3 id="45-dashboard-admin">4.5. Dashboard Admin</h3>
+<p>Dashboard Admin hiển thị tổng quan người dùng và liên kết nhanh đến chức năng quản lý tài khoản.</p>
+<p><img src="docs/images/09-dashboard-admin.png" alt="Dashboard quản trị"></p>
+<hr>
+<h2 id="5-nghiệp-vụ-teacher--quản-lý-môn-học">5. Nghiệp vụ Teacher — Quản lý môn học</h2>
+<p>Đăng nhập bằng tài khoản có vai trò <strong>Teacher</strong>.</p>
+<p>Dashboard Teacher hiển thị tổng số môn học, số đề đang hoạt động và các liên kết truy cập nhanh.</p>
+<p><img src="docs/images/02-dashboard-teacher.png" alt="Dashboard giáo viên"></p>
+<h3 id="51-xem-danh-sách-môn-học">5.1. Xem danh sách môn học</h3>
+<p>Chọn <strong>Subjects</strong> trên menu. Danh sách hiển thị mã môn, tên môn và mô tả.</p>
+<p><img src="docs/images/03-subjects.png" alt="Danh sách môn học"></p>
+<h3 id="52-tạo-môn-học">5.2. Tạo môn học</h3>
+<ol>
+<li>Nhấn <strong>Add Subject</strong>.</li>
+<li>Nhập:
+<ul>
+<li><strong>Code</strong>: mã môn, ví dụ <code>CS101</code>.</li>
+<li><strong>Name</strong>: tên môn học.</li>
+<li><strong>Description</strong>: mô tả, không bắt buộc.</li>
+</ul>
+</li>
+<li>Lưu thông tin.</li>
+</ol>
+<p>Mã môn phải duy nhất trong phạm vi các môn do giáo viên quản lý.</p>
+<h3 id="53-sửa-hoặc-xóa-môn-học">5.3. Sửa hoặc xóa môn học</h3>
+<ul>
+<li>Chọn <strong>Edit</strong> để cập nhật thông tin.</li>
+<li>Chọn <strong>Delete</strong> để xóa khi môn chưa bị ràng buộc bởi dữ liệu không thể xóa.</li>
+</ul>
+<p>Kiểm tra kỹ trước khi xóa vì thao tác có thể ảnh hưởng đến câu hỏi và đề thi liên quan.</p>
+<hr>
+<h2 id="6-nghiệp-vụ-teacher--ngân-hàng-câu-hỏi">6. Nghiệp vụ Teacher — Ngân hàng câu hỏi</h2>
+<h3 id="61-mở-ngân-hàng-câu-hỏi">6.1. Mở ngân hàng câu hỏi</h3>
+<ol>
+<li>Vào <strong>Subjects</strong>.</li>
+<li>Chọn môn học cần quản lý.</li>
+<li>Mở <strong>Questions</strong> hoặc <strong>Question Bank</strong>.</li>
+<li>Có thể tìm theo nội dung và lọc theo độ khó.</li>
+</ol>
+<p><img src="docs/images/04-question-bank.png" alt="Ngân hàng câu hỏi"></p>
+<h3 id="62-tạo-câu-hỏi-mcq">6.2. Tạo câu hỏi MCQ</h3>
+<ol>
+<li>Nhấn <strong>Add Question</strong>.</li>
+<li>Chọn môn học tại <strong>Subject</strong>.</li>
+<li>Nhập nội dung tại <strong>Question text</strong>.</li>
+<li>Chọn <strong>Difficulty</strong>:
+<ul>
+<li><code>Easy</code></li>
+<li><code>Medium</code></li>
+<li><code>Hard</code></li>
+</ul>
+</li>
+<li>Nhập <strong>Points</strong>.</li>
+<li>Nhập các phương án trả lời.</li>
+<li>Chọn <strong>chính xác một</strong> phương án đúng.</li>
+<li>Lưu câu hỏi.</li>
+</ol>
+<p><img src="docs/images/05-question-form.png" alt="Biểu mẫu tạo câu hỏi"></p>
+<p><strong>Điều kiện hợp lệ:</strong></p>
+<ul>
+<li>Có tối thiểu các phương án theo yêu cầu của biểu mẫu.</li>
+<li>Nội dung phương án không được để trống.</li>
+<li>Chỉ một phương án có trạng thái đúng.</li>
+<li>Điểm phải là giá trị hợp lệ và lớn hơn 0.</li>
+</ul>
+<h3 id="63-sửa-hoặc-xóa-câu-hỏi">6.3. Sửa hoặc xóa câu hỏi</h3>
+<ul>
+<li><strong>Edit</strong>: thay đổi nội dung, độ khó, điểm hoặc phương án.</li>
+<li><strong>Delete</strong>: xóa câu hỏi chưa bị ràng buộc theo quy tắc hệ thống.</li>
+</ul>
+<p>Không nên sửa nội dung câu hỏi đã được sử dụng trong một kỳ thi đang diễn ra.</p>
+<hr>
+<h2 id="7-nghiệp-vụ-teacher--quản-lý-đề-thi">7. Nghiệp vụ Teacher — Quản lý đề thi</h2>
+<h3 id="71-xem-danh-sách-đề">7.1. Xem danh sách đề</h3>
+<p>Chọn <strong>Exams</strong>. Danh sách thể hiện tên đề, môn học, trạng thái, thời gian mở và đóng.</p>
+<p><img src="docs/images/06-exam-list.png" alt="Danh sách đề thi"></p>
+<p>Các trạng thái:</p>
+<table>
+<thead>
+<tr>
+<th>Trạng thái</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DRAFT</strong></td>
+<td>Đang soạn, có thể chỉnh sửa</td>
+</tr>
+<tr>
+<td><strong>PUBLISHED</strong></td>
+<td>Đã phát hành cho học sinh được gán</td>
+</tr>
+<tr>
+<td><strong>CLOSED</strong></td>
+<td>Đã đóng, không nhận bài làm mới</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-tạo-đề-thi">7.2. Tạo đề thi</h3>
+<ol>
+<li>Chọn <strong>Create Exam</strong>.</li>
+<li>Nhập các trường:
+<ul>
+<li><strong>Subject</strong>: môn học.</li>
+<li><strong>Title</strong>: tên đề.</li>
+<li><strong>Description</strong>: mô tả.</li>
+<li><strong>Duration (minutes)</strong>: thời lượng làm bài.</li>
+<li><strong>Max attempts</strong>: số lượt làm tối đa.</li>
+<li><strong>Open date/time</strong>: thời điểm bắt đầu nhận bài.</li>
+<li><strong>Close date/time</strong>: thời điểm kết thúc.</li>
+<li><strong>Show answers after submit</strong>: cho phép học sinh xem đáp án sau khi nộp.</li>
+</ul>
+</li>
+<li>Lưu để tạo đề ở trạng thái <strong>DRAFT</strong>.</li>
+</ol>
+<h3 id="73-thêm-và-sắp-xếp-câu-hỏi">7.3. Thêm và sắp xếp câu hỏi</h3>
+<ol>
+<li>Mở đề thi ở trạng thái <strong>DRAFT</strong>.</li>
+<li>Chọn tab <strong>Questions</strong>.</li>
+<li>Tìm và chọn câu hỏi từ ngân hàng.</li>
+<li>Thêm câu hỏi vào đề.</li>
+<li>Sắp xếp thứ tự câu hỏi nếu cần.</li>
+<li>Lưu danh sách câu hỏi.</li>
+</ol>
+<h3 id="74-phát-hành-đề">7.4. Phát hành đề</h3>
+<p>Trước khi nhấn <strong>Publish</strong>, kiểm tra:</p>
+<ul>
+<li>Đề có ít nhất một câu hỏi.</li>
+<li>Thời lượng và số lượt làm đúng.</li>
+<li>Thời gian mở nhỏ hơn thời gian đóng.</li>
+<li>Tùy chọn xem đáp án phù hợp.</li>
+</ul>
+<p>Sau khi phát hành, cấu hình đề không còn được sửa như khi ở trạng thái Draft.</p>
+<p><img src="docs/images/07-exam-detail.png" alt="Chi tiết và cấu hình đề thi"></p>
+<h3 id="75-gán-đề-cho-học-sinh">7.5. Gán đề cho học sinh</h3>
+<ol>
+<li>Mở đề thi.</li>
+<li>Chọn tab <strong>Assign Students</strong>.</li>
+<li>Tìm học sinh theo tên hoặc email.</li>
+<li>Đánh dấu các học sinh cần gán.</li>
+<li>Xác nhận gán đề.</li>
+<li>Kiểm tra danh sách <strong>Assigned students</strong>.</li>
+</ol>
+<p>Một học sinh không thể được gán trùng cùng một đề.</p>
+<h3 id="76-đóng-đề">7.6. Đóng đề</h3>
+<p>Nhấn <strong>Close Exam</strong> khi không muốn nhận lượt làm mới. Sau khi đóng:</p>
+<ul>
+<li>Học sinh không thể bắt đầu lượt làm mới.</li>
+<li>Danh sách gán chuyển sang chế độ chỉ đọc.</li>
+<li>Giáo viên vẫn có thể xem kết quả.</li>
+</ul>
+<hr>
+<h2 id="8-nghiệp-vụ-student--xem-và-làm-bài">8. Nghiệp vụ Student — Xem và làm bài</h2>
+<p>Đăng nhập bằng tài khoản có vai trò <strong>Student</strong>.</p>
+<h3 id="81-xem-đề-được-gán">8.1. Xem đề được gán</h3>
+<ol>
+<li>Chọn <strong>My Exams</strong>.</li>
+<li>Kiểm tra tên đề, môn học, thời gian mở/đóng, thời lượng và trạng thái.</li>
+<li>Thao tác có thể hiển thị:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Nút / trạng thái</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Start</strong></td>
+<td>Bắt đầu lượt làm mới</td>
+</tr>
+<tr>
+<td><strong>Resume</strong></td>
+<td>Tiếp tục lượt đang làm</td>
+</tr>
+<tr>
+<td><strong>View Result</strong></td>
+<td>Xem kết quả lượt đã nộp</td>
+</tr>
+<tr>
+<td>Chưa mở / đã đóng</td>
+<td>Không thể bắt đầu</td>
+</tr>
+</tbody>
+</table>
+<p><img src="docs/images/11-my-exams.png" alt="Danh sách đề được gán cho học sinh"></p>
+<h3 id="82-bắt-đầu-làm-bài">8.2. Bắt đầu làm bài</h3>
+<ol>
+<li>Nhấn <strong>Start</strong>.</li>
+<li>Hệ thống tạo lượt làm và bắt đầu tính giờ.</li>
+<li>Đọc nội dung câu hỏi.</li>
+<li>Chọn một phương án trả lời.</li>
+<li>Dùng <strong>Previous</strong> và <strong>Next</strong>, hoặc <strong>Question Navigator</strong>, để di chuyển.</li>
+</ol>
+<p><img src="docs/images/12-take-exam.png" alt="Màn hình làm bài"></p>
+<h3 id="83-các-thành-phần-trên-màn-hình-làm-bài">8.3. Các thành phần trên màn hình làm bài</h3>
+<table>
+<thead>
+<tr>
+<th>Thành phần</th>
+<th>Chức năng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Time remaining</strong></td>
+<td>Thời gian còn lại</td>
+</tr>
+<tr>
+<td>Thanh tiến độ</td>
+<td>Tiến độ duyệt câu hỏi</td>
+</tr>
+<tr>
+<td><strong>Question Navigator</strong></td>
+<td>Chuyển nhanh đến câu bất kỳ</td>
+</tr>
+<tr>
+<td><strong>Answered / Unanswered</strong></td>
+<td>Số câu đã/chưa trả lời</td>
+</tr>
+<tr>
+<td><strong>Submit Exam</strong></td>
+<td>Nộp bài</td>
+</tr>
+</tbody>
+</table>
+<p>Đáp án được tự động lưu sau khi chọn. Nếu tải lại trang, học sinh có thể dùng <strong>Resume</strong> để tiếp tục lượt đang làm.</p>
+<h3 id="84-nộp-bài">8.4. Nộp bài</h3>
+<ol>
+<li>Kiểm tra số câu <strong>Unanswered</strong>.</li>
+<li>Nhấn <strong>Submit Exam</strong>.</li>
+<li>Đọc hộp thoại xác nhận.</li>
+<li>Xác nhận nộp bài.</li>
+<li>Chờ hệ thống chấm điểm và chuyển đến kết quả.</li>
+</ol>
+<blockquote>
+<p>Khi đồng hồ về 0, hệ thống tự động nộp bài. Không tắt trình duyệt hoặc mất kết nối trong thời điểm nộp.</p>
+</blockquote>
+<h3 id="85-xem-kết-quả">8.5. Xem kết quả</h3>
+<p>Kết quả có thể gồm:</p>
+<ul>
+<li>Tổng điểm đạt được / điểm tối đa.</li>
+<li>Số câu trả lời đúng.</li>
+<li>Trạng thái bài làm.</li>
+<li>Thời điểm nộp.</li>
+<li>Chi tiết từng câu nếu giáo viên cho phép xem đáp án.</li>
+</ul>
+<p><img src="docs/images/13-result.png" alt="Kết quả bài thi"></p>
+<p>Nhấn <strong>Back to My Exams</strong> để trở về danh sách đề.</p>
+<hr>
+<h2 id="9-nghiệp-vụ-teacher--xem-kết-quả">9. Nghiệp vụ Teacher — Xem kết quả</h2>
+<h3 id="91-xem-bảng-kết-quả">9.1. Xem bảng kết quả</h3>
+<ol>
+<li>Đăng nhập Teacher.</li>
+<li>Vào <strong>Exams</strong> và mở đề cần kiểm tra.</li>
+<li>Nhấn <strong>View Results</strong>.</li>
+<li>Xem tên học sinh, email, điểm, điểm tối đa, thời điểm nộp và trạng thái.</li>
+</ol>
+<p><img src="docs/images/08-exam-results.png" alt="Bảng kết quả đề thi"></p>
+<h3 id="92-xem-chi-tiết-bài-làm">9.2. Xem chi tiết bài làm</h3>
+<ol>
+<li>Tại bảng kết quả, chọn <strong>View Detail</strong> cho lượt làm.</li>
+<li>Xem từng câu hỏi, phương án học sinh chọn, đáp án đúng và số điểm.</li>
+<li>Quay lại bảng kết quả bằng breadcrumb hoặc nút quay lại.</li>
+</ol>
+<h3 id="93-đối-soát-kết-quả">9.3. Đối soát kết quả</h3>
+<p>Khi cần kiểm tra khiếu nại:</p>
+<ol>
+<li>Xác nhận đúng học sinh và đúng lượt làm.</li>
+<li>Kiểm tra trạng thái <code>SUBMITTED</code> hoặc <code>EXPIRED</code>.</li>
+<li>Kiểm tra thời gian bắt đầu, hết hạn và thời điểm nộp.</li>
+<li>Đối chiếu từng câu với điểm cấu hình.</li>
+<li>Ghi nhận vấn đề cho quản trị kỹ thuật nếu dữ liệu không khớp.</li>
+</ol>
+<hr>
+<h2 id="10-quy-trình-nghiệp-vụ-mẫu-từ-đầu-đến-cuối">10. Quy trình nghiệp vụ mẫu từ đầu đến cuối</h2>
+<h3 id="bước-1--admin-chuẩn-bị-tài-khoản">Bước 1 — Admin chuẩn bị tài khoản</h3>
+<ol>
+<li>Tạo một Teacher.</li>
+<li>Tạo một hoặc nhiều Student.</li>
+<li>Cung cấp thông tin đăng nhập an toàn cho từng người.</li>
+</ol>
+<h3 id="bước-2--teacher-chuẩn-bị-nội-dung">Bước 2 — Teacher chuẩn bị nội dung</h3>
+<ol>
+<li>Tạo Subject.</li>
+<li>Tạo các câu hỏi MCQ.</li>
+<li>Kiểm tra mỗi câu chỉ có một đáp án đúng.</li>
+</ol>
+<h3 id="bước-3--teacher-tổ-chức-thi">Bước 3 — Teacher tổ chức thi</h3>
+<ol>
+<li>Tạo Exam.</li>
+<li>Thêm và sắp xếp câu hỏi.</li>
+<li>Cấu hình thời gian, số lượt làm và quyền xem đáp án.</li>
+<li>Publish.</li>
+<li>Assign Students.</li>
+</ol>
+<h3 id="bước-4--student-làm-bài">Bước 4 — Student làm bài</h3>
+<ol>
+<li>Đăng nhập.</li>
+<li>Mở My Exams.</li>
+<li>Start/Resume.</li>
+<li>Chọn đáp án.</li>
+<li>Submit.</li>
+<li>Xem Result.</li>
+</ol>
+<h3 id="bước-5--teacher-tổng-hợp">Bước 5 — Teacher tổng hợp</h3>
+<ol>
+<li>Mở Exam Results.</li>
+<li>Kiểm tra điểm và trạng thái.</li>
+<li>Mở View Detail khi cần đối soát.</li>
+</ol>
+<hr>
+<h2 id="11-xử-lý-tình-huống-thường-gặp">11. Xử lý tình huống thường gặp</h2>
+<table>
+<thead>
+<tr>
+<th>Hiện tượng</th>
+<th>Nguyên nhân thường gặp</th>
+<th>Cách xử lý</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Không đăng nhập được</td>
+<td>Sai thông tin hoặc tài khoản inactive</td>
+<td>Kiểm tra email/mật khẩu; liên hệ Admin</td>
+</tr>
+<tr>
+<td>Không thấy menu theo vai trò</td>
+<td>Tài khoản được gán sai role</td>
+<td>Admin kiểm tra Role</td>
+</tr>
+<tr>
+<td>Teacher không thấy môn/đề của người khác</td>
+<td>Quy tắc sở hữu dữ liệu</td>
+<td>Đăng nhập đúng tài khoản tạo dữ liệu</td>
+</tr>
+<tr>
+<td>Student không thấy đề</td>
+<td>Chưa gán, chưa publish hoặc đề đã đóng</td>
+<td>Teacher kiểm tra status và assignment</td>
+</tr>
+<tr>
+<td>Nút Start không khả dụng</td>
+<td>Chưa đến giờ, hết giờ hoặc hết lượt</td>
+<td>Kiểm tra thời gian và Max attempts</td>
+</tr>
+<tr>
+<td>Không sửa được đề</td>
+<td>Đề đã Published/Closed</td>
+<td>Cấu hình chỉ sửa đầy đủ khi Draft</td>
+</tr>
+<tr>
+<td>Không xem được đáp án sau nộp</td>
+<td>Giáo viên tắt Show answers after submit</td>
+<td>Đây là hành vi đúng</td>
+</tr>
+<tr>
+<td>Token/phiên hết hạn</td>
+<td>JWT hết thời hạn</td>
+<td>Đăng nhập lại</td>
+</tr>
+<tr>
+<td>Mất mạng khi làm bài</td>
+<td>Request lưu đáp án thất bại</td>
+<td>Khôi phục mạng, kiểm tra trạng thái lưu, dùng Resume</td>
+</tr>
+<tr>
+<td>Điểm chưa hiển thị</td>
+<td>Request nộp chưa hoàn thành</td>
+<td>Không nộp lặp; tải lại sau khi kết nối ổn định</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="12-khuyến-nghị-vận-hành">12. Khuyến nghị vận hành</h2>
+<h3 id="admin">Admin</h3>
+<ul>
+<li>Kiểm tra đúng role trước khi bàn giao tài khoản.</li>
+<li>Vô hiệu hóa ngay tài khoản không còn sử dụng.</li>
+<li>Không dùng chung tài khoản Admin.</li>
+</ul>
+<h3 id="teacher">Teacher</h3>
+<ul>
+<li>Chuẩn bị và rà soát câu hỏi trước khi Publish.</li>
+<li>Đặt thời gian mở/đóng có khoảng dự phòng.</li>
+<li>Kiểm tra danh sách học sinh được gán trước giờ thi.</li>
+<li>Không thay đổi dữ liệu câu hỏi trong lúc kỳ thi diễn ra.</li>
+</ul>
+<h3 id="student">Student</h3>
+<ul>
+<li>Đăng nhập trước giờ thi để kiểm tra tài khoản.</li>
+<li>Dùng kết nối mạng ổn định và không mở nhiều tab làm cùng một bài.</li>
+<li>Theo dõi <strong>Time remaining</strong> và chủ động nộp trước khi hết giờ.</li>
+<li>Chờ hệ thống hiển thị kết quả/xác nhận sau khi nộp.</li>
+</ul>
+<hr>
+<h2 id="13-phạm-vi-phiên-bản-hiện-tại">13. Phạm vi phiên bản hiện tại</h2>
+<p>OEX v1 hỗ trợ:</p>
+<ul>
+<li>Một đáp án đúng cho mỗi câu MCQ.</li>
+<li>Gán đề trực tiếp cho từng học sinh.</li>
+<li>Timer, tự lưu và tự nộp.</li>
+<li>Chấm điểm tự động.</li>
+<li>Ba vai trò Admin, Teacher và Student.</li>
+</ul>
+<p>Chưa hỗ trợ:</p>
+<ul>
+<li>Import câu hỏi từ Excel.</li>
+<li>Module lớp học.</li>
+<li>Câu hỏi hình ảnh hoặc nhiều đáp án đúng.</li>
+<li>Xáo trộn câu hỏi/đáp án.</li>
+<li>Chống gian lận hoặc giám sát thi.</li>
+</ul>
+<hr>
+<h2 id="14-danh-mục-hình-minh-họa">14. Danh mục hình minh họa</h2>
+<table>
+<thead>
+<tr>
+<th>Hình</th>
+<th>Nội dung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>Đăng nhập</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Dashboard Teacher</td>
+</tr>
+<tr>
+<td>03</td>
+<td>Danh sách môn học</td>
+</tr>
+<tr>
+<td>04</td>
+<td>Ngân hàng câu hỏi</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Form câu hỏi</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Danh sách đề thi</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Chi tiết đề thi</td>
+</tr>
+<tr>
+<td>08</td>
+<td>Kết quả theo đề</td>
+</tr>
+<tr>
+<td>09</td>
+<td>Dashboard Admin</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Quản lý người dùng</td>
+</tr>
+<tr>
+<td>11</td>
+<td>My Exams</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Làm bài</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Kết quả học sinh</td>
+</tr>
+</tbody>
+</table>
+<p>Toàn bộ ảnh được lưu trong thư mục <a href="docs/images/"><code>docs/images/</code></a>.</p>
+<hr>
+<p><em>Tài liệu hướng dẫn nghiệp vụ OEX — Online Examination System.</em></p>
+
+</body>
+</html>

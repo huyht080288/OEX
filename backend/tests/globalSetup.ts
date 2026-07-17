@@ -69,7 +69,7 @@ async function startEmbeddedPostgres(): Promise<string> {
 
 export default async function globalSetup() {
   const configuredUrl =
-    process.env.DATABASE_URL ?? 'postgresql://oex:oex@localhost:5432/oex_test?schema=public';
+    process.env.DATABASE_URL ?? 'postgresql://oex:oex@localhost:5005/oex_test?schema=public';
 
   let databaseUrl = configuredUrl;
 

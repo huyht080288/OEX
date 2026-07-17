@@ -99,3 +99,10 @@ Dated log of meaningful project changes (not every commit).
 - **GAP-06** `docs/MANUAL_TEST_CHECKLIST.md` — defense demo script.
 - **GAP-05** `docs/OEX_PMHDV_Thesis.docx` — PMHDV thesis draft (`docs/scripts/generate-thesis.mjs`).
 - OpenAPI updated for new endpoints. Backend: **81 tests pass**; frontend build OK.
+
+### Development port standardization — 2026-07-17
+
+- Standardized local ports: frontend `5001`, backend/Swagger `5002`, Prisma Studio `5003`, PostgreSQL host `5005`.
+- Updated Vite proxy, Express defaults/CORS, Docker mapping, environment templates, test configuration, OpenAPI, scripts, and documentation.
+- Added `npm run db:studio` with fixed port `5003`.
+- PostgreSQL container recreated with persistent data volume; **83 backend tests pass**, backend and frontend builds pass.

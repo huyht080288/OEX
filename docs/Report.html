@@ -810,7 +810,7 @@ code {
 <tr>
 <td><code>CORS_ORIGIN</code></td>
 <td>Backend</td>
-<td>Origin frontend (<code>http://localhost:5173</code>)</td>
+<td>Origin frontend (<code>http://localhost:5001</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -1447,7 +1447,7 @@ code {
 </table>
 <p><strong>DTO frontend mirror API</strong> — đảm bảo field khớp OpenAPI (<code>camelCase</code> JSON).</p>
 <h3 id="412-đặc-tả-danh-sách-api-input--output">4.12. Đặc tả danh sách API (Input / Output)</h3>
-<p>Base URL: <code>http://localhost:3000/api/v1</code><br>
+<p>Base URL: <code>http://localhost:5002/api/v1</code><br>
 Envelope thành công: <code>{ &quot;success&quot;: true, &quot;data&quot;: ... }</code><br>
 Envelope lỗi: <code>{ &quot;success&quot;: false, &quot;error&quot;: { &quot;code&quot;, &quot;message&quot; } }</code><br>
 Auth: <code>Authorization: Bearer &lt;token&gt;</code> (trừ login).</p>
@@ -1837,7 +1837,7 @@ Auth: <code>Authorization: Bearer &lt;token&gt;</code> (trừ login).</p>
 <hr>
 <h2 id="5-triển-khai--kết-quả">5. TRIỂN KHAI &amp; KẾT QUẢ</h2>
 <h3 id="51-giao-diện-chương-trình">5.1. Giao diện chương trình</h3>
-<p>Ảnh chụp từ môi trường chạy thực tế (<code>http://localhost:5173</code>, backend <code>http://localhost:3000/api/v1</code>, dữ liệu seed). Tái tạo: <code>cd docs/scripts &amp;&amp; npm install &amp;&amp; npx playwright install chromium &amp;&amp; npm run capture-screenshots</code> (yêu cầu FE + BE đang chạy).</p>
+<p>Ảnh chụp từ môi trường chạy thực tế (<code>http://localhost:5001</code>, backend <code>http://localhost:5002/api/v1</code>, dữ liệu seed). Tái tạo: <code>cd docs/scripts &amp;&amp; npm install &amp;&amp; npx playwright install chromium &amp;&amp; npm run capture-screenshots</code> (yêu cầu FE + BE đang chạy).</p>
 <table>
 <thead>
 <tr>
@@ -2252,10 +2252,10 @@ npx prisma migrate deploy &amp;&amp; npx prisma db seed
 </div></code></pre>
 <h4 id="543-chạy">5.4.3. Chạy</h4>
 <pre class="hljs"><code><div><span class="hljs-comment"># Terminal 1</span>
-<span class="hljs-built_in">cd</span> backend &amp;&amp; npm run dev    <span class="hljs-comment"># http://localhost:3000/api/v1</span>
+<span class="hljs-built_in">cd</span> backend &amp;&amp; npm run dev    <span class="hljs-comment"># http://localhost:5002/api/v1</span>
 
 <span class="hljs-comment"># Terminal 2</span>
-<span class="hljs-built_in">cd</span> frontend &amp;&amp; npm run dev   <span class="hljs-comment"># http://localhost:5173</span>
+<span class="hljs-built_in">cd</span> frontend &amp;&amp; npm run dev   <span class="hljs-comment"># http://localhost:5001</span>
 </div></code></pre>
 <h4 id="544-tài-khoản-demo">5.4.4. Tài khoản demo</h4>
 <table>

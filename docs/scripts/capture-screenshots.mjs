@@ -1,6 +1,6 @@
 /**
  * Capture OEX UI screenshots for docs/Report.md
- * Prereq: backend (3000) + frontend (5173) running, DB seeded.
+ * Prereq: backend (5002) + frontend (5001) running, DB seeded.
  */
 import { mkdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
@@ -9,7 +9,7 @@ import { chromium } from 'playwright';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(__dirname, '..', 'images');
-const BASE = 'http://localhost:5173';
+const BASE = 'http://localhost:5001';
 const PASSWORD = 'Password123!';
 
 const IDS = {
