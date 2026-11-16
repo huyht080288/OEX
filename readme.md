@@ -2,689 +2,519 @@
 
 Hệ thống thi trắc nghiệm trực tuyến: giáo viên tạo ngân hàng câu hỏi và đề thi, gán bài cho học sinh; học sinh làm bài online có timer; hệ thống chấm điểm tự động sau khi nộp bài.
 
+Đồ án môn **Phát triển Phần mềm Hướng Dịch Vụ (PMHDV)** — Nhóm 11.
+
 | | |
 |---|---|
-| **Stack** | Vue 3 · Node.js · Express · PostgreSQL · Prisma · TypeScript |
+| **Backend** | Python 3.10+ · FastAPI · SQLAlchemy 2 (async) · asyncpg · Alembic · Pydantic v2 |
+| **Frontend** | Vue 3 · Vite · TypeScript · Pinia |
+| **Database** | PostgreSQL (chạy nhúng bằng `python -m app.dev_db`, **không cần Docker**) |
 | **UI** | Tiếng Anh |
-| **API base** | `http://localhost:5002/api/v1` |
-| **Frontend dev** | `http://localhost:5001` |
-| **Swagger UI** | `http://localhost:5002/api/docs` |
-| **Backend coverage** | `http://localhost:5002/testcoverage.html` |
-| **Frontend coverage** | `http://localhost:5001/testcoverage.html` |
-| **Trạng thái v1** | Hoàn thiện — **86 API tests** pass |
+| **Frontend dev** | http://localhost:5001 |
+| **API** | http://localhost:5002/api/v1 |
+| **Swagger UI** | http://localhost:5002/api/docs |
+| **PostgreSQL dev** | `localhost:5005` — DB `oex`, user/pass `oex`/`oex` (chỉ dùng cho dev) |
+| **Kiểm thử** | 86 test backend (pytest) · 95 test frontend (Vitest) |
 
-**Tài liệu thiết kế:** [`docs/OEX_DetailedDesign_V2.md`](docs/OEX_DetailedDesign_V2.md)  
-**OpenAPI spec:** [`docs/api/openapi.yaml`](docs/api/openapi.yaml)  
-**Deploy production:** [`docs/DEPLOY.md`](docs/DEPLOY.md)  
-**Báo cáo đồ án:** [`docs/Report.md`](docs/Report.md)  
-**Slide thuyết trình:** [`docs/OEX_Presentation.pptx`](docs/OEX_Presentation.pptx)
+**Tài liệu** (trong repo, thư mục `config/`):
+[Thiết kế chi tiết V2](config/OEX_DetailedDesign_V2.md) ·
+[OpenAPI spec](config/api/openapi.yaml) ·
+[Hướng dẫn sử dụng](UserManual.md) ·
+[Checklist test thủ công](config/MANUAL_TEST_CHECKLIST.md) ·
+[Báo cáo](config/Report.md) ·
+[Chi tiết backend Python](backendpy/README.md)
 
 ---
 
 ## Mục lục
 
-1. [Yêu cầu hệ thống](#yêu-cầu-hệ-thống)
-2. [Cấu trúc repository](#cấu-trúc-repository)
-3. [Khởi động nhanh (Quick start)](#khởi-động-nhanh-quick-start)
-4. [Database — khởi tạo & quản lý](#database--khởi-tạo--quản-lý)
-5. [Biến môi trường](#biến-môi-trường)
-6. [Chạy ứng dụng (development)](#chạy-ứng-dụng-development)
-7. [Swagger UI — test API trên trình duyệt](#swagger-ui--test-api-trên-trình-duyệt)
-8. [Kiểm thử tự động (automated tests)](#kiểm-thử-tự-động-automated-tests)
-9. [Kiểm thử thủ công (manual / demo)](#kiểm-thử-thủ-công-manual--demo)
-10. [Tài khoản mẫu & luồng demo](#tài-khoản-mẫu--luồng-demo)
-11. [API — tổng quan](#api--tổng-quan)
-12. [Build production](#build-production)
-13. [Tài liệu & công cụ hỗ trợ](#tài-liệu--công-cụ-hỗ-trợ)
-14. [Cursor agent (skills)](#cursor-agent-skills)
-15. [Phạm vi v1](#phạm-vi-v1)
-16. [Xử lý sự cố](#xử-lý-sự-cố)
-17. [Bảng lệnh thường dùng](#bảng-lệnh-thường-dùng)
+1. [Yêu cầu hệ thống](#1-yêu-cầu-hệ-thống)
+2. [Cấu trúc thư mục](#2-cấu-trúc-thư-mục)
+3. [Cài đặt lần đầu](#3-cài-đặt-lần-đầu)
+4. [Chạy ứng dụng hằng ngày](#4-chạy-ứng-dụng-hằng-ngày)
+5. [Tài khoản mẫu và luồng demo](#5-tài-khoản-mẫu-và-luồng-demo)
+6. [Biến môi trường](#6-biến-môi-trường)
+7. [Database](#7-database)
+8. [Kiểm thử tự động](#8-kiểm-thử-tự-động)
+9. [Swagger UI — thử API trên trình duyệt](#9-swagger-ui--thử-api-trên-trình-duyệt)
+10. [API — tổng quan](#10-api--tổng-quan)
+11. [Build và chạy production](#11-build-và-chạy-production)
+12. [AI agent (Claude Code)](#12-ai-agent-claude-code)
+13. [Phạm vi v1](#13-phạm-vi-v1)
+14. [Xử lý sự cố](#14-xử-lý-sự-cố)
+15. [Bảng lệnh thường dùng](#15-bảng-lệnh-thường-dùng)
 
 ---
 
-## Yêu cầu hệ thống
+## 1. Yêu cầu hệ thống
 
-| Công cụ | Phiên bản gợi ý | Dùng để |
-|---------|-----------------|---------|
-| [Node.js](https://nodejs.org/) | **20 LTS** trở lên | Backend + Frontend |
-| npm | đi kèm Node | Quản lý package |
-| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | mới nhất | PostgreSQL local (khuyến nghị) |
-| [Git](https://git-scm.com/) | mới nhất | Clone / version control |
-| Cursor hoặc VS Code | tùy chọn | IDE |
+| Công cụ | Phiên bản | Kiểm tra | Dùng cho |
+|---------|-----------|----------|----------|
+| [Python](https://www.python.org/) | **3.10** trở lên | `python --version` | Backend |
+| [Node.js](https://nodejs.org/) | **20 LTS** trở lên | `node -v` | Frontend |
+| npm | đi kèm Node | `npm -v` | Frontend |
+| Cổng trống | 5001, 5002, 5005 | | Frontend, API, database |
 
-**Tùy chọn:** `psql`, [DBeaver](https://dbeaver.io/) — xem/sửa database trực tiếp · [Pandoc](https://pandoc.org/) + Python — build báo cáo Word
+Không cần Docker và không cần cài PostgreSQL: package `pgserver` (trong `requirements-dev.txt`) chứa sẵn binary PostgreSQL 16.
 
-**Windows:** Trong PowerShell dùng `;` thay `&&` khi nối lệnh, hoặc chạy từng lệnh riêng.
-
----
-
-## Cấu trúc repository
-
-```
-PMHDV/
-├── PrjMng/                 # Tiến độ — đọc STATUS.md trước khi code
-│   ├── STATUS.md           # Phase hiện tại, next action
-│   ├── TASKS.md            # Backlog theo phase
-│   ├── DECISIONS.md        # Quyết định đã khóa
-│   └── CHANGELOG.md        # Nhật ký triển khai
-├── docs/
-│   ├── OEX_DetailedDesign_V2.md
-│   ├── api/openapi.yaml    # REST contract (Swagger dùng file này)
-│   ├── DEPLOY.md
-│   ├── MANUAL_TEST_CHECKLIST.md
-│   ├── Report.md           # Báo cáo đồ án
-│   ├── images/             # Screenshot + diagram PNG
-│   └── scripts/            # Screenshot, diagram, Word, slide generators
-├── backend/
-│   ├── src/                # Express API (routes → controllers → services)
-│   ├── prisma/             # schema, migrations, seed
-│   └── tests/              # Vitest + Supertest (86 tests)
-├── frontend/
-│   └── src/                # Vue 3 SPA (views, stores, api client)
-├── .cursor/                # Rules & skills cho Cursor agent
-├── docker-compose.yml      # PostgreSQL 15
-└── readme.md
-```
+> Ví dụ bên dưới dùng **PowerShell trên Windows** và đứng tại thư mục `src`.
+> Với Git Bash / macOS / Linux: thay `.venv\Scripts\python` bằng `.venv/bin/python`, `Copy-Item a b` bằng `cp a b`, `\` bằng `/`.
+> PowerShell 5.1 không hỗ trợ `&&`: dùng `;` hoặc chạy từng lệnh.
 
 ---
 
-## Khởi động nhanh (Quick start)
-
-Thực hiện **một lần** khi clone project mới:
-
-```bash
-git clone https://github.com/huyht080288/OEX
-
-# 1. Database
-docker compose up -d
-
-# 2. Env files
-cp backend/.env.example backend/.env
-cp backend/.env.test.example backend/.env.test
-cp frontend/.env.example frontend/.env
-
-# 3. Backend: install + migrate + seed
-cd backend
-npm install
-npx prisma migrate deploy
-npx prisma db seed
-
-# 4. Frontend: install
-cd ../frontend
-npm install
-cd ..
+## 2. Cấu trúc thư mục
 
 ```
+<workspace>/
+├── CLAUDE.md                # hướng dẫn cho Claude Code
+├── .claude/skills/          # skills cho Claude Code
+├── src/                     # ← git repo này
+│   ├── backendpy/           # Backend Python (FastAPI)
+│   │   ├── app/
+│   │   │   ├── main.py      # tạo app: CORS, xử lý lỗi, /health, Swagger
+│   │   │   ├── routers/     # tầng HTTP (auth, users, subjects, questions, exams, attempts, students)
+│   │   │   ├── services/    # nghiệp vụ + truy cập database
+│   │   │   ├── models.py    # ORM SQLAlchemy
+│   │   │   ├── schemas.py   # validate request (Pydantic)
+│   │   │   ├── seed.py      # dữ liệu mẫu
+│   │   │   └── dev_db.py    # PostgreSQL nhúng cho dev
+│   │   ├── alembic/         # migration database
+│   │   ├── tests/           # pytest (86 test)
+│   │   ├── requirements.txt / requirements-dev.txt
+│   │   └── .env.example
+│   ├── frontend/            # Vue 3 SPA
+│   │   ├── src/             # views, components, stores, api client, router
+│   │   ├── tests/           # Vitest (95 test)
+│   │   ├── vite.config.ts   # cổng 5001, proxy /api → http://localhost:5002
+│   │   └── .env.example
+│   ├── config/              # tài liệu trong repo; Swagger đọc OpenAPI ở đây
+│   │   ├── api/openapi.yaml
+│   │   ├── OEX_DetailedDesign_V2.md
+│   │   ├── MANUAL_TEST_CHECKLIST.md
+│   │   └── Report.md
+│   ├── docker-compose.yml   # tùy chọn: PostgreSQL qua Docker (không bắt buộc)
+│   ├── UserManual.md
+│   └── readme.md
+└── Ref/                     # tài liệu tham khảo (chỉ đọc)
+```
 
-Chạy hàng ngày — **2 terminal chính + 1 terminal Prisma Studio (tùy chọn)**:
+> Backend đọc `config/api/openapi.yaml` khi khởi động để hiển thị Swagger. File này nằm trong repo. Thiếu file thì backend báo `OpenAPI spec not found`.
 
-```bash
-# Terminal 1 — API
-cd backend
-npm run dev
+---
 
-# Terminal 2 — SPA
+## 3. Cài đặt lần đầu
+
+### 3.1. Backend Python
+
+```powershell
+cd backendpy
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements-dev.txt
+Copy-Item .env.example .env
+```
+
+Mở `backendpy/.env` và đặt `JWT_SECRET` thành một chuỗi ngẫu nhiên dài từ 32 ký tự trở lên. Các giá trị khác giữ như mẫu.
+
+### 3.2. Frontend
+
+```powershell
 cd frontend
-npm run dev
-
-# Terminal 3 — giao diện quản lý database (tùy chọn)
-cd backend
-npm run db:studio
-
+npm install
+Copy-Item .env.example .env
 ```
 
-Mở trên trình duyệt:
+### 3.3. Khởi tạo database (làm một lần)
+
+**Terminal 1** — chạy PostgreSQL nhúng và **giữ cửa sổ này mở**:
+
+```powershell
+cd backendpy
+.venv\Scripts\python -m app.dev_db
+```
+
+Đợi đến dòng:
+
+```
+PostgreSQL ready: postgresql://oex:oex@localhost:5005/oex (Ctrl+C to stop)
+```
+
+Lần đầu chạy, lệnh này tạo thư mục dữ liệu `backendpy/.pgdata-dev` và 2 database `oex`, `oex_test`.
+
+**Terminal 2** — tạo bảng và nạp dữ liệu mẫu:
+
+```powershell
+cd backendpy
+.venv\Scripts\alembic upgrade head
+.venv\Scripts\python -m app.seed
+```
+
+Kết quả mong đợi: bảng thống kê số bản ghi (`users: 22`, `exams: 10`, …) và dòng `The seed command has been executed.`
+
+---
+
+## 4. Chạy ứng dụng hằng ngày
+
+Mở 3 terminal, chạy theo thứ tự **database → backend → frontend**:
+
+| # | Thư mục | Lệnh | Chờ dòng |
+|---|---------|------|----------|
+| 1 | `src/backendpy` | `.venv\Scripts\python -m app.dev_db` | `PostgreSQL ready: ...` |
+| 2 | `src/backendpy` | `.venv\Scripts\python -m app.main` | `Application startup complete.` |
+| 3 | `src/frontend` | `npm run dev` | `Local: http://localhost:5001/` |
+
+Mở trình duyệt:
 
 | Giao diện | Địa chỉ |
 |-----------|---------|
-| OEX Frontend | **http://localhost:5001** |
-| Swagger API | **http://localhost:5002/api/docs** |
-| Prisma Studio (database) | **http://localhost:5003** |
-| Frontend coverage | **http://localhost:5001/testcoverage.html** |
-| Backend coverage | **http://localhost:5002/testcoverage.html** |
+| Ứng dụng OEX | **http://localhost:5001** |
+| Swagger UI | http://localhost:5002/api/docs |
+| Health check | http://localhost:5002/health → `{"status":"ok"}` |
+| Báo cáo coverage backend | http://localhost:5002/testcoverage.html (sau khi chạy test có coverage) |
 
-> Prisma Studio phải chạy ở terminal riêng và terminal đó cần được giữ mở. Công cụ này cho phép xem/sửa trực tiếp database, chỉ nên dùng trong môi trường development và không public ra Internet.
+Đăng nhập thử: `teacher@oex.test` / `Password123!`.
 
-Đăng nhập demo: `teacher@oex.test` / `Password123!`
-
----
-
-## Database — khởi tạo & quản lý
-
-### Docker PostgreSQL (khuyến nghị)
-
-```bash
-docker compose up -d          # Khởi động
-docker compose ps           # Kiểm tra trạng thái
-docker compose logs postgres
-docker compose down           # Dừng (giữ data volume)
-docker compose down -v        # Dừng + XÓA toàn bộ data (reset sạch)
-```
-
-| Thông số | Giá trị dev |
-|----------|-------------|
-| Host | `localhost` |
-| Port | `5005` (host) → `5432` (container) |
-| Database | `oex` |
-| User / Password | `oex` / `oex` |
-| Connection string | `postgresql://oex:oex@localhost:5005/oex?schema=public` |
-
-### Migrate & seed (dev database `oex`)
-
-```bash
-cd backend
-npx prisma migrate deploy    # Áp dụng migrations (production-safe)
-npx prisma db seed           # Nạp dữ liệu mẫu (users, subjects, exams, …)
-npx prisma generate          # Tạo lại Prisma Client sau khi đổi schema
-npm run db:studio            # GUI xem/sửa DB tại http://localhost:5003
-```
-
-**Tạo migration mới** (khi đổi `schema.prisma` trong dev):
-
-```bash
-cd backend
-npm run db:migrate           # = prisma migrate dev
-```
-
-### Database test (`oex_test`)
-
-Dùng cho `npm run db:test:prepare` khi muốn chuẩn bị test DB thủ công trên Docker Postgres:
-
-```sql
--- Chạy một lần trong psql hoặc DBeaver
-CREATE DATABASE oex_test;
-```
-
-```bash
-cd backend
-npm run db:test:prepare      # migrate deploy + seed vào oex_test
-```
-
-> **Lưu ý:** `npm run test` **không bắt buộc** Docker hay `oex_test` sẵn có. Vitest `globalSetup` tự thử kết nối `DATABASE_URL` từ `.env.test`; nếu không được sẽ khởi động **embedded PostgreSQL** cổng `5433` (data trong `backend/tmp/pgdata-test`).
-
-### Reset database dev (khi data lỗi / muốn làm lại từ đầu)
-
-```bash
-docker compose down -v
-docker compose up -d
-cd backend
-npx prisma migrate deploy
-npx prisma db seed
-```
+- Backend tự reload khi sửa code trong `backendpy/app/` (vì `APP_ENV="development"`).
+- Frontend dùng Vite: tự cập nhật khi sửa code. Mọi request `/api/*` được proxy sang `http://localhost:5002`, nên backend phải chạy trước.
+- Dừng: nhấn `Ctrl+C` ở từng terminal theo thứ tự frontend → backend → database.
 
 ---
 
-## Biến môi trường
+## 5. Tài khoản mẫu và luồng demo
 
-### Backend — `backend/.env`
+**Mật khẩu chung của tài khoản seed (chỉ dùng cho dev/test):** `Password123!`
 
-Copy từ `backend/.env.example`:
+| Email | Vai trò | Ghi chú |
+|-------|---------|---------|
+| `admin@oex.test` | Admin | Quản lý user |
+| `teacher@oex.test` | Teacher | Demo chính: môn học, câu hỏi, đề thi |
+| `teacher2@oex.test` … `teacher10@oex.test` | Teacher | |
+| `student1@oex.test` … `student10@oex.test` | Student | `student2` dùng demo làm bài |
+| `inactive@oex.test` | Student | Tài khoản bị khóa (để test) |
 
-| Biến | Bắt buộc | Mô tả |
-|------|----------|-------|
-| `DATABASE_URL` | ✓ | PostgreSQL connection string |
-| `JWT_SECRET` | ✓ | Khóa ký JWT — **đổi trong production** |
-| `JWT_EXPIRES_IN` | | Thời hạn token, mặc định `1h` |
-| `PORT` | | Cổng API, mặc định `5002` |
-| `CORS_ORIGIN` | | Origin frontend, mặc định `http://localhost:5001` |
-| `NODE_ENV` | | `development` / `production` / `test` |
-| `SWAGGER_ENABLED` | | `true` (mặc định) — set `false` để tắt `/api/docs` |
+| Vai trò | Thử trên giao diện |
+|---------|--------------------|
+| **Teacher** | Subjects → Question Bank → Exams → Publish → Assign students → Results |
+| **Student** | My Exams → Start → làm bài → Submit Exam → xem Result |
+| **Admin** | Dashboard → User Management → tạo/sửa/khóa user |
 
-```env
-DATABASE_URL="postgresql://oex:oex@localhost:5005/oex?schema=public"
-JWT_SECRET="dev-secret-change-in-production"
-JWT_EXPIRES_IN="1h"
-PORT=5002
-CORS_ORIGIN="http://localhost:5001"
-NODE_ENV="development"
-SWAGGER_ENABLED="true"
-```
+Seed có ít nhất 10 bản ghi mỗi loại. ID cố định nằm trong `backendpy/app/seed_data.py` (test dùng chung). Chạy lại `python -m app.seed` bất kỳ lúc nào để đưa dữ liệu mẫu về trạng thái ban đầu. Dữ liệu bạn tự tạo thêm (user, môn, đề…) được giữ nguyên, trừ các lượt làm bài mới của `student1`/`student2` trên đề *CS101 Midterm*: lệnh seed sẽ xóa những lượt này.
 
-### Backend test — `backend/.env.test`
+---
 
-Copy từ `backend/.env.test.example`:
+## 6. Biến môi trường
 
-```env
-DATABASE_URL="postgresql://oex:oex@localhost:5005/oex_test?schema=public"
-JWT_SECRET="test-secret"
-JWT_EXPIRES_IN="1h"
-PORT=5002
-NODE_ENV="test"
-```
+### Backend — `backendpy/.env` (copy từ `backendpy/.env.example`)
 
-### Frontend — `frontend/.env`
+| Biến | Bắt buộc | Giá trị dev | Mô tả |
+|------|----------|-------------|-------|
+| `DATABASE_URL` | | `postgresql://oex:oex@localhost:5005/oex?schema=public` | Kết nối PostgreSQL |
+| `JWT_SECRET` | ✓ | chuỗi ngẫu nhiên ≥ 32 ký tự | Khóa ký JWT. Thiếu biến này thì backend không khởi động |
+| `JWT_EXPIRES_IN` | | `1h` | Thời hạn token (`30m`, `1h`, `7d`, …) |
+| `HOST` | | `127.0.0.1` | Đặt `0.0.0.0` nếu cần truy cập từ máy khác |
+| `PORT` | | `5002` | Cổng API (proxy của frontend trỏ tới 5002) |
+| `CORS_ORIGIN` | | `http://localhost:5001` | Origin của frontend |
+| `APP_ENV` | | `development` | `development` (tự reload) / `test` / `production` |
+| `SWAGGER_ENABLED` | | `true` | `false` để tắt `/api/docs` |
+
+Biến đặt sẵn trong shell được ưu tiên hơn giá trị trong `.env`.
+
+### Frontend — `frontend/.env` (copy từ `frontend/.env.example`)
 
 ```env
 VITE_API_BASE_URL=/api/v1
 ```
 
-Vite dev server **proxy** `/api` → `http://localhost:5002` (xem `frontend/vite.config.ts`), nên mặc định không cần đổi URL.
+### Backend test — `backendpy/.env.test` (tùy chọn)
+
+Chỉ cần tạo file này khi muốn test chạy trên một database khác. Nếu không có, test dùng `localhost:5005/oex_test`. Nếu database đó không chạy, test tự bật PostgreSQL nhúng riêng ở cổng 5434.
+
+> Các file `.env` đã nằm trong `.gitignore`. Không commit và không chia sẻ chúng.
 
 ---
 
-## Chạy ứng dụng (development)
+## 7. Database
 
-### Backend API
+### 7.1. PostgreSQL nhúng (mặc định)
 
-```bash
-cd backend
-npm run dev
+| Thông số | Giá trị |
+|----------|---------|
+| Lệnh | `.venv\Scripts\python -m app.dev_db` (trong `backendpy`) |
+| Cổng | `5005` (đổi bằng `--port 5006` hoặc biến `DEV_DB_PORT`, nhớ sửa `DATABASE_URL` cho khớp) |
+| User / Password | `oex` / `oex` |
+| Database | `oex` (dev) và `oex_test` (test), tự tạo |
+| Dữ liệu | `backendpy/.pgdata-dev/` (gitignored, giữ lại giữa các lần chạy) |
+| Dừng | `Ctrl+C` trong terminal đang chạy |
+
+### 7.2. Migration và seed
+
+```powershell
+cd backendpy
+.venv\Scripts\alembic upgrade head     # tạo/cập nhật bảng
+.venv\Scripts\alembic current          # xem phiên bản schema hiện tại
+.venv\Scripts\python -m app.seed       # nạp lại dữ liệu mẫu (chạy lại được nhiều lần)
 ```
 
-| Endpoint | URL |
-|----------|-----|
-| API v1 | http://localhost:5002/api/v1 |
-| Health check | http://localhost:5002/health |
-| Swagger UI | http://localhost:5002/api/docs |
-| OpenAPI YAML | http://localhost:5002/api/openapi.yaml |
-| Test coverage HTML | http://localhost:5002/testcoverage.html |
+Khi đổi schema: sửa `app/models.py`, tạo migration bằng `.venv\Scripts\alembic revision -m "mo ta"` rồi tự viết `upgrade()` / `downgrade()`. Không dùng `--autogenerate`, vì `models.py` không khai báo đủ index nên Alembic sẽ đề xuất xóa index.
 
-Console khi start:
+### 7.3. Reset sạch database dev
 
-```
-OEX API listening on http://localhost:5002/api/v1
-Swagger UI: http://localhost:5002/api/docs
+```powershell
+# Dừng "python -m app.dev_db" (Ctrl+C) trước
+cd backendpy
+Remove-Item -Recurse -Force .pgdata-dev
+.venv\Scripts\python -m app.dev_db          # terminal 1
+.venv\Scripts\alembic upgrade head          # terminal 2
+.venv\Scripts\python -m app.seed
 ```
 
-### Frontend SPA
+### 7.4. Dùng PostgreSQL khác (tùy chọn)
 
-```bash
+- **PostgreSQL cài trên máy:** dùng tài khoản `postgres` tạo `CREATE ROLE oex LOGIN PASSWORD 'oex' CREATEDB;`, `CREATE DATABASE oex OWNER oex;`, `CREATE DATABASE oex_test OWNER oex;`. Sau đó sửa cổng trong `DATABASE_URL` thành `5432`.
+- **Docker:** `docker compose up -d` tại `src/` tạo PostgreSQL ở cổng 5005 với cùng thông số. Không chạy đồng thời với `app.dev_db`, vì trùng cổng.
+
+Sau đó chạy `alembic upgrade head` và `python -m app.seed` như trên.
+
+---
+
+## 8. Kiểm thử tự động
+
+### Backend (pytest)
+
+```powershell
+cd backendpy
+.venv\Scripts\python -m pytest
+.venv\Scripts\python -m pytest --cov --cov-report=html
+.venv\Scripts\python -m pytest tests\test_e2e_student_flow.py
+```
+
+- Lệnh 1 chạy toàn bộ 86 test.
+- Lệnh 2 chạy thêm coverage và ghi báo cáo vào `backendpy/coverage/index.html` (khoảng 93%).
+- Lệnh 3 chỉ chạy smoke test luồng học sinh: login → start → save → submit → result.
+
+Test không cần `app.dev_db` đang chạy. Trước khi chạy, `tests/conftest.py` tự chuẩn bị database theo thứ tự:
+
+1. Dùng `oex_test` ở cổng 5005, hoặc `DATABASE_URL` trong `backendpy/.env.test` nếu có file này.
+2. Nếu không kết nối được, tự bật PostgreSQL nhúng ở cổng 5434 (dữ liệu trong `backendpy/.pgdata-test`) và tắt khi test xong.
+3. Chạy `alembic upgrade head` và seed rồi mới bắt đầu test.
+
+| File test | Số test | Phạm vi |
+|-----------|---------|---------|
+| `test_auth.py` | 10 | Login, me, đổi mật khẩu, user bị khóa |
+| `test_users.py` | 11 | CRUD user, lọc theo role, khóa user |
+| `test_subjects.py` | 9 | CRUD môn học, quyền sở hữu của giáo viên |
+| `test_questions.py` | 10 | CRUD câu hỏi, đúng 1 đáp án đúng |
+| `test_exams.py` | 21 | CRUD đề, khung giờ, câu hỏi, publish, gán học sinh, kết quả |
+| `test_attempts.py` | 17 | Start, lưu đáp án, nộp bài, hết giờ, không lộ đáp án |
+| `test_students.py` | 3 | Danh sách học sinh để gán đề |
+| `test_e2e_student_flow.py` | 2 | Toàn bộ luồng học sinh (smoke) |
+| `test_docs_and_coverage.py` | 3 | `/api/docs`, `/api/openapi.yaml`, `/testcoverage.html` |
+| **Tổng** | **86** | |
+
+### Frontend (Vitest)
+
+```powershell
 cd frontend
-npm run dev
+npm run test
+npm run test:coverage
+npm run build
 ```
 
-| | |
-|---|---|
-| App | http://localhost:5001 |
-| Proxy API | `/api/*` → backend `:5002` |
+- `npm run test` chạy 95 test trong 16 file.
+- `npm run test:coverage` tạo báo cáo `frontend/coverage/index.html`. Ngưỡng tối thiểu là 75% cho cả 4 chỉ số; thấp hơn thì lệnh báo lỗi.
+- `npm run build` kiểm tra kiểu với vue-tsc rồi build bản production.
 
-### Production local (smoke)
+Khi Vite dev server đang chạy, xem báo cáo frontend tại http://localhost:5001/testcoverage.html.
 
-```bash
-cd backend && npm run build && npm start
-cd frontend && npm run build && npm run preview
-```
+### Kiểm thử thủ công
 
-Chi tiết deploy thật: [`docs/DEPLOY.md`](docs/DEPLOY.md).
+Checklist: [`config/MANUAL_TEST_CHECKLIST.md`](config/MANUAL_TEST_CHECKLIST.md). Trước khi demo:
+
+- [ ] `python -m app.dev_db` đang chạy
+- [ ] `python -m app.main` đang chạy
+- [ ] `npm run dev` đang chạy
+- [ ] `python -m pytest` pass
+- [ ] Mở http://localhost:5001 và đăng nhập được
 
 ---
 
-## Swagger UI — test API trên trình duyệt
+## 9. Swagger UI — thử API trên trình duyệt
 
-Swagger UI đọc spec từ [`docs/api/openapi.yaml`](docs/api/openapi.yaml) — đồng bộ với tài liệu thiết kế.
+Swagger UI đọc spec từ [`config/api/openapi.yaml`](config/api/openapi.yaml). Trang này tải giao diện Swagger từ CDN jsDelivr, nên cần có Internet.
 
-### Bước 1 — Khởi động backend
+1. Chạy backend, mở **http://localhost:5002/api/docs**.
+2. Mở **Auth → POST /auth/login → Try it out**, nhập body:
+   ```json
+   { "email": "teacher@oex.test", "password": "Password123!" }
+   ```
+3. Bấm **Execute**, rồi copy giá trị `data.accessToken` trong response.
+4. Bấm **Authorize** 🔒, nhập `Bearer <accessToken>`, bấm **Authorize** rồi **Close**.
+5. Gọi API theo vai trò:
 
-```bash
-cd backend && npm run dev
-```
-
-Mở **http://localhost:5002/api/docs**
-
-### Bước 2 — Đăng nhập lấy JWT
-
-1. Mở **Auth** → **POST /auth/login** → **Try it out**
-2. Request body:
-
-```json
-{
-  "email": "teacher@oex.test",
-  "password": "Password123!"
-}
-```
-
-3. **Execute** → copy `data.accessToken` từ response
-
-### Bước 3 — Authorize
-
-1. Bấm nút **Authorize** (🔒) phía trên
-2. Nhập: `Bearer <accessToken>` (có chữ `Bearer` và dấu cách)
-3. **Authorize** → **Close**
-
-### Bước 4 — Gọi API
-
-Thử các nhóm endpoint theo role:
-
-| Role | Email | Thử endpoint |
-|------|-------|--------------|
+| Vai trò | Email | Thử endpoint |
+|---------|-------|--------------|
 | Teacher | `teacher@oex.test` | GET `/subjects`, GET `/exams`, POST `/questions` |
 | Student | `student2@oex.test` | GET `/my-exams`, POST `/attempts/start` |
 | Admin | `admin@oex.test` | GET `/users`, POST `/users` |
 
-### Gợi ý khi test
+Thử bằng PowerShell, không cần Swagger:
 
-- Response envelope: thành công `{ "success": true, "data": ... }`, lỗi `{ "success": false, "error": { "code", "message" } }`
-- Token hết hạn (`JWT_EXPIRES_IN`) → login lại
-- Swagger lưu token giữa các request nếu bật **persistAuthorization** (mặc định)
-- Tắt Swagger production: `SWAGGER_ENABLED=false` trong `.env`
-
-### Test API bằng curl (không cần Swagger)
-
-```bash
-# Login
-curl -s -X POST http://localhost:5002/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"teacher@oex.test","password":"Password123!"}'
-
-# Dùng token (thay <TOKEN>)
-curl -s http://localhost:5002/api/v1/subjects \
-  -H "Authorization: Bearer <TOKEN>"
+```powershell
+$login = Invoke-RestMethod -Method Post -Uri http://localhost:5002/api/v1/auth/login -ContentType "application/json" -Body '{"email":"teacher@oex.test","password":"Password123!"}'
+Invoke-RestMethod -Uri http://localhost:5002/api/v1/subjects -Headers @{ Authorization = "Bearer $($login.data.accessToken)" }
 ```
 
 ---
 
-## Kiểm thử tự động (automated tests)
-
-### Yêu cầu pass (quality gate)
-
-Backend **không coi là xong** nếu:
-
-```bash
-cd backend
-npm run test    # exit code 0, 0 failed — hiện tại 86 tests
-```
-
-### Chạy test
-
-```bash
-cd backend
-
-# Toàn bộ suite (khuyến nghị trước khi commit / nộp bài)
-npm run test
-
-# Chỉ E2E smoke — luồng học sinh: login → start → save → submit → result
-npm run test:e2e
-
-# Watch mode (dev)
-npm run test:watch
-
-# Chạy test và tạo báo cáo HTML trong backend/coverage/
-npm run test:coverage
-
-# Chuẩn bị DB test thủ công (Docker oex_test)
-npm run db:test:prepare
-npm run test
-```
-
-Sau khi chạy coverage và khởi động Backend, mở:
-
-**http://localhost:5002/testcoverage.html**
-
-Backend whole-app coverage hiện tại: **91.09% statements, 75.11% branches,
-98.31% functions và 91.09% lines**. Báo cáo đo `backend/src/**/*.ts` cùng
-`prisma/seed-data.ts`; `prisma/seed.ts` được loại vì đây là script chuẩn bị dữ liệu
-chạy ngoài application runtime. Tính đúng đắn của seed được xác minh qua integration tests.
-
-### Cơ chế test database
-
-1. Đọc `DATABASE_URL` từ `backend/.env.test`
-2. Nếu kết nối được → migrate + seed DB đó
-3. Nếu không → thử embedded PG cổng `5433`
-4. Nếu vẫn không → tự khởi động embedded PostgreSQL (`backend/tmp/pgdata-test`)
-5. Ghi `backend/.test-runtime.env` (tự tạo/xóa khi chạy test)
-
-### Phân bổ 86 tests
-
-| File test | Số test | Phạm vi |
-|-----------|---------|---------|
-| `auth.test.ts` | 10 | Login, me, change-password, inactive user |
-| `users.test.ts` | 11 | CRUD user, role filter, deactivate |
-| `subjects.test.ts` | 9 | CRUD subject, ownership teacher |
-| `questions.test.ts` | 10 | CRUD MCQ, validate 1 đáp án đúng |
-| `exams.test.ts` | 21 | CRUD exam, validate time window, questions, publish, assign, results |
-| `attempts.test.ts` | 17 | Start, save, submit, expire, hide answers |
-| `students.test.ts` | 3 | List students for assign |
-| `e2e-student-flow.test.ts` | 2 | Full student journey (smoke) |
-| `swagger.test.ts` | 2 | `/api/docs`, `/api/openapi.yaml` |
-| `coverageReport.test.ts` | 1 | Trang điều hướng báo cáo coverage HTML |
-| **Tổng** | **86** | |
-
-### Frontend tests, coverage và build
-
-```bash
-cd frontend
-npm run test             # Vitest unit tests
-npm run test:coverage    # Tạo frontend/coverage/index.html
-npm run build    # vue-tsc + Vite production bundle
-```
-
-Khi Vite dev server đang chạy, mở báo cáo Frontend:
-
-**http://localhost:5001/testcoverage.html**
-
-Trang này có navigation và liên kết nhanh sang Backend Coverage, Swagger và OEX App.
-
-Frontend hiện có **95 test cases / 16 test files** cho API client, auth store, router,
-composables, shared components và các luồng Admin/Teacher/Student. Báo cáo whole-app:
-**88.46% statements, 82.59% branches, 77.53% functions, 90.45% lines**.
-Vitest áp dụng ngưỡng tối thiểu **75% cho cả bốn chỉ số**; lệnh coverage sẽ thất bại nếu
-coverage bị giảm dưới ngưỡng.
-
----
-
-## Kiểm thử thủ công (manual / demo)
-
-Checklist đầy đủ: [`docs/MANUAL_TEST_CHECKLIST.md`](docs/MANUAL_TEST_CHECKLIST.md) (40+ testcase UI).
-
-**Trước khi demo / bảo vệ:**
-
-- [ ] `docker compose up -d`
-- [ ] `cd backend && npm run dev`
-- [ ] `cd frontend && npm run dev`
-- [ ] `npm run test` pass
-- [ ] Mở http://localhost:5001
-
-**Script chụp screenshot** (cần FE + BE đang chạy):
-
-```bash
-cd docs/scripts
-npm install
-npx playwright install chromium
-npm run capture-screenshots
-# → docs/images/01-login.png … 13-result.png
-```
-
----
-
-## Tài khoản mẫu & luồng demo
-
-**Mật khẩu tất cả tài khoản seed:** `Password123!`
-
-| Email | Role | Ghi chú |
-|-------|------|---------|
-| `admin@oex.test` | Admin | Quản lý user |
-| `teacher@oex.test` | Teacher | Demo chính — môn, câu hỏi, đề thi |
-| `teacher2@oex.test` | Teacher | |
-| `student1@oex.test` | Student | |
-| `student2@oex.test` | Student | Demo làm bài |
-| `student3@oex.test` … `student10@oex.test` | Student | |
-| `teacher3@oex.test` … `teacher10@oex.test` | Teacher | |
-| `inactive@oex.test` | Student | Tài khoản bị khóa (test) |
-
-Seed gồm **≥10 bản ghi mỗi loại**: users, subjects, questions, exams, assignments, attempts. ID cố định export trong `backend/prisma/seed-data.ts` (dùng cho tests).
-
-### Luồng demo nhanh
-
-| Role | Đăng nhập | Thử trên UI |
-|------|-----------|-------------|
-| **Teacher** | `teacher@oex.test` | Subjects → Question Bank → Exams → Publish → Assign student |
-| **Student** | `student2@oex.test` | My Exams → Start → làm bài → Submit → xem Result |
-| **Admin** | `admin@oex.test` | Dashboard → User Management → CRUD user |
-
-### Luồng demo qua Swagger
-
-Teacher: login → GET `/subjects` → GET `/exams`  
-Student: login → GET `/my-exams` → POST `/attempts/start` → PUT `/attempts/:id/answers` → POST `/attempts/:id/submit`
-
----
-
-## API — tổng quan
+## 10. API — tổng quan
 
 | | |
 |---|---|
 | Base URL | `http://localhost:5002/api/v1` |
-| Auth | `Authorization: Bearer <JWT>` (trừ `POST /auth/login`) |
-| Spec | [`docs/api/openapi.yaml`](docs/api/openapi.yaml) |
-| Swagger | http://localhost:5002/api/docs |
+| Xác thực | `Authorization: Bearer <JWT>` (trừ `POST /auth/login`) |
+| Thành công | `{ "success": true, "data": …, "message": "…" }` |
+| Lỗi | `{ "success": false, "error": { "code", "message", "details"? } }` |
 
-### Nhóm endpoint
-
-| Prefix | Role | Chức năng |
-|--------|------|-----------|
-| `/auth` | Public / Any | login, me, change-password |
-| `/users` | Admin | CRUD user |
+| Prefix | Vai trò | Chức năng |
+|--------|---------|-----------|
+| `/auth` | Public / mọi user | login, me, change-password |
+| `/users` | Admin | CRUD user, khóa/mở user |
 | `/subjects` | Teacher | CRUD môn học |
-| `/questions` | Teacher | CRUD câu MCQ |
-| `/exams` | Teacher | CRUD đề, publish, assign, results |
-| `/students` | Teacher | Danh sách học sinh (gán đề) |
+| `/questions` | Teacher | CRUD câu hỏi trắc nghiệm |
+| `/exams` | Teacher | CRUD đề, câu hỏi của đề, publish/close, gán học sinh, kết quả |
+| `/students` | Teacher | Danh sách học sinh để gán đề |
 | `/my-exams` | Student | Đề được gán |
-| `/attempts` | Student | start, save answers, submit, result |
-
-### Mã lỗi nghiệp vụ thường gặp
+| `/attempts` | Student | start, lưu đáp án, submit, xem kết quả |
 
 | Code | HTTP | Ý nghĩa |
 |------|------|---------|
-| `INVALID_CREDENTIALS` | 401 | Sai email/password |
+| `VALIDATION_ERROR` | 400 / 409 | Dữ liệu không hợp lệ / đã nộp bài / đã gán học sinh |
+| `INVALID_CREDENTIALS` | 401 | Sai email hoặc mật khẩu |
+| `UNAUTHORIZED` | 401 | Thiếu token hoặc token hết hạn |
 | `ACCOUNT_INACTIVE` | 403 | Tài khoản bị khóa |
-| `FORBIDDEN` | 403 | Sai role / không sở hữu resource |
+| `FORBIDDEN` | 403 | Sai vai trò hoặc không sở hữu tài nguyên |
 | `NOT_FOUND` | 404 | Không tìm thấy |
-| `EXAM_NOT_AVAILABLE` | 400 | Chưa publish / ngoài khung giờ |
-| `MAX_ATTEMPTS_REACHED` | 400 | Hết lượt làm |
+| `EXAM_NOT_AVAILABLE` | 400 | Đề chưa publish, ngoài khung giờ hoặc chưa có câu hỏi |
+| `ATTEMPT_IN_PROGRESS` | 409 | Đang có lượt làm bài chưa nộp |
+| `MAX_ATTEMPTS_REACHED` | 400 | Hết lượt làm bài |
 | `ATTEMPT_EXPIRED` | 400 | Hết giờ làm bài |
-| `VALIDATION_ERROR` | 400 | Dữ liệu không hợp lệ |
+| `SERVICE_UNAVAILABLE` | 503 | Không kết nối được database |
 
 ---
 
-## Build production
+## 11. Build và chạy production
 
-Tóm tắt — chi tiết trong [`docs/DEPLOY.md`](docs/DEPLOY.md):
+### Backend
 
 ```bash
-# Backend
-cd backend
-npm ci
-npx prisma generate
-npx prisma migrate deploy
-npm run build
-NODE_ENV=production node dist/index.js
+cd backendpy
+python -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/alembic upgrade head
+APP_ENV=production HOST=0.0.0.0 .venv/bin/python -m app.main
+```
 
-# Frontend
+- `requirements.txt` chỉ có thư viện runtime, không kèm pytest và pgserver.
+- Khi `APP_ENV=production`, backend tắt tự reload và ẩn trang `/testcoverage.html`.
+
+### Frontend
+
+```bash
 cd frontend
 npm ci
 npm run build
-# Phục vụ frontend/dist qua Nginx/CDN, proxy /api/v1 → backend
 ```
 
-**Production lưu ý:** Đổi `JWT_SECRET`, hạn chế `CORS_ORIGIN`, dùng HTTPS, **không** chạy `prisma db seed` với data demo.
+Lệnh build tạo thư mục `frontend/dist`. Phục vụ thư mục này qua Nginx/CDN và proxy `/api/v1` sang backend.
+
+**Lưu ý production:**
+- Dùng `JWT_SECRET` riêng và đủ mạnh.
+- Đặt `CORS_ORIGIN` đúng domain của frontend.
+- Dùng HTTPS.
+- Dùng PostgreSQL thật, không dùng `app.dev_db`.
+- **Không** chạy `python -m app.seed`, vì lệnh này tạo tài khoản demo với mật khẩu công khai.
 
 ---
 
-## Tài liệu & công cụ hỗ trợ
+## 12. AI agent (Claude Code)
 
-| File / thư mục | Mục đích |
-|----------------|----------|
-| [`PrjMng/STATUS.md`](PrjMng/STATUS.md) | Phase hiện tại, việc tiếp theo |
-| [`PrjMng/TASKS.md`](PrjMng/TASKS.md) | Backlog theo phase |
-| [`PrjMng/DECISIONS.md`](PrjMng/DECISIONS.md) | Quyết định đã khóa (stack, scope cuts) |
-| [`PrjMng/CHANGELOG.md`](PrjMng/CHANGELOG.md) | Nhật ký triển khai |
-| [`docs/OEX_DetailedDesign_V2.md`](docs/OEX_DetailedDesign_V2.md) | Thiết kế chi tiết |
-| [`docs/api/openapi.yaml`](docs/api/openapi.yaml) | REST API contract |
-| [`docs/DEPLOY.md`](docs/DEPLOY.md) | Hướng dẫn deploy |
-| [`docs/MANUAL_TEST_CHECKLIST.md`](docs/MANUAL_TEST_CHECKLIST.md) | Checklist test UI |
-| [`docs/Report.md`](docs/Report.md) | Báo cáo đồ án PMHDV |
-| [`docs/OEX_Presentation.pptx`](docs/OEX_Presentation.pptx) | Slide thuyết trình |
-| [`docs/images/`](docs/images/) | Screenshot + diagram PNG |
+Cấu hình nằm ở thư mục workspace (thư mục cha của `src/`). Mở Claude Code tại đó.
 
-### Scripts trong `docs/scripts/`
+| Thành phần | Vị trí |
+|------------|--------|
+| Quy tắc chung của dự án | `CLAUDE.md` |
+| Skills | `.claude/skills/` |
 
-```bash
-cd docs/scripts
-npm install
-
-npm run capture-screenshots   # Chụp 13 màn hình UI (Playwright)
-npm run render-diagrams       # Render Mermaid → PNG
-npm run build-nhom11-docx     # Report.md → Word (cần pandoc + Python)
-npm run build-presentation    # Tạo slide PowerPoint
-```
+| Phạm vi | Skill |
+|---------|-------|
+| Chung cho backend và frontend | `oex-coding` |
+| Backend Python | `oex-backendpy` |
+| Frontend | `frontend-design` |
+| Báo cáo Word | `docx` |
+| Thiết kế UI, slide, brand | `ui-ux-pro-max`, `ckm-*` |
 
 ---
 
-## Cursor agent (skills)
+## 13. Phạm vi v1
 
-| Phạm vi | Skill / rule |
-|---------|----------------|
-| Luôn bật | `.cursor/rules/oex-project-layout.mdc` |
-| Chung FE + BE | `.cursor/skills/oex-coding/` |
-| Chỉ backend | `.cursor/skills/oex-backend/` |
-| Chỉ frontend | `.cursor/skills/frontend-design/` |
+**Có:**
+- Đăng nhập JWT, phân quyền Admin / Teacher / Student.
+- Câu hỏi trắc nghiệm có đúng một đáp án đúng.
+- Ngân hàng câu hỏi, tạo đề, publish, gán học sinh trực tiếp.
+- Làm bài có timer, tự lưu đáp án, tự nộp khi hết giờ.
+- Chấm điểm tự động và xem kết quả.
+- Giao diện tiếng Anh.
+- OpenAPI và Swagger UI.
 
-Khi agent tiếp tục code: đọc `PrjMng/STATUS.md` trước, cập nhật `STATUS.md` + `CHANGELOG.md` sau mỗi phase/task lớn.
+**Không có:**
+- Import câu hỏi từ Excel.
+- Chống gian lận.
+- Module lớp học.
+- Câu hỏi có hình ảnh hoặc nhiều đáp án đúng.
+- Xáo trộn câu hỏi/đáp án.
+- OAuth/SSO.
 
----
-
-## Phạm vi v1
-
-**Có trong v1:**
-
-- Auth JWT + phân quyền Admin / Teacher / Student
-- MCQ **một đáp án đúng**
-- Ngân hàng câu hỏi, tạo đề, publish, gán học sinh trực tiếp
-- Làm bài online: timer, auto-save, auto-submit khi hết giờ
-- Chấm điểm tự động, xem kết quả
-- UI tiếng Anh đầy đủ 3 role
-- OpenAPI + Swagger UI + coverage HTML + 86 API tests
-
-**Không có (ngoài phạm vi v1):**
-
-- Import Excel câu hỏi
-- Chống gian lận (proctoring)
-- Module lớp học (gán theo class)
-- Câu hỏi hình ảnh / đa đáp án
-- Xáo trộn câu / đáp án
-- Playwright UI E2E (có API E2E smoke + manual checklist)
-
-Chi tiết: `docs/OEX_DetailedDesign_V2.md`.
+Chi tiết xem mục §15 của tài liệu thiết kế.
 
 ---
 
-## Xử lý sự cố
+## 14. Xử lý sự cố
 
-| Vấn đề | Nguyên nhân / cách xử lý |
-|--------|---------------------------|
-| `ECONNREFUSED` database | `docker compose up -d` → đợi healthy → `npx prisma migrate deploy && npx prisma db seed` |
-| Login báo lỗi server / 500 | DB chưa chạy hoặc chưa migrate/seed |
-| `PrismaClient` / schema lỗi | `cd backend && npx prisma generate` |
-| Test fail sau đổi schema | `npm run db:test:prepare` hoặc xóa `backend/tmp/pgdata-test` rồi `npm run test` |
-| Port 5001 / 5002 / 5003 / 5005 bận | Đổi cấu hình port tương ứng hoặc tắt process chiếm port |
-| Swagger không mở | Kiểm tra `SWAGGER_ENABLED` ≠ `false`, backend đang chạy |
-| Swagger 401 trên endpoint | Chưa Authorize hoặc token hết hạn — login lại |
-| Frontend không gọi được API | Backend phải chạy; dev dùng proxy Vite (`/api/v1`) |
-| CORS lỗi (production) | `CORS_ORIGIN` phải khớp URL frontend |
-| `docker compose down -v` mất data | Bình thường — chạy lại migrate + seed |
-| PowerShell `&&` lỗi | Dùng `;` hoặc tách lệnh |
-
----
-
-## Bảng lệnh thường dùng
-
-| Mục đích | Lệnh |
-|----------|------|
-| Start DB | `docker compose up -d` |
-| Dev API | `cd backend && npm run dev` |
-| Dev UI | `cd frontend && npm run dev` |
-| Migrate dev DB | `cd backend && npx prisma migrate deploy` |
-| Seed dev DB | `cd backend && npx prisma db seed` |
-| Reset dev DB | `docker compose down -v && docker compose up -d` → migrate + seed |
-| Run all tests | `cd backend && npm run test` |
-| E2E smoke | `cd backend && npm run test:e2e` |
-| Prepare test DB | `cd backend && npm run db:test:prepare` |
-| FE build | `cd frontend && npm run build` |
-| BE build | `cd backend && npm run build` |
-| Prisma GUI | `cd backend && npm run db:studio` |
-| Swagger | http://localhost:5002/api/docs |
-| Health | http://localhost:5002/health |
+| Triệu chứng | Nguyên nhân và cách xử lý |
+|-------------|---------------------------|
+| `RuntimeError: JWT_SECRET is not configured` | Chưa có `backendpy/.env` hoặc chưa đặt `JWT_SECRET` |
+| `RuntimeError: OpenAPI spec not found` | Thiếu `config/api/openapi.yaml`. Khôi phục file, hoặc đặt `SWAGGER_ENABLED="false"` |
+| `pgserver is not installed` | Chạy `.venv\Scripts\python -m pip install -r requirements-dev.txt` |
+| `No module named app` | Chạy lệnh từ thư mục `src/backendpy` |
+| `app.dev_db` báo lỗi vì cổng 5005 đã dùng | Có PostgreSQL/Docker khác đang dùng cổng 5005. Tắt nó đi, hoặc dùng `--port 5006` và sửa `DATABASE_URL` |
+| Đã đóng terminal nhưng cổng 5005 vẫn bận | Trong `backendpy`: `.venv\Scripts\python -c "from app.dev_db import stop_server; from pathlib import Path; stop_server(Path('.pgdata-dev'))"` |
+| API trả `SERVICE_UNAVAILABLE` | Database chưa chạy, hoặc chưa chạy `alembic upgrade head` |
+| Đăng nhập thì Vite báo `http proxy error ... ECONNREFUSED` | Backend chưa chạy ở cổng 5002. Kiểm tra `PORT` trong `backendpy/.env` |
+| Frontend báo `Port 5001 is already in use` | Tắt process đang chiếm cổng 5001 (Vite dùng `strictPort`) |
+| Swagger UI trắng trang | Không có Internet (giao diện Swagger tải từ CDN). API vẫn chạy bình thường |
+| Token hết hạn, Swagger trả 401 | Đăng nhập lại để lấy token mới |
+| Test lỗi sau khi đổi schema | Kiểm tra migration mới; có thể xóa `backendpy/.pgdata-test` rồi chạy lại `pytest` |
 
 ---
 
-*OEX v1 — Online Examination System · PTIT / PMHDV*
+## 15. Bảng lệnh thường dùng
+
+| Mục đích | Thư mục | Lệnh |
+|----------|---------|------|
+| Cài backend (lần đầu) | `backendpy` | `python -m venv .venv` rồi `.venv\Scripts\python -m pip install -r requirements-dev.txt` |
+| Cài frontend (lần đầu) | `frontend` | `npm install` |
+| Chạy database | `backendpy` | `.venv\Scripts\python -m app.dev_db` |
+| Tạo/cập nhật bảng | `backendpy` | `.venv\Scripts\alembic upgrade head` |
+| Nạp dữ liệu mẫu | `backendpy` | `.venv\Scripts\python -m app.seed` |
+| Chạy API | `backendpy` | `.venv\Scripts\python -m app.main` |
+| Chạy giao diện | `frontend` | `npm run dev` |
+| Test backend | `backendpy` | `.venv\Scripts\python -m pytest` |
+| Test backend + coverage | `backendpy` | `.venv\Scripts\python -m pytest --cov --cov-report=html` |
+| Test frontend | `frontend` | `npm run test` |
+| Build frontend | `frontend` | `npm run build` |
+| Swagger | | http://localhost:5002/api/docs |
+| Health | | http://localhost:5002/health |
+
+---
+
+*OEX v1 — Online Examination System · PMHDV · Nhóm 11*

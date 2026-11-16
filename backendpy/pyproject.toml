@@ -1,0 +1,23 @@
+[project]
+name = "oex-backendpy"
+version = "1.0.0"
+description = "OEX — Online Examination System, Python (FastAPI) backend"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+filterwarnings = [
+    # starlette.testclient still works with httpx; the replacement package is not needed here.
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated",
+]
+
+[tool.coverage.run]
+source = ["app"]
+# SQLAlchemy's asyncio layer runs ORM code in greenlets; without this, lines after `await` are missed.
+concurrency = ["thread", "greenlet"]
+omit = ["app/dev_db.py"]
+
+[tool.coverage.html]
+directory = "coverage"

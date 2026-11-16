@@ -12,6 +12,11 @@ backend/.env.test
 dist/
 backend/dist/
 frontend/dist/
+and_src/local.properties
+and_src/.gradle/
+and_src/**/build/
+and_src/*.apk
+and_src/*.aab
 
 # Logs
 *.log
@@ -35,3 +40,14 @@ frontend/dist/
 # Prisma
 backend/prisma/*.db
 backend/prisma/*.db-journal
+
+# Python backend (backendpy)
+backendpy/.env
+backendpy/.env.test
+backendpy/.venv/
+backendpy/.pgdata-dev/
+backendpy/.pgdata-test/
+backendpy/.coverage
+backendpy/.pytest_cache/
+__pycache__/
+*.pyc
